@@ -59,7 +59,6 @@ import java.util.List;
 public class XACMLBasedAuthorizationHandler implements AuthorizationHandler {
 
     private static final Log log = LogFactory.getLog(XACMLBasedAuthorizationHandler.class);
-    public static final String DISALLOW_DOCTYPE_DECL = "http://apache.org/xml/features/disallow-doctype-decl";
     public static final String DECISION_XPATH = "/Response/Result/Decision/text()";
     private static volatile XACMLBasedAuthorizationHandler instance;
 
@@ -182,8 +181,7 @@ public class XACMLBasedAuthorizationHandler implements AuthorizationHandler {
     private boolean evaluateXACMLResponse(String xacmlResponse) throws FrameworkException {
 
         try {
-            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-            dbf.setFeature(DISALLOW_DOCTYPE_DECL, true);
+            DocumentBuilderFactory dbf = IdentityUtil.getSecuredDocumentBuilderFactory();
             DocumentBuilder db = dbf.newDocumentBuilder();
             InputSource is = new InputSource();
             is.setCharacterStream(new StringReader(xacmlResponse));

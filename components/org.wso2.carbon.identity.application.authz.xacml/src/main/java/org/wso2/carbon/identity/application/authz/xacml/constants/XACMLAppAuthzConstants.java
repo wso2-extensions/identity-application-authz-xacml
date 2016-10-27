@@ -21,15 +21,15 @@ package org.wso2.carbon.identity.application.authz.xacml.constants;
 public class XACMLAppAuthzConstants {
 
     public static final String AUTH_CATEGORY = "http://wso2.org/identity/auth";
-    public static final String AUTH_CTX_ID = AUTH_CATEGORY +"/auth-ctx-id";
-    public static final String SP_NAME_ID = AUTH_CATEGORY +"/sp-name";
-    public static final String SP_DOMAIN_ID = AUTH_CATEGORY +"/sp-domain";
-    public static final String USERNAME_ID = AUTH_CATEGORY +"/username";
-    public static final String USER_STORE_ID = AUTH_CATEGORY +"/userstore-domain";
-    public static final String USER_TENANT_DOMAIN_ID = AUTH_CATEGORY +"/user-tenant-domain";
+    public static final String AUTH_CTX_ID = AUTH_CATEGORY + "/auth-ctx-id";
+    public static final String SP_NAME_ID = AUTH_CATEGORY + "/sp-name";
+    public static final String SP_DOMAIN_ID = AUTH_CATEGORY + "/sp-domain";
+    public static final String USERNAME_ID = AUTH_CATEGORY + "/username";
+    public static final String USER_STORE_ID = AUTH_CATEGORY + "/userstore-domain";
+    public static final String USER_TENANT_DOMAIN_ID = AUTH_CATEGORY + "/user-tenant-domain";
 
-    public static final String INBOUND_PROTOCOL_ATTRIBUTE = AUTH_CATEGORY +"/inbound-protocol";
-    public static final String CLIENT_IP_ATTRIBUTE = AUTH_CATEGORY +"/user-ip";
+    public static final String INBOUND_PROTOCOL_ATTRIBUTE = AUTH_CATEGORY + "/inbound-protocol";
+    public static final String CLIENT_IP_ATTRIBUTE = AUTH_CATEGORY + "/user-ip";
 
 
     private XACMLAppAuthzConstants() {

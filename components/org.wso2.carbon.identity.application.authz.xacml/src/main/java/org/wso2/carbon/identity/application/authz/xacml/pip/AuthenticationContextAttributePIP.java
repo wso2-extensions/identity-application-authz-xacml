@@ -112,13 +112,8 @@ public class AuthenticationContextAttributePIP extends AbstractPIPAttributeFinde
                     default:
                 }
                 if (log.isDebugEnabled()) {
-                    StringBuilder sb = new StringBuilder();
-                    sb.append("[");
-                    for (String value : values) {
-                        sb.append(value).append(", ");
-                    }
-                    sb.append("]");
-                    log.debug("Returning " + attributeId + " value as " + sb.toString());
+                    String valuesString = StringUtils.join(values, ",");
+                    log.debug("Returning " + attributeId + " value as " + valuesString);
                 }
                 return values;
             }
