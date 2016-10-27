@@ -21,6 +21,7 @@ package org.wso2.carbon.identity.application.authz.xacml.handler.impl;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Document;
+import org.wso2.balana.utils.Constants.PolicyConstants;
 import org.wso2.balana.utils.exception.PolicyBuilderException;
 import org.wso2.balana.utils.policy.PolicyBuilder;
 import org.wso2.balana.utils.policy.dto.RequestElementDTO;
@@ -28,6 +29,7 @@ import org.wso2.carbon.identity.application.authentication.framework.context.Aut
 import org.wso2.carbon.identity.application.authentication.framework.exception.FrameworkException;
 import org.wso2.carbon.identity.application.authentication.framework.handler.authz.AuthorizationHandler;
 import org.wso2.carbon.identity.application.authentication.framework.util.FrameworkUtils;
+import org.wso2.carbon.identity.application.authz.xacml.constants.XACMLAppAuthzConstants;
 import org.wso2.carbon.identity.application.authz.xacml.internal.AppAuthzDataholder;
 import org.wso2.carbon.identity.base.IdentityConstants;
 import org.wso2.carbon.identity.core.util.IdentityUtil;
@@ -57,6 +59,8 @@ import java.util.List;
 public class XACMLBasedAuthorizationHandler implements AuthorizationHandler {
 
     private static final Log log = LogFactory.getLog(XACMLBasedAuthorizationHandler.class);
+    public static final String DISALLOW_DOCTYPE_DECL = "http://apache.org/xml/features/disallow-doctype-decl";
+    public static final String DECISION_XPATH = "/Response/Result/Decision/text()";
     private static volatile XACMLBasedAuthorizationHandler instance;
 
     public static XACMLBasedAuthorizationHandler getInstance() {
@@ -128,24 +132,37 @@ public class XACMLBasedAuthorizationHandler implements AuthorizationHandler {
         List<RowDTO> rowDTOs = new ArrayList<>();
         RowDTO contextIdentifierDTO =
                 createRowDTO(context.getContextIdentifier(),
-                        "urn:oasis:names:tc:xacml:1.0:auth:authn-context-id",
-                        "urn:oasis:names:tc:xacml:1.0:auth-category:auth-context");
-        RowDTO resourceDTO =
+                        XACMLAppAuthzConstants.AUTH_CTX_ID, XACMLAppAuthzConstants.AUTH_CATEGORY);
+        RowDTO spDTO =
                 createRowDTO(context.getServiceProviderName(),
-                        "urn:oasis:names:tc:xacml:1.0:resource:resource-id",
-                        "urn:oasis:names:tc:xacml:3.0:attribute-category:resource");
+                        XACMLAppAuthzConstants.SP_NAME_ID, XACMLAppAuthzConstants.AUTH_CATEGORY);
+        RowDTO spDomainDTO =
+                createRowDTO(context.getTenantDomain(),
+                        XACMLAppAuthzConstants.SP_DOMAIN_ID, XACMLAppAuthzConstants.AUTH_CATEGORY);
+        RowDTO usernameDTO =
+                createRowDTO(context.getTenantDomain(),
+                        XACMLAppAuthzConstants.USERNAME_ID, XACMLAppAuthzConstants.AUTH_CATEGORY);
+        RowDTO userStoreDomainDTO =
+                createRowDTO(context.getSequenceConfig().getAuthenticatedUser().getUserStoreDomain(),
+                        XACMLAppAuthzConstants.USER_STORE_ID, XACMLAppAuthzConstants.AUTH_CATEGORY);
+        RowDTO userTenantDomainDTO =
+                createRowDTO(context.getSequenceConfig().getAuthenticatedUser().getTenantDomain(),
+                        XACMLAppAuthzConstants.USER_TENANT_DOMAIN_ID, XACMLAppAuthzConstants.AUTH_CATEGORY);
         String subject = null;
         if (context.getSequenceConfig() != null && context.getSequenceConfig().getAuthenticatedUser() != null) {
             subject = context.getSequenceConfig().getAuthenticatedUser().toString();
         }
         if (subject != null) {
             RowDTO subjectDTO =
-                    createRowDTO(subject, "urn:oasis:names:tc:xacml:1.0:subject:subject-id",
-                            "urn:oasis:names:tc:xacml:1.0:subject-category:access-subject");
+                    createRowDTO(subject, PolicyConstants.SUBJECT_ID_DEFAULT, PolicyConstants.SUBJECT_CATEGORY_URI);
             rowDTOs.add(subjectDTO);
         }
         rowDTOs.add(contextIdentifierDTO);
-        rowDTOs.add(resourceDTO);
+        rowDTOs.add(spDTO);
+        rowDTOs.add(spDomainDTO);
+        rowDTOs.add(usernameDTO);
+        rowDTOs.add(userStoreDomainDTO);
+        rowDTOs.add(userTenantDomainDTO);
         RequestDTO requestDTO = new RequestDTO();
         requestDTO.setRowDTOs(rowDTOs);
         return requestDTO;
@@ -166,14 +183,14 @@ public class XACMLBasedAuthorizationHandler implements AuthorizationHandler {
 
         try {
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-            dbf.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+            dbf.setFeature(DISALLOW_DOCTYPE_DECL, true);
             DocumentBuilder db = dbf.newDocumentBuilder();
             InputSource is = new InputSource();
             is.setCharacterStream(new StringReader(xacmlResponse));
             Document doc = db.parse(is);
 
             XPath xpath = XPathFactory.newInstance().newXPath();
-            XPathExpression expr = xpath.compile("/Response/Result/Decision/text()");
+            XPathExpression expr = xpath.compile(DECISION_XPATH);
             String decision = (String) expr.evaluate(doc, XPathConstants.STRING);
             if (decision.equalsIgnoreCase(EntitlementPolicyConstants.RULE_EFFECT_PERMIT)
                     || decision.equalsIgnoreCase(EntitlementPolicyConstants.RULE_EFFECT_NOT_APPLICABLE)) {

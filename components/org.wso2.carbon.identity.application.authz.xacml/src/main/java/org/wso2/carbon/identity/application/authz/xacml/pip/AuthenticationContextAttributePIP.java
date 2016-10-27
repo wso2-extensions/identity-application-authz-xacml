@@ -28,6 +28,7 @@ import org.wso2.balana.cond.EvaluationResult;
 import org.wso2.balana.ctx.EvaluationCtx;
 import org.wso2.carbon.identity.application.authentication.framework.context.AuthenticationContext;
 import org.wso2.carbon.identity.application.authentication.framework.util.FrameworkUtils;
+import org.wso2.carbon.identity.application.authz.xacml.constants.XACMLAppAuthzConstants;
 import org.wso2.carbon.identity.base.IdentityConstants;
 import org.wso2.carbon.identity.entitlement.pip.AbstractPIPAttributeFinder;
 
@@ -40,12 +41,7 @@ import java.util.Set;
 /**
  * Provides the attributes from authentication context. The attributes include the following
  * <ul>
- *     <li><b>http://wso2.org/authentication/username</b> - Authenticated user name</li>
- *     <li><b>http://wso2.org/authentication/userstore</b> - Authenticated user's userstore</li>
- *     <li><b>http://wso2.org/authentication/user-tenant-domain</b> - Authenticated user's tenant domain</li>
  *     <li><b>http://wso2.org/authentication/user-ip</b> - Authenticated user's IP</li>
- *     <li><b>http://wso2.org/authentication/app-name</b> - SP name</li>
- *     <li><b>http://wso2.org/authentication/app-tenant-domain</b> - SP's tenant domain</li>
  *     <li><b>http://wso2.org/authentication/inbound-protocol</b> - Authentication protocol (eg. saml)</li>
  * </ul>
  */
@@ -53,28 +49,13 @@ public class AuthenticationContextAttributePIP extends AbstractPIPAttributeFinde
 
     private static final String PIP_NAME = "AuthenticationContextAttributePIP";
 
-    private static final String SP_NAME_ATTRIBUTE = "http://wso2.org/authentication/app-name";
-    private static final String USERNAME_ATTRIBUTE = "http://wso2.org/authentication/username";
-    private static final String USER_STORE_NAME_ATTRIBUTE = "http://wso2.org/authentication/userstore";
-    private static final String USER_TENANT_DOMAIN_ATTRIBUTE = "http://wso2.org/authentication/user-tenant-domain";
-    private static final String SP_TENANT_DOMAIN_ATTRIBUTE = "http://wso2.org/authentication/app-tenant-domain";
-    private static final String INBOUND_PROTOCOL_ATTRIBUTE = "http://wso2.org/authentication/inbound-protocol";
-    private static final String CLIENT_IP_ATTRIBUTE = "http://wso2.org/authentication/user-ip";
-    private static final String AUTH_CTX_ID_URI = "urn:oasis:names:tc:xacml:1.0:auth:authn-context-id";
-    private static final String AUTH_CTX_ID_CATEGORY = "urn:oasis:names:tc:xacml:1.0:auth-category:auth-context";
-
     private static final Set<String> SUPPORTED_ATTRIBUTES;
     private static final Log log = LogFactory.getLog(AuthenticationContextAttributePIP.class);
 
     static {
         SUPPORTED_ATTRIBUTES = new HashSet<String>() {{
-            add(SP_NAME_ATTRIBUTE);
-            add(USERNAME_ATTRIBUTE);
-            add(USER_STORE_NAME_ATTRIBUTE);
-            add(USER_TENANT_DOMAIN_ATTRIBUTE);
-            add(SP_TENANT_DOMAIN_ATTRIBUTE);
-            add(INBOUND_PROTOCOL_ATTRIBUTE);
-            add(CLIENT_IP_ATTRIBUTE);
+            add(XACMLAppAuthzConstants.INBOUND_PROTOCOL_ATTRIBUTE);
+            add(XACMLAppAuthzConstants.CLIENT_IP_ATTRIBUTE);
         }};
     }
 
@@ -99,8 +80,9 @@ public class AuthenticationContextAttributePIP extends AbstractPIPAttributeFinde
             log.debug("Empty attribute URI received..");
             return Collections.EMPTY_SET;
         }
-        context = evaluationCtx.getAttribute(new URI(StringAttribute.identifier), new URI(AUTH_CTX_ID_URI), issuer,
-                new URI(AUTH_CTX_ID_CATEGORY));
+        context = evaluationCtx
+                .getAttribute(new URI(StringAttribute.identifier), new URI(XACMLAppAuthzConstants.AUTH_CTX_ID),
+                        issuer, new URI(XACMLAppAuthzConstants.AUTH_CATEGORY));
         if (context != null && context.getAttributeValue() != null &&
                 context.getAttributeValue().isBag()) {
             BagAttribute bagAttribute = (BagAttribute) context.getAttributeValue();
@@ -118,31 +100,25 @@ public class AuthenticationContextAttributePIP extends AbstractPIPAttributeFinde
             if (authCtx != null) {
                 Set<String> values = new HashSet<>();
                 switch (attributeId.toString()) {
-                    case SP_NAME_ATTRIBUTE:
-                        values.add(authCtx.getServiceProviderName());
-                        break;
-                    case USERNAME_ATTRIBUTE:
-                        values.add(authCtx.getSequenceConfig().getAuthenticatedUser().getUserName());
-                        break;
-                    case USER_TENANT_DOMAIN_ATTRIBUTE:
-                        values.add(authCtx.getSequenceConfig().getAuthenticatedUser().getTenantDomain());
-                        break;
-                    case USER_STORE_NAME_ATTRIBUTE:
-                        values.add(authCtx.getSequenceConfig().getAuthenticatedUser().getUserStoreDomain());
-                        break;
-                    case SP_TENANT_DOMAIN_ATTRIBUTE:
-                        values.add(authCtx.getTenantDomain());
-                        break;
-                    case INBOUND_PROTOCOL_ATTRIBUTE:
+                    case XACMLAppAuthzConstants.INBOUND_PROTOCOL_ATTRIBUTE:
                         values.add(authCtx.getRequestType());
                         break;
-                    case CLIENT_IP_ATTRIBUTE:
+                    case XACMLAppAuthzConstants.CLIENT_IP_ATTRIBUTE:
                         Object ipObj = authCtx.getParameter(IdentityConstants.USER_IP);
                         if (ipObj != null) {
                             values.add(ipObj.toString());
                         }
                         break;
                     default:
+                }
+                if (log.isDebugEnabled()) {
+                    StringBuilder sb = new StringBuilder();
+                    sb.append("[");
+                    for (String value : values) {
+                        sb.append(value).append(", ");
+                    }
+                    sb.append("]");
+                    log.debug("Returning " + attributeId + " value as " + sb.toString());
                 }
                 return values;
             }
