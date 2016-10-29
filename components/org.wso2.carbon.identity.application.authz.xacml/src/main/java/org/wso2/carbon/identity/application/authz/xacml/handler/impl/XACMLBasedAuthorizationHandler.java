@@ -18,9 +18,12 @@
 
 package org.wso2.carbon.identity.application.authz.xacml.handler.impl;
 
+import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.impl.builder.StAXOMBuilder;
+import org.apache.axiom.om.xpath.AXIOMXPath;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.w3c.dom.Document;
+import org.jaxen.JaxenException;
 import org.wso2.balana.utils.Constants.PolicyConstants;
 import org.wso2.balana.utils.exception.PolicyBuilderException;
 import org.wso2.balana.utils.policy.PolicyBuilder;
@@ -38,28 +41,21 @@ import org.wso2.carbon.identity.entitlement.ui.EntitlementPolicyConstants;
 import org.wso2.carbon.identity.entitlement.ui.dto.RequestDTO;
 import org.wso2.carbon.identity.entitlement.ui.dto.RowDTO;
 import org.wso2.carbon.identity.entitlement.ui.util.PolicyCreatorUtil;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpression;
-import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
-import java.io.IOException;
-import java.io.StringReader;
+import javax.xml.stream.XMLStreamException;
+import java.io.ByteArrayInputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
 public class XACMLBasedAuthorizationHandler implements AuthorizationHandler {
 
     private static final Log log = LogFactory.getLog(XACMLBasedAuthorizationHandler.class);
-    public static final String DECISION_XPATH = "/Response/Result/Decision/text()";
+    public static final String DECISION_XPATH = "//ns:Result/ns:Decision/text()";
+    public static final String XACML_NS = "urn:oasis:names:tc:xacml:3.0:core:schema:wd-17";
+    public static final String XACML_NS_PREFIX = "ns";
     private static volatile XACMLBasedAuthorizationHandler instance;
 
     public static XACMLBasedAuthorizationHandler getInstance() {
@@ -181,22 +177,17 @@ public class XACMLBasedAuthorizationHandler implements AuthorizationHandler {
     private boolean evaluateXACMLResponse(String xacmlResponse) throws FrameworkException {
 
         try {
-            DocumentBuilderFactory dbf = IdentityUtil.getSecuredDocumentBuilderFactory();
-            DocumentBuilder db = dbf.newDocumentBuilder();
-            InputSource is = new InputSource();
-            is.setCharacterStream(new StringReader(xacmlResponse));
-            Document doc = db.parse(is);
+            AXIOMXPath axiomxPath = new AXIOMXPath(DECISION_XPATH);
+            axiomxPath.addNamespace(XACML_NS_PREFIX, XACML_NS);
+            OMElement rootElement =
+                    new StAXOMBuilder(new ByteArrayInputStream(xacmlResponse.getBytes(StandardCharsets.UTF_8)))
+                            .getDocumentElement();
+            String decision = axiomxPath.stringValueOf(rootElement);
 
-            XPath xpath = XPathFactory.newInstance().newXPath();
-            XPathExpression expr = xpath.compile(DECISION_XPATH);
-            String decision = (String) expr.evaluate(doc, XPathConstants.STRING);
-            if (decision.equalsIgnoreCase(EntitlementPolicyConstants.RULE_EFFECT_PERMIT)
-                    || decision.equalsIgnoreCase(EntitlementPolicyConstants.RULE_EFFECT_NOT_APPLICABLE)) {
-                return true;
-            }
-        } catch (ParserConfigurationException | SAXException | XPathExpressionException | IOException e) {
-            throw new FrameworkException("Exception occurred while xacmlResponse processing", e);
+            return EntitlementPolicyConstants.RULE_EFFECT_PERMIT.equalsIgnoreCase(decision)
+                    || EntitlementPolicyConstants.RULE_EFFECT_NOT_APPLICABLE.equalsIgnoreCase(decision);
+        } catch (JaxenException | XMLStreamException e) {
+            throw new FrameworkException("Exception occurred when getting decision from xacml response.", e);
         }
-        return false;
     }
 }

@@ -235,6 +235,8 @@
 
         <identity.app.authz.xacml.pkg.exp.version>${project.version}</identity.app.authz.xacml.pkg.exp.version>
 
+        <axiom.org.jaxen.imp.pkg.version.range>[1.1.1, 2.0.0)</axiom.org.jaxen.imp.pkg.version.range>
+        <axiom.osgi.version.range>[1.2.11, 2.0.0)</axiom.osgi.version.range>
         <balana.import.version.range>[1.0.0, 2.0.0)</balana.import.version.range>
         <imp.pkg.version.javax.xml.parsers>[0.0.0, 1.0.0)</imp.pkg.version.javax.xml.parsers>
         <apache.felix.scr.ds.annotations.version>1.2.4</apache.felix.scr.ds.annotations.version>
