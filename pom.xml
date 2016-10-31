@@ -229,8 +229,8 @@
 
     <properties>
         <!--Carbon framework version-->
-        <carbon.identity.framework.import.version.range>[5.0.0, 6.0.0)</carbon.identity.framework.import.version.range>
-        <carbon.identity.framework.version>5.5.11-SNAPSHOT</carbon.identity.framework.version>
+        <carbon.identity.framework.import.version.range>[5.6.0, 6.0.0)</carbon.identity.framework.import.version.range>
+        <carbon.identity.framework.version>5.6.0</carbon.identity.framework.version>
         <balana.version>1.0.5</balana.version>
 
         <identity.app.authz.xacml.pkg.exp.version>${project.version}</identity.app.authz.xacml.pkg.exp.version>
