@@ -53,9 +53,12 @@ import java.util.List;
 public class XACMLBasedAuthorizationHandler implements AuthorizationHandler {
 
     private static final Log log = LogFactory.getLog(XACMLBasedAuthorizationHandler.class);
-    public static final String DECISION_XPATH = "//ns:Result/ns:Decision/text()";
-    public static final String XACML_NS = "urn:oasis:names:tc:xacml:3.0:core:schema:wd-17";
-    public static final String XACML_NS_PREFIX = "ns";
+    private static final String DECISION_XPATH = "//ns:Result/ns:Decision/text()";
+    private static final String XACML_NS = "urn:oasis:names:tc:xacml:3.0:core:schema:wd-17";
+    private static final String XACML_NS_PREFIX = "ns";
+    private static final String RULE_EFFECT_PERMIT = "Permit";
+    private static final String RULE_EFFECT_NOT_APPLICABLE = "NotApplicable";
+    public static final String ACTION_AUTHENTICATE = "authenticate";
     private static volatile XACMLBasedAuthorizationHandler instance;
 
     public static XACMLBasedAuthorizationHandler getInstance() {
@@ -105,12 +108,19 @@ public class XACMLBasedAuthorizationHandler implements AuthorizationHandler {
                 if (log.isDebugEnabled()) {
                     log.debug("XACML Authorization response :\n" + responseString);
                 }
-                Boolean isAuthorized = evaluateXACMLResponse(responseString);
-                FrameworkUtils.removeAuthenticationContextFromCache(context.getContextIdentifier());
-                if (isAuthorized) {
-                    return true;
+                String authzResponse = evaluateXACMLResponse(responseString);
+                boolean isAuthorized = false;
+                if (RULE_EFFECT_NOT_APPLICABLE.equalsIgnoreCase(authzResponse)) {
+                    log.warn(String.format(
+                            "No applicable rule for service provider '%s@%s', Hence authorizing the user by default. " +
+                                    "Add an authorization policy (or unset authorization) to fix this warning.",
+                            context.getServiceProviderName(), context.getTenantDomain()));
+                    isAuthorized = true;
+                } else if (RULE_EFFECT_PERMIT.equalsIgnoreCase(authzResponse)) {
+                    isAuthorized = true;
                 }
-                //todo: audit log if not authorized
+                FrameworkUtils.removeAuthenticationContextFromCache(context.getContextIdentifier());
+                return isAuthorized;
             } catch (PolicyBuilderException e) {
                 log.error("Policy Builder Exception occurred", e);
             } catch (EntitlementException e) {
@@ -125,24 +135,27 @@ public class XACMLBasedAuthorizationHandler implements AuthorizationHandler {
     private RequestDTO createRequestDTO(AuthenticationContext context) {
 
         List<RowDTO> rowDTOs = new ArrayList<>();
+        RowDTO actionDTO =
+                createRowDTO(ACTION_AUTHENTICATE,
+                        XACMLAppAuthzConstants.AUTH_ACTION_ID, XACMLAppAuthzConstants.ACTION_CATEGORY);
         RowDTO contextIdentifierDTO =
                 createRowDTO(context.getContextIdentifier(),
                         XACMLAppAuthzConstants.AUTH_CTX_ID, XACMLAppAuthzConstants.AUTH_CATEGORY);
-        RowDTO spDTO =
+        RowDTO spNameDTO =
                 createRowDTO(context.getServiceProviderName(),
-                        XACMLAppAuthzConstants.SP_NAME_ID, XACMLAppAuthzConstants.AUTH_CATEGORY);
+                        XACMLAppAuthzConstants.SP_NAME_ID, XACMLAppAuthzConstants.SP_CATEGORY);
         RowDTO spDomainDTO =
                 createRowDTO(context.getTenantDomain(),
-                        XACMLAppAuthzConstants.SP_DOMAIN_ID, XACMLAppAuthzConstants.AUTH_CATEGORY);
+                        XACMLAppAuthzConstants.SP_DOMAIN_ID, XACMLAppAuthzConstants.SP_CATEGORY);
         RowDTO usernameDTO =
-                createRowDTO(context.getTenantDomain(),
-                        XACMLAppAuthzConstants.USERNAME_ID, XACMLAppAuthzConstants.AUTH_CATEGORY);
+                createRowDTO(context.getSequenceConfig().getAuthenticatedUser().getUserName(),
+                        XACMLAppAuthzConstants.USERNAME_ID, XACMLAppAuthzConstants.USER_CATEGORY);
         RowDTO userStoreDomainDTO =
                 createRowDTO(context.getSequenceConfig().getAuthenticatedUser().getUserStoreDomain(),
-                        XACMLAppAuthzConstants.USER_STORE_ID, XACMLAppAuthzConstants.AUTH_CATEGORY);
+                        XACMLAppAuthzConstants.USER_STORE_ID, XACMLAppAuthzConstants.USER_CATEGORY);
         RowDTO userTenantDomainDTO =
                 createRowDTO(context.getSequenceConfig().getAuthenticatedUser().getTenantDomain(),
-                        XACMLAppAuthzConstants.USER_TENANT_DOMAIN_ID, XACMLAppAuthzConstants.AUTH_CATEGORY);
+                        XACMLAppAuthzConstants.USER_TENANT_DOMAIN_ID, XACMLAppAuthzConstants.USER_CATEGORY);
         String subject = null;
         if (context.getSequenceConfig() != null && context.getSequenceConfig().getAuthenticatedUser() != null) {
             subject = context.getSequenceConfig().getAuthenticatedUser().toString();
@@ -152,8 +165,9 @@ public class XACMLBasedAuthorizationHandler implements AuthorizationHandler {
                     createRowDTO(subject, PolicyConstants.SUBJECT_ID_DEFAULT, PolicyConstants.SUBJECT_CATEGORY_URI);
             rowDTOs.add(subjectDTO);
         }
+        rowDTOs.add(actionDTO);
         rowDTOs.add(contextIdentifierDTO);
-        rowDTOs.add(spDTO);
+        rowDTOs.add(spNameDTO);
         rowDTOs.add(spDomainDTO);
         rowDTOs.add(usernameDTO);
         rowDTOs.add(userStoreDomainDTO);
@@ -174,7 +188,7 @@ public class XACMLBasedAuthorizationHandler implements AuthorizationHandler {
 
     }
 
-    private boolean evaluateXACMLResponse(String xacmlResponse) throws FrameworkException {
+    private String evaluateXACMLResponse(String xacmlResponse) throws FrameworkException {
 
         try {
             AXIOMXPath axiomxPath = new AXIOMXPath(DECISION_XPATH);
@@ -182,10 +196,7 @@ public class XACMLBasedAuthorizationHandler implements AuthorizationHandler {
             OMElement rootElement =
                     new StAXOMBuilder(new ByteArrayInputStream(xacmlResponse.getBytes(StandardCharsets.UTF_8)))
                             .getDocumentElement();
-            String decision = axiomxPath.stringValueOf(rootElement);
-
-            return EntitlementPolicyConstants.RULE_EFFECT_PERMIT.equalsIgnoreCase(decision)
-                    || EntitlementPolicyConstants.RULE_EFFECT_NOT_APPLICABLE.equalsIgnoreCase(decision);
+            return axiomxPath.stringValueOf(rootElement);
         } catch (JaxenException | XMLStreamException e) {
             throw new FrameworkException("Exception occurred when getting decision from xacml response.", e);
         }
