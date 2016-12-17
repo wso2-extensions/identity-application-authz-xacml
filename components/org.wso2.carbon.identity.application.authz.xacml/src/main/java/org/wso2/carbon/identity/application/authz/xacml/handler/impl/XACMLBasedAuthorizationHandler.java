@@ -37,10 +37,10 @@ import org.wso2.carbon.identity.application.authz.xacml.internal.AppAuthzDatahol
 import org.wso2.carbon.identity.base.IdentityConstants;
 import org.wso2.carbon.identity.core.util.IdentityUtil;
 import org.wso2.carbon.identity.entitlement.EntitlementException;
-import org.wso2.carbon.identity.entitlement.ui.EntitlementPolicyConstants;
-import org.wso2.carbon.identity.entitlement.ui.dto.RequestDTO;
-import org.wso2.carbon.identity.entitlement.ui.dto.RowDTO;
-import org.wso2.carbon.identity.entitlement.ui.util.PolicyCreatorUtil;
+import org.wso2.carbon.identity.entitlement.common.EntitlementPolicyConstants;
+import org.wso2.carbon.identity.entitlement.common.dto.RequestDTO;
+import org.wso2.carbon.identity.entitlement.common.dto.RowDTO;
+import org.wso2.carbon.identity.entitlement.common.util.PolicyCreatorUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
