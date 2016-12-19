@@ -23,6 +23,10 @@ public class XACMLAppAuthzConstants {
     public static final String SP_CATEGORY = "http://wso2.org/identity/sp";
     public static final String USER_CATEGORY = "http://wso2.org/identity/user";
     public static final String AUTH_CATEGORY = "http://wso2.org/identity/auth";
+    public static final String AUTH_CONTEXT_PROPERTY_CATEGORY = "http://wso2.org/identity/auth-context-property";
+    public static final String AUTH_CONTEXT_REQ_PARAM_CATEGORY = "http://wso2.org/identity/auth-context-request-param";
+    public static final String AUTH_CONTEXT_REQ_HEADER_CATEGORY = "http://wso2" +
+            ".org/identity/auth-context-request-header";
     public static final String ACTION_CATEGORY = "http://wso2.org/identity/identity-action";
     public static final String AUTH_ACTION_ID = ACTION_CATEGORY + "/action-name";
     public static final String AUTH_CTX_ID = AUTH_CATEGORY + "/auth-ctx-id";
