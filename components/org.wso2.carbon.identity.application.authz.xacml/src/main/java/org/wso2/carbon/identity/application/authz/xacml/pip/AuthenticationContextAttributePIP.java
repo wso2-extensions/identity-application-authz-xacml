@@ -41,6 +41,9 @@ import java.util.Set;
 /**
  * Provides the attributes from authentication context. The attributes include the following
  * <ul>
+ *     <li><b>http://wso2.org/identity/auth-context-property</b> - Authentication context properties</li>
+ *     <li><b>http://wso2.org/identity/auth-context-request-param</b> - Authentication request parameters</li>
+ *     <li><b>http://wso2.org/identity/auth-context-request-header</b> - Authentication request headers</li>
  *     <li><b>http://wso2.org/authentication/user-ip</b> - Authenticated user's IP</li>
  *     <li><b>http://wso2.org/authentication/inbound-protocol</b> - Authentication protocol (eg. saml)</li>
  * </ul>
@@ -53,10 +56,12 @@ public class AuthenticationContextAttributePIP extends AbstractPIPAttributeFinde
     private static final Log log = LogFactory.getLog(AuthenticationContextAttributePIP.class);
 
     static {
-        SUPPORTED_ATTRIBUTES = new HashSet<String>() {{
-            add(XACMLAppAuthzConstants.INBOUND_PROTOCOL_ATTRIBUTE);
-            add(XACMLAppAuthzConstants.CLIENT_IP_ATTRIBUTE);
-        }};
+        SUPPORTED_ATTRIBUTES = new HashSet<>();
+        SUPPORTED_ATTRIBUTES.add(XACMLAppAuthzConstants.INBOUND_PROTOCOL_ATTRIBUTE);
+        SUPPORTED_ATTRIBUTES.add(XACMLAppAuthzConstants.CLIENT_IP_ATTRIBUTE);
+        SUPPORTED_ATTRIBUTES.add(XACMLAppAuthzConstants.AUTH_CONTEXT_PROPERTY_CATEGORY);
+        SUPPORTED_ATTRIBUTES.add(XACMLAppAuthzConstants.AUTH_CONTEXT_REQ_PARAM_CATEGORY);
+        SUPPORTED_ATTRIBUTES.add(XACMLAppAuthzConstants.AUTH_CONTEXT_REQ_HEADER_CATEGORY);
     }
 
     /**
@@ -83,8 +88,7 @@ public class AuthenticationContextAttributePIP extends AbstractPIPAttributeFinde
         context = evaluationCtx
                 .getAttribute(new URI(StringAttribute.identifier), new URI(XACMLAppAuthzConstants.AUTH_CTX_ID),
                         issuer, new URI(XACMLAppAuthzConstants.AUTH_CATEGORY));
-        if (context != null && context.getAttributeValue() != null &&
-                context.getAttributeValue().isBag()) {
+        if (context != null && context.getAttributeValue() != null && context.getAttributeValue().isBag()) {
             BagAttribute bagAttribute = (BagAttribute) context.getAttributeValue();
             if (bagAttribute.size() > 0) {
                 contextId = ((AttributeValue) bagAttribute.iterator().next()).encode();
@@ -99,6 +103,30 @@ public class AuthenticationContextAttributePIP extends AbstractPIPAttributeFinde
             AuthenticationContext authCtx = FrameworkUtils.getAuthenticationContextFromCache(contextId);
             if (authCtx != null) {
                 Set<String> values = new HashSet<>();
+                switch ((category.toString())) {
+                    case XACMLAppAuthzConstants.AUTH_CONTEXT_PROPERTY_CATEGORY:
+                        values = getAuthenticationContextProperty(authCtx, attributeType, attributeId, category,
+                                issuer, evaluationCtx);
+                        break;
+                    case XACMLAppAuthzConstants.AUTH_CONTEXT_REQ_PARAM_CATEGORY:
+                        values = getAuthenticationRequestParameter(authCtx, attributeType, attributeId, category,
+                                issuer, evaluationCtx);
+                        break;
+                    case XACMLAppAuthzConstants.AUTH_CONTEXT_REQ_HEADER_CATEGORY:
+                        values = getAuthenticationRequestHeader(authCtx, attributeType, attributeId, category,
+                                issuer, evaluationCtx);
+                        break;
+                    default:
+                }
+
+                if (!values.isEmpty()) {
+                    if (log.isDebugEnabled()) {
+                        String valuesString = StringUtils.join(values, ",");
+                        log.debug("Returning " + attributeId + " value as " + valuesString);
+                    }
+                    return values;
+                }
+
                 switch (attributeId.toString()) {
                     case XACMLAppAuthzConstants.INBOUND_PROTOCOL_ATTRIBUTE:
                         values.add(authCtx.getRequestType());
@@ -136,5 +164,51 @@ public class AuthenticationContextAttributePIP extends AbstractPIPAttributeFinde
     public Set<String> getSupportedAttributes() {
 
         return SUPPORTED_ATTRIBUTES;
+    }
+
+    protected Set<String> getAuthenticationContextProperty(AuthenticationContext authCtx, URI attributeType, URI
+            attributeId, URI category, String issuer, EvaluationCtx evaluationCtx) {
+
+        Set<String> values = new HashSet<>();
+
+        Object property = authCtx.getProperty(attributeId.toString());
+
+        if (property != null) {
+            if (property instanceof String) {
+                values.add((String) property);
+            } else {
+                values.add(property.toString());
+            }
+
+        }
+
+        return values;
+    }
+
+    protected Set<String> getAuthenticationRequestParameter(AuthenticationContext authCtx, URI attributeType, URI
+            attributeId, URI category, String issuer, EvaluationCtx evaluationCtx) {
+
+        Set<String> values = new HashSet<>();
+
+        String[] params = authCtx.getAuthenticationRequest().getRequestQueryParam(attributeId.toString());
+
+        if (params != null) {
+            for (String param : params) {
+                values.add(param);
+            }
+        }
+
+        return values;
+    }
+
+    protected Set<String> getAuthenticationRequestHeader(AuthenticationContext authCtx, URI attributeType, URI
+            attributeId, URI category, String issuer, EvaluationCtx evaluationCtx) {
+
+        Set<String> values = new HashSet<>();
+
+        String headers = authCtx.getAuthenticationRequest().getRequestHeaders().get(attributeId.toString());
+        values.add(headers);
+
+        return values;
     }
 }
