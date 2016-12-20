@@ -41,6 +41,9 @@ import java.util.Set;
 /**
  * Provides the attributes from authentication context. The attributes include the following
  * <ul>
+ *     <li><b>http://wso2.org/identity/auth-context-property</b> - Authentication context properties</li>
+ *     <li><b>http://wso2.org/identity/auth-context-request-param</b> - Authentication request parameters</li>
+ *     <li><b>http://wso2.org/identity/auth-context-request-header</b> - Authentication request headers</li>
  *     <li><b>http://wso2.org/authentication/user-ip</b> - Authenticated user's IP</li>
  *     <li><b>http://wso2.org/authentication/inbound-protocol</b> - Authentication protocol (eg. saml)</li>
  * </ul>
@@ -53,13 +56,12 @@ public class AuthenticationContextAttributePIP extends AbstractPIPAttributeFinde
     private static final Log log = LogFactory.getLog(AuthenticationContextAttributePIP.class);
 
     static {
-        SUPPORTED_ATTRIBUTES = new HashSet<String>() {{
-            add(XACMLAppAuthzConstants.INBOUND_PROTOCOL_ATTRIBUTE);
-            add(XACMLAppAuthzConstants.CLIENT_IP_ATTRIBUTE);
-            add(XACMLAppAuthzConstants.AUTH_CONTEXT_PROPERTY_CATEGORY);
-            add(XACMLAppAuthzConstants.AUTH_CONTEXT_REQ_PARAM_CATEGORY);
-            add(XACMLAppAuthzConstants.AUTH_CONTEXT_REQ_HEADER_CATEGORY);
-        }};
+        SUPPORTED_ATTRIBUTES = new HashSet<>();
+        SUPPORTED_ATTRIBUTES.add(XACMLAppAuthzConstants.INBOUND_PROTOCOL_ATTRIBUTE);
+        SUPPORTED_ATTRIBUTES.add(XACMLAppAuthzConstants.CLIENT_IP_ATTRIBUTE);
+        SUPPORTED_ATTRIBUTES.add(XACMLAppAuthzConstants.AUTH_CONTEXT_PROPERTY_CATEGORY);
+        SUPPORTED_ATTRIBUTES.add(XACMLAppAuthzConstants.AUTH_CONTEXT_REQ_PARAM_CATEGORY);
+        SUPPORTED_ATTRIBUTES.add(XACMLAppAuthzConstants.AUTH_CONTEXT_REQ_HEADER_CATEGORY);
     }
 
     /**
@@ -107,11 +109,11 @@ public class AuthenticationContextAttributePIP extends AbstractPIPAttributeFinde
                                 issuer, evaluationCtx);
                         break;
                     case XACMLAppAuthzConstants.AUTH_CONTEXT_REQ_PARAM_CATEGORY:
-                        values = getAuthenticationContextProperty(authCtx, attributeType, attributeId, category,
+                        values = getAuthenticationRequestParameter(authCtx, attributeType, attributeId, category,
                                 issuer, evaluationCtx);
                         break;
                     case XACMLAppAuthzConstants.AUTH_CONTEXT_REQ_HEADER_CATEGORY:
-                        values = getAuthenticationContextProperty(authCtx, attributeType, attributeId, category,
+                        values = getAuthenticationRequestHeader(authCtx, attributeType, attributeId, category,
                                 issuer, evaluationCtx);
                         break;
                     default:
@@ -173,7 +175,7 @@ public class AuthenticationContextAttributePIP extends AbstractPIPAttributeFinde
 
         if (property != null) {
             if (property instanceof String) {
-                values.add((String)property);
+                values.add((String) property);
             } else {
                 values.add(property.toString());
             }
