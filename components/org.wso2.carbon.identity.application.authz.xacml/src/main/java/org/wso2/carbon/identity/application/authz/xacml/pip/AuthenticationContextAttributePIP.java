@@ -33,6 +33,7 @@ import org.wso2.carbon.identity.base.IdentityConstants;
 import org.wso2.carbon.identity.entitlement.pip.AbstractPIPAttributeFinder;
 
 import java.net.URI;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Properties;
@@ -41,11 +42,11 @@ import java.util.Set;
 /**
  * Provides the attributes from authentication context. The attributes include the following
  * <ul>
- *     <li><b>http://wso2.org/identity/auth-context-property</b> - Authentication context properties</li>
- *     <li><b>http://wso2.org/identity/auth-context-request-param</b> - Authentication request parameters</li>
- *     <li><b>http://wso2.org/identity/auth-context-request-header</b> - Authentication request headers</li>
- *     <li><b>http://wso2.org/authentication/user-ip</b> - Authenticated user's IP</li>
- *     <li><b>http://wso2.org/authentication/inbound-protocol</b> - Authentication protocol (eg. saml)</li>
+ * <li><b>http://wso2.org/identity/auth-context-property</b> - Authentication context properties</li>
+ * <li><b>http://wso2.org/identity/auth-context-request-param</b> - Authentication request parameters</li>
+ * <li><b>http://wso2.org/identity/auth-context-request-header</b> - Authentication request headers</li>
+ * <li><b>http://wso2.org/authentication/user-ip</b> - Authenticated user's IP</li>
+ * <li><b>http://wso2.org/authentication/inbound-protocol</b> - Authentication protocol (eg. saml)</li>
  * </ul>
  */
 public class AuthenticationContextAttributePIP extends AbstractPIPAttributeFinder {
@@ -171,17 +172,24 @@ public class AuthenticationContextAttributePIP extends AbstractPIPAttributeFinde
 
         Set<String> values = new HashSet<>();
 
-        Object property = authCtx.getProperty(attributeId.toString());
+        char separator = getSeparator(attributeId.toString());
+        String attribute = filterOutCategoryAndSeparator(category.toString(), attributeId.toString(), separator);
+        Object property = authCtx.getProperty(attribute);
+        String attributeValue;
 
         if (property != null) {
             if (property instanceof String) {
-                values.add((String) property);
+                attributeValue = (String) property;
             } else {
-                values.add(property.toString());
+                attributeValue = property.toString();
             }
 
+            if (separator != 0) {
+                values.addAll(Arrays.asList(attributeValue.split(String.valueOf(separator))));
+            } else {
+                values.add(attributeValue);
+            }
         }
-
         return values;
     }
 
@@ -189,13 +197,20 @@ public class AuthenticationContextAttributePIP extends AbstractPIPAttributeFinde
             attributeId, URI category, String issuer, EvaluationCtx evaluationCtx) {
 
         Set<String> values = new HashSet<>();
+        char separator = getSeparator(attributeId.toString());
+        String queryParam = filterOutCategoryAndSeparator(category.toString(), attributeId.toString(), separator);
+        String[] params = authCtx.getAuthenticationRequest().getRequestQueryParam(queryParam);
 
-        String[] params = authCtx.getAuthenticationRequest().getRequestQueryParam(attributeId.toString());
 
         if (params != null) {
-            for (String param : params) {
-                values.add(param);
+            if (separator != 0) {
+                for (String param : params) {
+                    values.addAll(Arrays.asList(param.split(String.valueOf(separator))));
+                }
+            } else {
+                Collections.addAll(values, params);
             }
+
         }
 
         return values;
@@ -205,10 +220,42 @@ public class AuthenticationContextAttributePIP extends AbstractPIPAttributeFinde
             attributeId, URI category, String issuer, EvaluationCtx evaluationCtx) {
 
         Set<String> values = new HashSet<>();
+        char separator = getSeparator(attributeId.toString());
+        String attributeHeader = filterOutCategoryAndSeparator(category.toString(), attributeId.toString(), separator);
+        String headers = authCtx.getAuthenticationRequest().getRequestHeaders().get(attributeHeader);
 
-        String headers = authCtx.getAuthenticationRequest().getRequestHeaders().get(attributeId.toString());
-        values.add(headers);
-
+        if (separator != 0) {
+            values.addAll(Arrays.asList(headers.split(String.valueOf(separator))));
+        } else {
+            values.add(headers);
+        }
         return values;
+    }
+
+    protected String filterOutCategoryAndSeparator(String category, String attributeId, char separator) {
+
+        if (attributeId.startsWith(category)) {
+            //Remove the category and the separator character('/' or ':') following
+            attributeId = attributeId.replaceFirst(category, "").substring(1);
+        }
+
+        if (separator != 0) {
+            int separatorIdx = attributeId.lastIndexOf(":");
+            //remove the separator and ':' the following separator
+            attributeId = attributeId.substring(0, separatorIdx);
+        }
+        if (log.isDebugEnabled()) {
+            log.debug("filtered out attribute id is " + attributeId);
+        }
+        return attributeId;
+    }
+
+    protected char getSeparator(String attributeId) {
+
+        String[] tokens = attributeId.split(":");
+        if (tokens.length > 1) {
+            return (char) Integer.parseInt(tokens[tokens.length - 1], 16);
+        }
+        return 0;
     }
 }
