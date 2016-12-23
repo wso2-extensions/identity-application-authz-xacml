@@ -27,7 +27,7 @@
     <groupId>org.wso2.carbon.identity.application.authz.xacml</groupId>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>identity-application-authz-xacml</artifactId>
-    <version>0.1.6-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>WSO2 Carbon - XACML Application authorization handler</name>
     <description>
@@ -228,15 +228,15 @@
 
     <properties>
         <!--Carbon framework version-->
-        <carbon.identity.framework.import.version.range>[5.6.0, 6.0.0)</carbon.identity.framework.import.version.range>
-        <carbon.identity.framework.version>5.6.61</carbon.identity.framework.version>
-        <balana.version>1.0.5</balana.version>
+        <carbon.identity.framework.import.version.range>[5.7.0, 6.0.0)</carbon.identity.framework.import.version.range>
+        <carbon.identity.framework.version>5.7.0</carbon.identity.framework.version>
+        <balana.version>1.1.2</balana.version>
 
         <identity.app.authz.xacml.pkg.exp.version>${project.version}</identity.app.authz.xacml.pkg.exp.version>
 
         <axiom.org.jaxen.imp.pkg.version.range>[1.1.1, 2.0.0)</axiom.org.jaxen.imp.pkg.version.range>
         <axiom.osgi.version.range>[1.2.11, 2.0.0)</axiom.osgi.version.range>
-        <balana.import.version.range>[1.0.0, 2.0.0)</balana.import.version.range>
+        <balana.import.version.range>[1.1.0, 2.0.0)</balana.import.version.range>
         <imp.pkg.version.javax.xml.parsers>[0.0.0, 1.0.0)</imp.pkg.version.javax.xml.parsers>
         <apache.felix.scr.ds.annotations.version>1.2.4</apache.felix.scr.ds.annotations.version>
 
