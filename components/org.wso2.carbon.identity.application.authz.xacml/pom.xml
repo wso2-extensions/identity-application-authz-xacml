@@ -102,6 +102,10 @@
                             org.wso2.carbon.identity.entitlement.common.dto;version="${carbon.identity.framework.import.version.range}",
                             org.wso2.carbon.identity.entitlement.common.util;version="${carbon.identity.framework.import.version.range}",
                             org.jaxen; version="${axiom.org.jaxen.imp.pkg.version.range}",
+                            org.wso2.balana.utils.Constants; version="${balana.imp.pkg.version.range}",
+                            org.wso2.carbon.context; version="${carbon.kernel.package.import.version.range}",
+                            org.wso2.carbon.identity.base; version="${carbon.identity.package.import.version.range}",
+                            org.wso2.carbon.identity.entitlement.common; version="${project.version}"
                         </Import-Package>
                         <Export-Package>
                             !org.wso2.carbon.identity.application.authz.xacml.internal,
