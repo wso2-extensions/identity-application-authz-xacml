@@ -28,7 +28,6 @@ import org.wso2.balana.utils.Constants.PolicyConstants;
 import org.wso2.balana.utils.exception.PolicyBuilderException;
 import org.wso2.balana.utils.policy.PolicyBuilder;
 import org.wso2.balana.utils.policy.dto.RequestElementDTO;
-import org.wso2.carbon.context.PrivilegedCarbonContext;
 import org.wso2.carbon.identity.application.authentication.framework.context.AuthenticationContext;
 import org.wso2.carbon.identity.application.authentication.framework.exception.FrameworkException;
 import org.wso2.carbon.identity.application.authentication.framework.handler.authz.AuthorizationHandler;
@@ -105,9 +104,7 @@ public class XACMLBasedAuthorizationHandler implements AuthorizationHandler {
                     log.debug("XACML Authorization request :\n" + requestString);
                 }
 
-                PrivilegedCarbonContext.startTenantFlow();
-                PrivilegedCarbonContext privilegedCarbonContext = PrivilegedCarbonContext.getThreadLocalCarbonContext();
-                privilegedCarbonContext.setTenantDomain(context.getTenantDomain(), true);
+                FrameworkUtils.startTenantFlow(context.getTenantDomain());
                 String responseString =
                         AppAuthzDataholder.getInstance().getEntitlementService().getDecision(requestString);
                 if (log.isDebugEnabled()) {
@@ -133,7 +130,7 @@ public class XACMLBasedAuthorizationHandler implements AuthorizationHandler {
             } catch (FrameworkException e) {
                 log.error("Error when evaluating the XACML response", e);
             } finally {
-                PrivilegedCarbonContext.endTenantFlow();
+                FrameworkUtils.endTenantFlow();
             }
         }
         return false;
