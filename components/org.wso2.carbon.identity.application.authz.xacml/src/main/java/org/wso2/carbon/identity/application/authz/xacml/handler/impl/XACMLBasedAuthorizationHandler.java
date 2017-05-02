@@ -103,6 +103,8 @@ public class XACMLBasedAuthorizationHandler implements AuthorizationHandler {
                 if (log.isDebugEnabled()) {
                     log.debug("XACML Authorization request :\n" + requestString);
                 }
+
+                FrameworkUtils.startTenantFlow(context.getTenantDomain());
                 String responseString =
                         AppAuthzDataholder.getInstance().getEntitlementService().getDecision(requestString);
                 if (log.isDebugEnabled()) {
@@ -127,6 +129,8 @@ public class XACMLBasedAuthorizationHandler implements AuthorizationHandler {
                 log.error("Entitlement Exception occurred", e);
             } catch (FrameworkException e) {
                 log.error("Error when evaluating the XACML response", e);
+            } finally {
+                FrameworkUtils.endTenantFlow();
             }
         }
         return false;

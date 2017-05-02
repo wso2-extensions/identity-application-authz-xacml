@@ -18,6 +18,9 @@
 
 package org.wso2.carbon.identity.application.authz.xacml.constants;
 
+/**
+ * This class contains the constants required for XACML based application authorization handler
+ */
 public class XACMLAppAuthzConstants {
 
     public static final String SP_CATEGORY = "http://wso2.org/identity/sp";

@@ -107,6 +107,7 @@
                             !org.wso2.carbon.identity.application.authz.xacml.internal,
                             org.wso2.carbon.identity.application.authz.xacml.pip;version="${identity.app.authz.xacml.pkg.exp.version}",
                             org.wso2.carbon.identity.application.authz.xacml.handler.impl;version="${identity.app.authz.xacml.pkg.exp.version}",
+                            org.wso2.carbon.identity.application.authz.xacml.constants;version="${identity.app.authz.xacml.pkg.exp.version}",
                         </Export-Package>
                     </instructions>
                 </configuration>
