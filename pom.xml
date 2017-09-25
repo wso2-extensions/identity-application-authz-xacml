@@ -259,6 +259,12 @@
         <carbon.p2.plugin.version>1.5.3</carbon.p2.plugin.version>
 
         <equinox.osgi.services.version>3.5.100.v20160504-1419</equinox.osgi.services.version>
+
+        <!-- Unit test version-->
+        <testng.version>6.9.10</testng.version>
+        <jacoco.version>0.7.9</jacoco.version>
+        <maven.surefire.plugin.version>2.18.1</maven.surefire.plugin.version>
+        <powermock.version>1.6.4</powermock.version>
     </properties>
 
     <modules>

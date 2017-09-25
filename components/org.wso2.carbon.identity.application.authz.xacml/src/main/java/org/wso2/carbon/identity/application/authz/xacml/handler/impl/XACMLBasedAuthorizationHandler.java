@@ -61,6 +61,9 @@ public class XACMLBasedAuthorizationHandler implements AuthorizationHandler {
     public static final String ACTION_AUTHENTICATE = "authenticate";
     private static volatile XACMLBasedAuthorizationHandler instance;
 
+    private XACMLBasedAuthorizationHandler(){
+    }
+
     public static XACMLBasedAuthorizationHandler getInstance() {
 
         if (instance == null) {
