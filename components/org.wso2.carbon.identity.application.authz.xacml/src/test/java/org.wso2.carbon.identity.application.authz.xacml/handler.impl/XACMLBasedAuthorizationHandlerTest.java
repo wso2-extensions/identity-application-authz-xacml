@@ -23,7 +23,6 @@ import org.apache.commons.logging.LogFactory;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.reflect.internal.WhiteboxImpl;
-import org.testng.Assert;
 import org.testng.IObjectFactory;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.ObjectFactory;
@@ -36,10 +35,12 @@ import org.wso2.carbon.identity.application.authentication.framework.util.Framew
 import org.wso2.carbon.identity.core.util.IdentityUtil;
 import org.wso2.carbon.identity.entitlement.common.dto.RequestDTO;
 
+import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertTrue;
+
 /**
  * XACMLBasedAuthorizationHandlerTest defines unit tests for XACMLBasedAuthorizationHandler class.
  */
-
 @PrepareForTest({LogFactory.class, FrameworkUtils.class, PolicyBuilder.class, IdentityUtil.class})
 public class XACMLBasedAuthorizationHandlerTest {
 
@@ -66,8 +67,7 @@ public class XACMLBasedAuthorizationHandlerTest {
     public void testGetInstance() {
 
         XACMLBasedAuthorizationHandler xacmlBasedAuthorizationHandler = XACMLBasedAuthorizationHandler.getInstance();
-        Assert.assertNotNull(xacmlBasedAuthorizationHandler);
-        Assert.assertEquals(XACMLBasedAuthorizationHandler.getInstance(), xacmlBasedAuthorizationHandler);
+        assertNotNull(xacmlBasedAuthorizationHandler);
     }
 
     @Test
@@ -80,7 +80,7 @@ public class XACMLBasedAuthorizationHandlerTest {
         PowerMockito.when(authenticatedUser.getUserName()).thenReturn("adminUser");
         RequestDTO requestDTO = WhiteboxImpl.invokeMethod(xacmlBasedAuthorizationHandler,
                 "createRequestDTO", context);
-        Assert.assertTrue(requestDTO.getRowDTOs().size() == 8);
+        assertTrue(requestDTO.getRowDTOs().size() == 8);
     }
 
 }

@@ -18,20 +18,16 @@
 
 package org.wso2.carbon.identity.application.authz.xacml.pip;
 
-import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
-import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import org.wso2.balana.attr.AttributeValue;
-import org.wso2.balana.attr.BagAttribute;
-import org.wso2.balana.cond.EvaluationResult;
 import org.wso2.balana.ctx.EvaluationCtx;
 
 import java.net.URI;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Set;
+
+import static org.testng.Assert.assertTrue;
+import static org.testng.Assert.assertEquals;
 
 /**
  * AuthenticationContextAttributePIPTest defines unit tests for AuthenticationContextAttributePIP class.
@@ -52,30 +48,28 @@ public class AuthenticationContextAttributePIPTest {
     @Test(expectedExceptions = UnsupportedOperationException.class)
     public void testGetAttributeValues() throws Exception {
 
-        authenticationContextAttributePIP.getAttributeValues(new String("a"), new String("b"),
-                new String("c"), new String("d"),
-                new String("e"), new String("f"));
+        authenticationContextAttributePIP.getAttributeValues("a", "b", "c", "d", "e", "f");
     }
 
     @Test
     public void testOverloadedGetAttributeValues() throws Exception {
 
         Set<String> result = authenticationContextAttributePIP.getAttributeValues(new URI("http://wso2.org"),
-                new URI("12345"), new URI("local"), new String("travelocity.com"), evaluationCtx);
-        Assert.assertEquals(result.size(), 0);
+                new URI("12345"), new URI("local"), "travelocity.com", evaluationCtx);
+        assertEquals(result.size(), 0);
     }
 
     @Test
     public void testGetModuleName(){
 
-        Assert.assertEquals(authenticationContextAttributePIP.getModuleName(),
+        assertEquals(authenticationContextAttributePIP.getModuleName(),
                 "AuthenticationContextAttributePIP");
     }
 
     @Test
     public void testGetSupportedAttributes(){
 
-        Assert.assertTrue(authenticationContextAttributePIP.getSupportedAttributes().size() > 0);
+        assertTrue(authenticationContextAttributePIP.getSupportedAttributes().size() > 0);
     }
 
 

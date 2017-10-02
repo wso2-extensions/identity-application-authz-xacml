@@ -20,9 +20,12 @@ package org.wso2.carbon.identity.application.authz.xacml.internal;
 
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
-import org.testng.Assert;
 import org.testng.annotations.Test;
 import org.wso2.carbon.identity.entitlement.EntitlementService;
+
+import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertNull;
+import static org.testng.Assert.assertEquals;
 
 /**
  * AppAuthzDataholderTest defines unit tests for AppAuthzDataholder class.
@@ -32,16 +35,16 @@ public class AppAuthzDataholderTest {
     @Test
     public void testGetInstance() {
 
-        Assert.assertEquals(AppAuthzDataholder.getInstance(), AppAuthzDataholder.getInstance());
+        assertEquals(AppAuthzDataholder.getInstance(), AppAuthzDataholder.getInstance());
     }
 
     @Test
     public void testGetAndSetEntitlementService() {
 
         AppAuthzDataholder appAuthzDataholder = AppAuthzDataholder.getInstance();
-        Assert.assertNull(appAuthzDataholder.getEntitlementService());
+        assertNull(appAuthzDataholder.getEntitlementService());
         appAuthzDataholder.setEntitlementService(PowerMockito.mock(EntitlementService.class));
-        Assert.assertNotNull(appAuthzDataholder.getEntitlementService());
+        assertNotNull(appAuthzDataholder.getEntitlementService());
         PowerMockito.verifyStatic(Mockito.times(1));
     }
 }
