@@ -1,9 +1,11 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 
-<suite name="TestAll">
-    <test name="authz-xacml-tests">
-        <packages>
-            <package name="org.wso2.carbon.identity.application.authz.xacml.*" />
-        </packages>
+<suite name="Identity-Application-Authz-Xacml-Test-Suite">
+    <test name="authz-xacml-tests" preserve-order="true" parallel="false">
+        <classes>
+            <class name="org.wso2.carbon.identity.application.authz.xacml.handler.impl.XACMLBasedAuthorizationHandlerTest"/>
+            <class name="org.wso2.carbon.identity.application.authz.xacml.internal.AppAuthzDataholderTest"/>
+            <class name="org.wso2.carbon.identity.application.authz.xacml.pip.AuthenticationContextAttributePIPTest"/>
+        </classes>
     </test>
 </suite>
