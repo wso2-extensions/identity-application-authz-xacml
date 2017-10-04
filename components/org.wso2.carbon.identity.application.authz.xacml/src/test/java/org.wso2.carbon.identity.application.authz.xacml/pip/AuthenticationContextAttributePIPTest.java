@@ -18,7 +18,6 @@
 
 package org.wso2.carbon.identity.application.authz.xacml.pip;
 
-import org.powermock.api.mockito.PowerMockito;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.wso2.balana.ctx.EvaluationCtx;
@@ -28,6 +27,7 @@ import java.util.Set;
 
 import static org.testng.Assert.assertTrue;
 import static org.testng.Assert.assertEquals;
+import static org.powermock.api.mockito.PowerMockito.mock;
 
 /**
  * AuthenticationContextAttributePIPTest defines unit tests for AuthenticationContextAttributePIP class.
@@ -41,7 +41,7 @@ public class AuthenticationContextAttributePIPTest {
     public void init() {
 
         authenticationContextAttributePIP = new AuthenticationContextAttributePIP();
-        evaluationCtx = PowerMockito.mock(EvaluationCtx.class);
+        evaluationCtx = mock(EvaluationCtx.class);
     }
 
 
@@ -71,7 +71,4 @@ public class AuthenticationContextAttributePIPTest {
 
         assertTrue(authenticationContextAttributePIP.getSupportedAttributes().size() > 0);
     }
-
-
-
 }
