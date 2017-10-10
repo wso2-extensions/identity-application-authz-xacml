@@ -25,6 +25,7 @@ import org.wso2.carbon.identity.entitlement.EntitlementService;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertNull;
 import static org.powermock.api.mockito.PowerMockito.mock;
+import static org.testng.AssertJUnit.assertEquals;
 
 /**
  * AppAuthzDataholderTest defines unit tests for AppAuthzDataholder class.
@@ -43,6 +44,7 @@ public class AppAuthzDataholderTest {
     public void testGetInstance() {
 
         assertNotNull(appAuthzDataholder);
+        assertEquals(appAuthzDataholder, AppAuthzDataholder.getInstance());
     }
 
     @Test
@@ -51,5 +53,6 @@ public class AppAuthzDataholderTest {
         assertNull(appAuthzDataholder.getEntitlementService());
         appAuthzDataholder.setEntitlementService(mock(EntitlementService.class));
         assertNotNull(appAuthzDataholder.getEntitlementService());
+        appAuthzDataholder.setEntitlementService(null);
     }
 }
