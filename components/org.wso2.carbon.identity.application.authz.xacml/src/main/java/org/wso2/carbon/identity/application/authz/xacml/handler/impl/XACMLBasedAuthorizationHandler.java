@@ -59,22 +59,13 @@ public class XACMLBasedAuthorizationHandler implements AuthorizationHandler {
     private static final String RULE_EFFECT_PERMIT = "Permit";
     private static final String RULE_EFFECT_NOT_APPLICABLE = "NotApplicable";
     public static final String ACTION_AUTHENTICATE = "authenticate";
-    private static volatile XACMLBasedAuthorizationHandler instance;
 
-    private XACMLBasedAuthorizationHandler(){
-    }
-
-    public static XACMLBasedAuthorizationHandler getInstance() {
-
-        if (instance == null) {
-            synchronized (XACMLBasedAuthorizationHandler.class) {
-                if (instance == null) {
-                    instance = new XACMLBasedAuthorizationHandler();
-                }
-            }
-        }
-        return instance;
-    }
+    /**
+     * Default constructor that will be used by the Authentication Framework to instantiate this handler using
+     * Reflection. This construction should not be removed until we modify {@link AuthorizationHandler} extension
+     * point to make use of declared OSGi services.
+     */
+    public XACMLBasedAuthorizationHandler() {}
 
     /**
      * Executes the authorization flow
