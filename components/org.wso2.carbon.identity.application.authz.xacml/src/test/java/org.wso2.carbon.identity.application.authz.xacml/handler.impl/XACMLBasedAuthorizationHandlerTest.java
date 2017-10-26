@@ -92,17 +92,9 @@ public class XACMLBasedAuthorizationHandlerTest {
 
         mockStatic(LogFactory.class);
         when(LogFactory.getLog(XACMLBasedAuthorizationHandler.class)).thenReturn(log);
-        xacmlBasedAuthorizationHandler = spy(XACMLBasedAuthorizationHandler.getInstance());
+        xacmlBasedAuthorizationHandler = spy(new XACMLBasedAuthorizationHandler());
         context = mock(AuthenticationContext.class);
         when(log.isDebugEnabled()).thenReturn(true);
-    }
-
-    @Test
-    public void testGetInstance() {
-
-        XACMLBasedAuthorizationHandler xacmlBasedAuthorizationHandler = XACMLBasedAuthorizationHandler.getInstance();
-        assertNotNull(xacmlBasedAuthorizationHandler);
-        assertEquals(xacmlBasedAuthorizationHandler, XACMLBasedAuthorizationHandler.getInstance());
     }
 
     @Test
