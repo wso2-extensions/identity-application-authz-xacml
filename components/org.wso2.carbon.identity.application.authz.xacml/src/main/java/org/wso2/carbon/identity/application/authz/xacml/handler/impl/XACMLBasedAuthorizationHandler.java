@@ -78,7 +78,7 @@ public class XACMLBasedAuthorizationHandler extends AbstractPostAuthnHandler {
             log.debug("In policy authorization flow...");
         }
 
-        if (!isAuthorizationEnabled(context) && getAuthenticatedUser(context) == null) {
+        if (!isAuthorizationEnabled(context) || getAuthenticatedUser(context) == null) {
             return PostAuthnHandlerFlowStatus.SUCCESS_COMPLETED;
         }
         try {
