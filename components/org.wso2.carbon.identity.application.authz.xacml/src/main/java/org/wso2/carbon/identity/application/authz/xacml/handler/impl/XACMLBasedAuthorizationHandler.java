@@ -30,7 +30,10 @@ import org.wso2.balana.utils.policy.PolicyBuilder;
 import org.wso2.balana.utils.policy.dto.RequestElementDTO;
 import org.wso2.carbon.identity.application.authentication.framework.context.AuthenticationContext;
 import org.wso2.carbon.identity.application.authentication.framework.exception.FrameworkException;
-import org.wso2.carbon.identity.application.authentication.framework.handler.authz.AuthorizationHandler;
+import org.wso2.carbon.identity.application.authentication.framework.exception.PostAuthenticationFailedException;
+import org.wso2.carbon.identity.application.authentication.framework.handler.request.AbstractPostAuthnHandler;
+import org.wso2.carbon.identity.application.authentication.framework.handler.request.PostAuthnHandlerFlowStatus;
+import org.wso2.carbon.identity.application.authentication.framework.model.AuthenticatedUser;
 import org.wso2.carbon.identity.application.authentication.framework.util.FrameworkUtils;
 import org.wso2.carbon.identity.application.authz.xacml.constants.XACMLAppAuthzConstants;
 import org.wso2.carbon.identity.application.authz.xacml.internal.AppAuthzDataholder;
@@ -42,15 +45,15 @@ import org.wso2.carbon.identity.entitlement.common.dto.RequestDTO;
 import org.wso2.carbon.identity.entitlement.common.dto.RowDTO;
 import org.wso2.carbon.identity.entitlement.common.util.PolicyCreatorUtil;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.xml.stream.XMLStreamException;
 import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.xml.stream.XMLStreamException;
 
-public class XACMLBasedAuthorizationHandler implements AuthorizationHandler {
+public class XACMLBasedAuthorizationHandler extends AbstractPostAuthnHandler {
 
     private static final Log log = LogFactory.getLog(XACMLBasedAuthorizationHandler.class);
     private static final String DECISION_XPATH = "//ns:Result/ns:Decision/text()";
@@ -61,13 +64,6 @@ public class XACMLBasedAuthorizationHandler implements AuthorizationHandler {
     public static final String ACTION_AUTHENTICATE = "authenticate";
 
     /**
-     * Default constructor that will be used by the Authentication Framework to instantiate this handler using
-     * Reflection. This construction should not be removed until we modify {@link AuthorizationHandler} extension
-     * point to make use of declared OSGi services.
-     */
-    public XACMLBasedAuthorizationHandler() {}
-
-    /**
      * Executes the authorization flow
      *
      * @param request  request
@@ -75,59 +71,61 @@ public class XACMLBasedAuthorizationHandler implements AuthorizationHandler {
      * @param context  context
      */
     @Override
-    public boolean isAuthorized(HttpServletRequest request, HttpServletResponse response,
-                                AuthenticationContext context) {
+    public PostAuthnHandlerFlowStatus handle(HttpServletRequest request, HttpServletResponse response,
+                                             AuthenticationContext context) throws PostAuthenticationFailedException {
 
         if (log.isDebugEnabled()) {
             log.debug("In policy authorization flow...");
         }
 
-        if (context != null) {
-            try {
-//                get the ip from request and add as a authctx property because the request won't available at PIP
-                context.addParameter(IdentityConstants.USER_IP, IdentityUtil.getClientIpAddress(request));
-                FrameworkUtils.addAuthenticationContextToCache(context.getContextIdentifier(), context);
-
-                //TODO: "RequestDTO" and "PolicyCreatorUtil" is taken from entitlement.ui. Need to reconsider of
-                // using the ui bundle
-                RequestDTO requestDTO = createRequestDTO(context);
-                RequestElementDTO requestElementDTO = PolicyCreatorUtil.createRequestElementDTO(requestDTO);
-
-                String requestString = PolicyBuilder.getInstance().buildRequest(requestElementDTO);
-                if (log.isDebugEnabled()) {
-                    log.debug("XACML Authorization request :\n" + requestString);
-                }
-
-                FrameworkUtils.startTenantFlow(context.getTenantDomain());
-                String responseString =
-                        AppAuthzDataholder.getInstance().getEntitlementService().getDecision(requestString);
-                if (log.isDebugEnabled()) {
-                    log.debug("XACML Authorization response :\n" + responseString);
-                }
-                String authzResponse = evaluateXACMLResponse(responseString);
-                boolean isAuthorized = false;
-                if (RULE_EFFECT_NOT_APPLICABLE.equalsIgnoreCase(authzResponse)) {
-                    log.warn(String.format(
-                            "No applicable rule for service provider '%s@%s', Hence authorizing the user by default. " +
-                                    "Add an authorization policy (or unset authorization) to fix this warning.",
-                            context.getServiceProviderName(), context.getTenantDomain()));
-                    isAuthorized = true;
-                } else if (RULE_EFFECT_PERMIT.equalsIgnoreCase(authzResponse)) {
-                    isAuthorized = true;
-                }
-                FrameworkUtils.removeAuthenticationContextFromCache(context.getContextIdentifier());
-                return isAuthorized;
-            } catch (PolicyBuilderException e) {
-                log.error("Policy Builder Exception occurred", e);
-            } catch (EntitlementException e) {
-                log.error("Entitlement Exception occurred", e);
-            } catch (FrameworkException e) {
-                log.error("Error when evaluating the XACML response", e);
-            } finally {
-                FrameworkUtils.endTenantFlow();
-            }
+        if (!isAuthorizationEnabled(context)) {
+            return PostAuthnHandlerFlowStatus.SUCCESS_COMPLETED;
         }
-        return false;
+        try {
+//                get the ip from request and add as a authctx property because the request won't available at PIP
+            context.addParameter(IdentityConstants.USER_IP, IdentityUtil.getClientIpAddress(request));
+            FrameworkUtils.addAuthenticationContextToCache(context.getContextIdentifier(), context);
+
+            //TODO: "RequestDTO" and "PolicyCreatorUtil" is taken from entitlement.ui. Need to reconsider of
+            // using the ui bundle
+            RequestDTO requestDTO = createRequestDTO(context);
+            RequestElementDTO requestElementDTO = PolicyCreatorUtil.createRequestElementDTO(requestDTO);
+
+            String requestString = PolicyBuilder.getInstance().buildRequest(requestElementDTO);
+            if (log.isDebugEnabled()) {
+                log.debug("XACML Authorization request :\n" + requestString);
+            }
+
+            FrameworkUtils.startTenantFlow(context.getTenantDomain());
+            String responseString =
+                    AppAuthzDataholder.getInstance().getEntitlementService().getDecision(requestString);
+            if (log.isDebugEnabled()) {
+                log.debug("XACML Authorization response :\n" + responseString);
+            }
+            String authzResponse = evaluateXACMLResponse(responseString);
+            boolean isAuthorized = false;
+            if (RULE_EFFECT_NOT_APPLICABLE.equalsIgnoreCase(authzResponse)) {
+                log.warn(String.format(
+                        "No applicable rule for service provider '%s@%s', Hence authorizing the user by default. " +
+                                "Add an authorization policy (or unset authorization) to fix this warning.",
+                        context.getServiceProviderName(), context.getTenantDomain()));
+                isAuthorized = true;
+            } else if (RULE_EFFECT_PERMIT.equalsIgnoreCase(authzResponse)) {
+                isAuthorized = true;
+            }
+            FrameworkUtils.removeAuthenticationContextFromCache(context.getContextIdentifier());
+            if (!isAuthorized) {
+                throw new PostAuthenticationFailedException("Authorization Failed", "XACML policy evaluation failed " +
+                        "for user");
+            } else {
+                return PostAuthnHandlerFlowStatus.SUCCESS_COMPLETED;
+            }
+        } catch (PolicyBuilderException | EntitlementException | FrameworkException e) {
+            throw new PostAuthenticationFailedException("Authorization Failed", "Error while trying to evaluate " +
+                    "authorization", e);
+        } finally {
+            FrameworkUtils.endTenantFlow();
+        }
     }
 
     private RequestDTO createRequestDTO(AuthenticationContext context) {
@@ -198,5 +196,20 @@ public class XACMLBasedAuthorizationHandler implements AuthorizationHandler {
         } catch (JaxenException | XMLStreamException e) {
             throw new FrameworkException("Exception occurred when getting decision from xacml response.", e);
         }
+    }
+
+    private AuthenticatedUser getAuthenticatedUser(AuthenticationContext authenticationContext) {
+
+        AuthenticatedUser user = authenticationContext.getSequenceConfig().getAuthenticatedUser();
+        return user;
+    }
+
+    private boolean isAuthorizationEnabled(AuthenticationContext authenticationContext) {
+
+        if (authenticationContext != null && authenticationContext.getSequenceConfig() != null &&
+                authenticationContext.getSequenceConfig().getApplicationConfig() != null) {
+            return true;
+        }
+        return false;
     }
 }

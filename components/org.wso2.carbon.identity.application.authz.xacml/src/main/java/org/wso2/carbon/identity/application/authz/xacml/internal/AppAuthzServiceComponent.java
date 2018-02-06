@@ -26,6 +26,8 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ReferenceCardinality;
 import org.osgi.service.component.annotations.ReferencePolicy;
+import org.wso2.carbon.identity.application.authentication.framework.handler.request.PostAuthenticationHandler;
+import org.wso2.carbon.identity.application.authz.xacml.handler.impl.XACMLBasedAuthorizationHandler;
 import org.wso2.carbon.identity.entitlement.EntitlementService;
 
 @Component(
@@ -39,9 +41,18 @@ public class AppAuthzServiceComponent {
     @SuppressWarnings("unchecked")
     @Activate
     protected void activate(ComponentContext ctxt) {
-        log.debug("Application XACML authorization handler bundle is activated");
-    }
 
+        try {
+            XACMLBasedAuthorizationHandler xacmlBasedAuthorizationHandler = new XACMLBasedAuthorizationHandler();
+            ctxt.getBundleContext().registerService(PostAuthenticationHandler.class.getName(),
+                    xacmlBasedAuthorizationHandler, null);
+            if (log.isDebugEnabled()) {
+                log.debug("Application XACML authorization handler bundle is activated");
+            }
+        } catch (Throwable throwable) {
+            log.error("Error while starting identity applicaion authorization XACML component", throwable);
+        }
+    }
 
     @Reference(
             name = "identity.entitlement.service",
