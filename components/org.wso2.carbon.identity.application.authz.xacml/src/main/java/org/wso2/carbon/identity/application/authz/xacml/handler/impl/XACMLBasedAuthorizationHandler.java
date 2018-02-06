@@ -78,7 +78,7 @@ public class XACMLBasedAuthorizationHandler extends AbstractPostAuthnHandler {
             log.debug("In policy authorization flow...");
         }
 
-        if (!isAuthorizationEnabled(context)) {
+        if (!isAuthorizationEnabled(context) && getAuthenticatedUser(context) == null) {
             return PostAuthnHandlerFlowStatus.SUCCESS_COMPLETED;
         }
         try {
@@ -200,15 +200,17 @@ public class XACMLBasedAuthorizationHandler extends AbstractPostAuthnHandler {
 
     private AuthenticatedUser getAuthenticatedUser(AuthenticationContext authenticationContext) {
 
-        AuthenticatedUser user = authenticationContext.getSequenceConfig().getAuthenticatedUser();
-        return user;
+        if (authenticationContext != null && authenticationContext.getSequenceConfig() != null) {
+            return authenticationContext.getSequenceConfig().getAuthenticatedUser();
+        }
+        return null;
     }
 
     private boolean isAuthorizationEnabled(AuthenticationContext authenticationContext) {
 
         if (authenticationContext != null && authenticationContext.getSequenceConfig() != null &&
                 authenticationContext.getSequenceConfig().getApplicationConfig() != null) {
-            return true;
+            return authenticationContext.getSequenceConfig().getApplicationConfig().isEnableAuthorization();
         }
         return false;
     }
