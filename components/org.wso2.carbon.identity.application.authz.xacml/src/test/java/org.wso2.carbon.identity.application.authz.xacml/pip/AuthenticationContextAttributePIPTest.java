@@ -107,13 +107,13 @@ public class AuthenticationContextAttributePIPTest {
         authenticationContextAttributePIP.getAttributeValues("a", "b", "c", "d", "e", "f");
     }
 
-
     @DataProvider(name = "BuildAttributeValues")
     public Object[][] buildAttributeValues() throws URISyntaxException {
 
         AttributeValue attributeValue = new AttributeValue(new URI(TYPE)) {
             @Override
             public String encode() {
+
                 return CONTEXT_ID;
             }
         };
@@ -158,7 +158,7 @@ public class AuthenticationContextAttributePIPTest {
     @Test(dataProvider = "BuildAttributeValues")
     public void testOverloadedGetAttributeValues(Object type, Object id, Object group, String issuer,
                                                  Object evaluationContext, Object evaluationResult,
-                                                 Object authenticationContext, String parameter , int expectedResult)
+                                                 Object authenticationContext, String parameter, int expectedResult)
             throws Exception {
 
         URI attributeType = (URI) type;
@@ -221,7 +221,7 @@ public class AuthenticationContextAttributePIPTest {
         AuthenticationContext authenticationContext = mock(AuthenticationContext.class);
 
         AuthenticationRequest authenticationRequest = mock(AuthenticationRequest.class);
-        String[] queryParams = new String[] {"1","2"};
+        String[] queryParams = new String[]{"1", "2"};
         when(authenticationContext.getAuthenticationRequest()).thenReturn(authenticationRequest);
         when(authenticationRequest.getRequestQueryParam(anyString())).thenReturn(queryParams);
 
