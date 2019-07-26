@@ -41,6 +41,9 @@ public class XACMLAppAuthzConstants {
 
     public static final String INBOUND_PROTOCOL_ATTRIBUTE = AUTH_CATEGORY + "/inbound-protocol";
     public static final String CLIENT_IP_ATTRIBUTE = AUTH_CATEGORY + "/user-ip";
+    public static final String SP_CLAIM_CATEGORY = "http://wso2.org/identity/user/claim/sp";
+    public static final String LOCAL_CLAIM_CATEGORY = "http://wso2.org/identity/user/claim/local";
+    public static final String USER_TYPE_ID = USER_CATEGORY + "/user-type";
 
 
     private XACMLAppAuthzConstants() {

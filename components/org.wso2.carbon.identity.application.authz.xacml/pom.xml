@@ -110,6 +110,7 @@
                             org.wso2.carbon.identity.application.authentication.framework.handler.request;version="${carbon.identity.framework.import.version.range}",
                             org.wso2.carbon.identity.application.authentication.framework.model;version="${carbon.identity.framework.import.version.range}",
                             org.wso2.carbon.identity.application.authentication.framework.util;version="${carbon.identity.framework.import.version.range}",
+                            org.wso2.carbon.identity.application.common.model;version="${carbon.identity.framework.import.version.range}",
                             org.wso2.carbon.identity.core.util;version="${carbon.identity.framework.import.version.range}",
                             org.wso2.carbon.identity.entitlement;version="${carbon.identity.framework.import.version.range}",
                             org.wso2.carbon.identity.entitlement.pip;version="${carbon.identity.framework.import.version.range}",
