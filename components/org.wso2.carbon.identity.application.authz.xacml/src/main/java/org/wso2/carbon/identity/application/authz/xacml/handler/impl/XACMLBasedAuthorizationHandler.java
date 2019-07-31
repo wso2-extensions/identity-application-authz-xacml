@@ -21,6 +21,7 @@ package org.wso2.carbon.identity.application.authz.xacml.handler.impl;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.xpath.AXIOMXPath;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jaxen.JaxenException;
@@ -34,10 +35,13 @@ import org.wso2.carbon.identity.application.authentication.framework.exception.P
 import org.wso2.carbon.identity.application.authentication.framework.handler.request.AbstractPostAuthnHandler;
 import org.wso2.carbon.identity.application.authentication.framework.handler.request.PostAuthnHandlerFlowStatus;
 import org.wso2.carbon.identity.application.authentication.framework.model.AuthenticatedUser;
+import org.wso2.carbon.identity.application.authentication.framework.util.FrameworkConstants;
 import org.wso2.carbon.identity.application.authentication.framework.util.FrameworkUtils;
 import org.wso2.carbon.identity.application.authz.xacml.constants.XACMLAppAuthzConstants;
 import org.wso2.carbon.identity.application.authz.xacml.internal.AppAuthzDataholder;
+import org.wso2.carbon.identity.application.common.model.ClaimMapping;
 import org.wso2.carbon.identity.base.IdentityConstants;
+import org.wso2.carbon.identity.core.util.IdentityCoreConstants;
 import org.wso2.carbon.identity.core.util.IdentityUtil;
 import org.wso2.carbon.identity.entitlement.EntitlementException;
 import org.wso2.carbon.identity.entitlement.common.EntitlementPolicyConstants;
@@ -48,7 +52,9 @@ import org.wso2.carbon.identity.entitlement.common.util.PolicyCreatorUtil;
 import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.stream.XMLStreamException;
@@ -161,6 +167,12 @@ public class XACMLBasedAuthorizationHandler extends AbstractPostAuthnHandler {
                     createRowDTO(subject, PolicyConstants.SUBJECT_ID_DEFAULT, PolicyConstants.SUBJECT_CATEGORY_URI);
             rowDTOs.add(subjectDTO);
         }
+
+        // Adding user-type as available in the context to XACML request
+        createRowDTOForUserType(context,rowDTOs);
+        // Adding user attributes available in the context to XACML request.
+        createRowDTOsForUserAttributes(context, rowDTOs);
+
         rowDTOs.add(actionDTO);
         rowDTOs.add(contextIdentifierDTO);
         rowDTOs.add(spNameDTO);
@@ -213,5 +225,76 @@ public class XACMLBasedAuthorizationHandler extends AbstractPostAuthnHandler {
             return authenticationContext.getSequenceConfig().getApplicationConfig().isEnableAuthorization();
         }
         return false;
+    }
+
+    private void createRowDTOForUserType(AuthenticationContext context, List<RowDTO> rowDTOs) {
+
+        String userType = null;
+        if (context.getSequenceConfig().getAuthenticatedUser().isFederatedUser()) {
+            userType = "FEDERATED";
+        } else {
+            userType = "LOCAL";
+        }
+        RowDTO userTypeDTO = createRowDTO(userType, XACMLAppAuthzConstants.USER_TYPE_ID,
+                XACMLAppAuthzConstants.USER_CATEGORY);
+        rowDTOs.add(userTypeDTO);
+    }
+
+    private void createRowDTOsForUserAttributes(AuthenticationContext context, List<RowDTO> rowDTOs) {
+
+        // User attributes are obtained from context.
+        Map<ClaimMapping, String> userAttributes =
+                context.getSequenceConfig().getAuthenticatedUser().getUserAttributes();
+        HashMap<String, String> spToLocalClaimMapping =
+                (HashMap<String, String>) context.getProperty(FrameworkConstants.SP_TO_CARBON_CLAIM_MAPPING);
+
+        if (userAttributes != null) {
+            for (Map.Entry<ClaimMapping, String> entry : userAttributes.entrySet()) {
+                if (entry.getKey().getRemoteClaim() != null && StringUtils.isNotEmpty(entry.getKey().getRemoteClaim().getClaimUri()) &&
+                        StringUtils.isNotEmpty(entry.getValue())) {
+                    if (entry.getKey().getRemoteClaim().getClaimUri().equalsIgnoreCase(IdentityCoreConstants.MULTI_ATTRIBUTE_SEPARATOR)) {
+                        continue;
+                    }
+                    String userAttribute = entry.getValue();
+                    String[] attributeValueList = null;
+                    if (userAttribute.contains(FrameworkUtils.getMultiAttributeSeparator())) {
+                        attributeValueList = getAttributeValues(userAttribute);
+                    } else {
+                        attributeValueList = new String[]{userAttribute};
+                    }
+                    for (String attributes : attributeValueList) {
+                        if (spToLocalClaimMapping != null) {
+                            String remoteClaimURI = entry.getKey().getRemoteClaim().getClaimUri();
+                            RowDTO userClaimsInSpDialect =
+                                    createRowDTO(attributes, remoteClaimURI, XACMLAppAuthzConstants.SP_CLAIM_CATEGORY);
+                            rowDTOs.add(userClaimsInSpDialect);
+                            String localClaimURI = getLocalClaimURI(spToLocalClaimMapping, remoteClaimURI);
+                            if (StringUtils.isNotEmpty(localClaimURI)) {
+                                RowDTO userClaimsInLocalDialect =
+                                        createRowDTO(attributes, localClaimURI, XACMLAppAuthzConstants.LOCAL_CLAIM_CATEGORY);
+                                rowDTOs.add(userClaimsInLocalDialect);
+                            }
+                        } else {
+                            // If the claims are not mapped, then they will be in local dialect. Then there won't be
+                            // any SP_TO_CARBON_CLAIM mapping.
+                            String localClaimURI = entry.getKey().getRemoteClaim().getClaimUri();
+                            RowDTO userClaimsInLocalDialect =
+                                    createRowDTO(attributes, localClaimURI, XACMLAppAuthzConstants.LOCAL_CLAIM_CATEGORY);
+                            rowDTOs.add(userClaimsInLocalDialect);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private String[] getAttributeValues(String attributes) {
+
+        return attributes.split(FrameworkUtils.getMultiAttributeSeparator());
+    }
+
+    private String getLocalClaimURI(HashMap<String, String> spToCarbonClaimMapping, String remoteClaimURI) {
+
+        return spToCarbonClaimMapping.get(remoteClaimURI);
     }
 }

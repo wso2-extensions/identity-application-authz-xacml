@@ -110,7 +110,7 @@ public class XACMLBasedAuthorizationHandlerTest {
         when(authenticatedUser.getUserName()).thenReturn(ADMIN_USER);
         RequestDTO requestDTO = WhiteboxImpl.invokeMethod(xacmlBasedAuthorizationHandler,
                 "createRequestDTO", context);
-        assertTrue(requestDTO.getRowDTOs().size() == 8);
+        assertTrue(requestDTO.getRowDTOs().size() == 9);
     }
 
     @Test
