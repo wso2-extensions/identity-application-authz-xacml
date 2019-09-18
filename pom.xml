@@ -259,8 +259,8 @@
 
     <properties>
         <!--Carbon framework version-->
-        <carbon.identity.framework.import.version.range>[5.14.0, 6.0.0)</carbon.identity.framework.import.version.range>
-        <carbon.identity.framework.version>5.14.0</carbon.identity.framework.version>
+        <carbon.identity.framework.import.version.range>[5.14.67, 6.0.0)</carbon.identity.framework.import.version.range>
+        <carbon.identity.framework.version>5.14.67</carbon.identity.framework.version>
         <balana.version>1.1.15</balana.version>
 
         <identity.app.authz.xacml.pkg.exp.version>${project.version}</identity.app.authz.xacml.pkg.exp.version>
@@ -273,7 +273,7 @@
 
         <!-- Carbon kernel version -->
         <carbon.kernel.registry.imp.pkg.version>[1.0.1, 2.0.0)</carbon.kernel.registry.imp.pkg.version>
-        <carbon.kernel.version>4.5.0-m3</carbon.kernel.version>
+        <carbon.kernel.version>4.5.0</carbon.kernel.version>
         <carbon.kernel.feature.version>4.5.0</carbon.kernel.feature.version>
 
         <osgi.framework.imp.pkg.version.range>[1.7.0, 2.0.0)</osgi.framework.imp.pkg.version.range>
