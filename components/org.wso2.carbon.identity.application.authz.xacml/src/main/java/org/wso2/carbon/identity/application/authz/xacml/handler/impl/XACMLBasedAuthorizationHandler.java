@@ -290,6 +290,19 @@ public class XACMLBasedAuthorizationHandler extends AbstractPostAuthnHandler {
         }
     }
 
+    @Override
+    public int getPriority() {
+
+        int priority = super.getPriority();
+        if (priority == -1) {
+            /* Priority value should be greater than PostAuthAssociationHandler, so that JIT provisioned users
+             * username will be correctly adjusted when executing XACMLBasedAuthorizationHandler.
+             */
+            priority = 26;
+        }
+        return priority;
+    }
+
     private String[] getAttributeValues(String attributes) {
 
         return attributes.split(FrameworkUtils.getMultiAttributeSeparator());
