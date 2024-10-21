@@ -21,13 +21,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.wso2.carbon.identity.framework</groupId>
+        <groupId>org.wso2.carbon.identity.application.authz.xacml</groupId>
         <artifactId>entitlement</artifactId>
-        <version>7.5.68-SNAPSHOT</version>
+        <version>2.3.3-SNAPSHOT</version>
     </parent>
 
     <artifactId>org.wso2.carbon.identity.api.server.entitlement</artifactId>
-    <version>7.5.68-SNAPSHOT</version>
+    <version>2.3.3-SNAPSHOT</version>
     <name>WSO2 Carbon - Entitlement REST API</name>
     <packaging>jar</packaging>
 
@@ -65,7 +65,7 @@
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>org.wso2.carbon.identity.framework</groupId>
+            <groupId>org.wso2.carbon.identity.application.authz.xacml</groupId>
             <artifactId>org.wso2.carbon.identity.entitlement</artifactId>
             <scope>provided</scope>
         </dependency>

@@ -42,11 +42,11 @@
             <artifactId>org.wso2.balana.utils</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.wso2.carbon.identity.framework</groupId>
+            <groupId>org.wso2.carbon.identity.application.authz.xacml</groupId>
             <artifactId>org.wso2.carbon.identity.entitlement</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.wso2.carbon.identity.framework</groupId>
+            <groupId>org.wso2.carbon.identity.application.authz.xacml</groupId>
             <artifactId>org.wso2.carbon.identity.entitlement.common</artifactId>
         </dependency>
         <dependency>
