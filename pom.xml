@@ -431,7 +431,7 @@
     <properties>
         <!--Carbon framework version-->
         <carbon.identity.framework.import.version.range>[5.14.67, 8.0.0)</carbon.identity.framework.import.version.range>
-        <carbon.identity.framework.version>7.8.67</carbon.identity.framework.version>
+        <carbon.identity.framework.version>7.5.69</carbon.identity.framework.version>
         <carbon.identity.package.export.version>${project.version}</carbon.identity.package.export.version>
         <balana.version>1.2.4</balana.version>
 
