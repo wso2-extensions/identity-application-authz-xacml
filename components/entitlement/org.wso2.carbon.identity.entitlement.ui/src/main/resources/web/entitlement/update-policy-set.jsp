@@ -1,6 +1,6 @@
 <!--
 /*
-* Copyright (c) WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+* Copyright (c) WSO2 LLC. (https://www.wso2.com).
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
