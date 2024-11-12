@@ -256,6 +256,49 @@
                 <version>${saml.common.util.version}</version>
             </dependency>
             <dependency>
+                <groupId>org.wso2.carbon.identity.framework</groupId>
+                <artifactId>org.wso2.carbon.policyeditor</artifactId>
+                <version>${carbon.identity.framework.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.identity.framework</groupId>
+                <artifactId>org.wso2.carbon.policyeditor.ui</artifactId>
+                <version>${carbon.identity.framework.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.identity.application.authz.xacml</groupId>
+                <artifactId>org.wso2.carbon.identity.entitlement.ui</artifactId>
+                <version>${project.version}}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon</groupId>
+                <artifactId>org.wso2.carbon.ui.menu.tools</artifactId>
+                <version>${carbon.kernel.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.identity.application.authz.xacml</groupId>
+                <artifactId>org.wso2.carbon.identity.entitlement.common</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.identity.application.authz.xacml</groupId>
+                <artifactId>org.wso2.carbon.identity.entitlement.endpoint</artifactId>
+                <version>${project.version}</version>
+                <type>war</type>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.identity.application.authz.xacml</groupId>
+                <artifactId>org.wso2.carbon.identity.xacml.server.feature</artifactId>
+                <version>${project.version}</version>
+                <type>zip</type>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.identity.application.authz.xacml</groupId>
+                <artifactId>org.wso2.carbon.identity.xacml.ui.feature</artifactId>
+                <version>${project.version}</version>
+                <type>zip</type>
+            </dependency>
+            <dependency>
                 <groupId>org.wso2.orbit.joda-time</groupId>
                 <artifactId>joda-time</artifactId>
                 <version>${joda.wso2.version}</version>
@@ -512,6 +555,7 @@
         <module>components/entitlement</module>
         <module>components/org.wso2.carbon.identity.application.authz.xacml</module>
         <module>features/org.wso2.carbon.identity.application.authz.xacml.feature</module>
+        <module>features/xacml</module>
         <module>service-stubs/identity/org.wso2.carbon.identity.entitlement.stub</module>
     </modules>
 
