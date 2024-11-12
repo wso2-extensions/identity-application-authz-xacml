@@ -377,6 +377,12 @@
                 <scope>provided</scope>
             </dependency>
             <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <scope>test</scope>
+                <version>${junit.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.testng</groupId>
                 <artifactId>testng</artifactId>
                 <version>${testng.version}</version>
@@ -419,7 +425,7 @@
     <properties>
         <!--Carbon framework version-->
         <carbon.identity.framework.import.version.range>[5.14.67, 8.0.0)</carbon.identity.framework.import.version.range>
-        <carbon.identity.framework.version>5.14.67</carbon.identity.framework.version>
+        <carbon.identity.framework.version>7.5.69</carbon.identity.framework.version>
         <balana.version>1.2.4</balana.version>
 
         <identity.app.authz.xacml.pkg.exp.version>${project.version}</identity.app.authz.xacml.pkg.exp.version>
@@ -447,7 +453,7 @@
 
         <!-- Carbon kernel version -->
         <carbon.kernel.registry.imp.pkg.version>[1.0.1, 2.0.0)</carbon.kernel.registry.imp.pkg.version>
-        <carbon.kernel.version>4.10.22</carbon.kernel.version>
+        <carbon.kernel.version>4.10.24</carbon.kernel.version>
         <carbon.kernel.feature.version>4.6.0</carbon.kernel.feature.version>
         <carbon.kernel.package.import.version.range>[4.6.0, 5.0.0)</carbon.kernel.package.import.version.range>
 
@@ -493,7 +499,8 @@
         <equinox.osgi.stax-api.imp.pkg.version.range>[1.0.1,2.0.0)</equinox.osgi.stax-api.imp.pkg.version.range>
 
         <!-- Unit test version-->
-        <testng.version>6.9.10</testng.version>
+        <junit.version>4.13.1</junit.version>
+        <testng.version>7.10.1</testng.version>
         <jacoco.version>0.8.7</jacoco.version>
         <maven.surefire.plugin.version>3.2.5</maven.surefire.plugin.version>
         <mockito.version>5.3.1</mockito.version>
@@ -505,7 +512,7 @@
         <module>components/entitlement</module>
         <module>components/org.wso2.carbon.identity.application.authz.xacml</module>
         <module>features/org.wso2.carbon.identity.application.authz.xacml.feature</module>
-        <module>service-stubs/identity</module>
+        <module>service-stubs/identity/org.wso2.carbon.identity.entitlement.stub</module>
     </modules>
 
 </project>
