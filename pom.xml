@@ -268,7 +268,7 @@
             <dependency>
                 <groupId>org.wso2.carbon.identity.application.authz.xacml</groupId>
                 <artifactId>org.wso2.carbon.identity.entitlement.ui</artifactId>
-                <version>${project.version}}</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.wso2.carbon</groupId>
@@ -399,6 +399,11 @@
                 <version>${project.version}</version>
             </dependency>
             <dependency>
+                <groupId>org.wso2.orbit.jsr105</groupId>
+                <artifactId>jsr105</artifactId>
+                <version>${jsr105.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.apache.axis2.wso2</groupId>
                 <artifactId>axis2-client</artifactId>
                 <version>${axis2.wso2.version}</version>
@@ -519,6 +524,7 @@
         <log4j.core.version>2.17.1</log4j.core.version>
         <commons-collections.version>3.2.2.wso2v1</commons-collections.version>
         <commons-lang.wso2.version>2.6.0.wso2v1</commons-lang.wso2.version>
+        <jsr105.version>1.0.1.wso2v1</jsr105.version>
 
         <com.fasterxml.jackson.version>2.16.1</com.fasterxml.jackson.version>
         <com.fasterxml.jackson.annotation.version>2.16.1</com.fasterxml.jackson.annotation.version>
