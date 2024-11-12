@@ -22,9 +22,9 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.wso2.carbon.identity.entitlement.EntitlementService;
 
+import static org.mockito.Mockito.mock;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertNull;
-import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.testng.AssertJUnit.assertEquals;
 
 /**

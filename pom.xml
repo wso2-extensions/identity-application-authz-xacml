@@ -27,7 +27,7 @@
     <groupId>org.wso2.carbon.identity.application.authz.xacml</groupId>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>identity-application-authz-xacml</artifactId>
-    <version>2.3.3-SNAPSHOT</version>
+    <version>2.4.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>WSO2 Carbon - XACML Application authorization handler</name>
     <description>
@@ -52,7 +52,7 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-javadoc-plugin</artifactId>
                     <configuration>
-                        <source>1.8</source>
+                        <source>11</source>
                     </configuration>
                     <executions>
                         <execution>
@@ -112,14 +112,8 @@
                 <artifactId>maven-deploy-plugin</artifactId>
             </plugin>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.3.1</version>
-                <inherited>true</inherited>
-                <configuration>
-                    <encoding>UTF-8</encoding>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
@@ -396,21 +390,15 @@
                 <version>${jacoco.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.powermock</groupId>
-                <artifactId>powermock-module-testng</artifactId>
-                <version>${powermock.version}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.powermock</groupId>
-                <artifactId>powermock-api-mockito</artifactId>
-                <version>${powermock.version}</version>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-core</artifactId>
+                <version>${mockito.version}</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.mockito</groupId>
-                <artifactId>mockito-core</artifactId>
-                <version>${mockito.version}</version>
+                <artifactId>mockito-testng</artifactId>
+                <version>${mockito-testng.version}</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
@@ -431,10 +419,8 @@
     <properties>
         <!--Carbon framework version-->
         <carbon.identity.framework.import.version.range>[5.14.67, 8.0.0)</carbon.identity.framework.import.version.range>
-        <carbon.identity.framework.version>7.5.69</carbon.identity.framework.version>
-        <carbon.identity.package.export.version>${project.version}</carbon.identity.package.export.version>
+        <carbon.identity.framework.version>5.14.67</carbon.identity.framework.version>
         <balana.version>1.2.4</balana.version>
-
 
         <identity.app.authz.xacml.pkg.exp.version>${project.version}</identity.app.authz.xacml.pkg.exp.version>
 
@@ -508,10 +494,10 @@
 
         <!-- Unit test version-->
         <testng.version>6.9.10</testng.version>
-        <jacoco.version>0.7.9</jacoco.version>
-        <maven.surefire.plugin.version>2.18.1</maven.surefire.plugin.version>
-        <powermock.version>1.6.4</powermock.version>
+        <jacoco.version>0.8.7</jacoco.version>
+        <maven.surefire.plugin.version>3.2.5</maven.surefire.plugin.version>
         <mockito.version>5.3.1</mockito.version>
+        <mockito-testng.version>0.5.2</mockito-testng.version>
         <h2database.version>2.2.224</h2database.version>
     </properties>
 

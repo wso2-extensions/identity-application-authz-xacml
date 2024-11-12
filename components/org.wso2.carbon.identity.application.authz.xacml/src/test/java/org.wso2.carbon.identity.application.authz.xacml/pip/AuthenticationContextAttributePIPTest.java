@@ -19,16 +19,9 @@
 package org.wso2.carbon.identity.application.authz.xacml.pip;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.powermock.core.classloader.annotations.PowerMockIgnore;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.testng.PowerMockObjectFactory;
-import org.powermock.reflect.internal.WhiteboxImpl;
-import org.testng.IObjectFactory;
+import org.mockito.MockedStatic;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
-import org.testng.annotations.ObjectFactory;
 import org.testng.annotations.Test;
 import org.wso2.balana.attr.AttributeValue;
 import org.wso2.balana.attr.BagAttribute;
@@ -40,6 +33,7 @@ import org.wso2.carbon.identity.application.authentication.framework.util.Framew
 import org.wso2.carbon.identity.application.authz.xacml.constants.XACMLAppAuthzConstants;
 import org.wso2.carbon.identity.base.IdentityConstants;
 
+import java.lang.reflect.Method;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -48,19 +42,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
-import static org.powermock.api.mockito.PowerMockito.mock;
-import static org.powermock.api.mockito.PowerMockito.mockStatic;
-import static org.powermock.api.mockito.PowerMockito.when;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.mockStatic;
+import static org.mockito.Mockito.when;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 /**
  * AuthenticationContextAttributePIPTest defines unit tests for AuthenticationContextAttributePIP class.
  */
-@PowerMockIgnore("org.w3c.dom.*")
-@PrepareForTest({LogFactory.class, FrameworkUtils.class})
 public class AuthenticationContextAttributePIPTest {
 
     private AuthenticationContextAttributePIP authenticationContextAttributePIP;
@@ -69,7 +61,6 @@ public class AuthenticationContextAttributePIPTest {
     private URI attributeId;
     private URI category;
     private String issuer;
-    private Log log = mock(Log.class);
     private static final String TYPE = "type";
     private static final String CONTEXT_ID = "context_id";
     private static final String URI_STRING_1 = "12345";
@@ -81,20 +72,11 @@ public class AuthenticationContextAttributePIPTest {
     private static final String HEADER = "header";
     private static final String AUTHENTICATION_CONTEXT_ATTRIBUTE_PIP = "AuthenticationContextAttributePIP";
 
-    @ObjectFactory
-    public IObjectFactory getObjectFactory() {
-
-        return new PowerMockObjectFactory();
-    }
-
     @BeforeClass
     public void init() throws URISyntaxException {
 
-        mockStatic(LogFactory.class);
-        when(LogFactory.getLog(AuthenticationContextAttributePIP.class)).thenReturn(log);
         authenticationContextAttributePIP = new AuthenticationContextAttributePIP();
         evaluationCtx = mock(EvaluationCtx.class);
-        when(log.isDebugEnabled()).thenReturn(true);
         issuer = ISSUER;
         attributeType = new URI(URI_STRING_1);
         attributeId = new URI(URI_STRING_1);
@@ -161,21 +143,25 @@ public class AuthenticationContextAttributePIPTest {
                                                  Object authenticationContext, String parameter, int expectedResult)
             throws Exception {
 
-        URI attributeType = (URI) type;
-        URI attributeId = (URI) id;
-        URI category = (URI) group;
-        EvaluationCtx evaluationCtx = (EvaluationCtx) evaluationContext;
-        EvaluationResult context = (EvaluationResult) evaluationResult;
-        AuthenticationContext authCtx = (AuthenticationContext) authenticationContext;
-        if (XACMLAppAuthzConstants.CLIENT_IP_ATTRIBUTE.equals(attributeId.toString())) {
-            authCtx.addParameter(parameter, USER_IP);
+        try (MockedStatic<FrameworkUtils> frameworkUtilsMockedStatic = mockStatic(FrameworkUtils.class);) {
+            URI attributeType = (URI) type;
+            URI attributeId = (URI) id;
+            URI category = (URI) group;
+            EvaluationCtx evaluationCtx = (EvaluationCtx) evaluationContext;
+            EvaluationResult context = (EvaluationResult) evaluationResult;
+            AuthenticationContext authCtx = (AuthenticationContext) authenticationContext;
+            if (XACMLAppAuthzConstants.CLIENT_IP_ATTRIBUTE.equals(attributeId.toString())) {
+                authCtx.addParameter(parameter, USER_IP);
+            }
+            when(evaluationCtx.getAttribute(any(URI.class), any(URI.class), anyString(), any(URI.class)))
+                    .thenReturn(context);
+            frameworkUtilsMockedStatic.when(() -> FrameworkUtils.getAuthenticationContextFromCache(anyString()))
+                    .thenReturn(authCtx);
+            when(FrameworkUtils.getAuthenticationContextFromCache(anyString())).thenReturn(authCtx);
+            Set<String> attributeValues = authenticationContextAttributePIP.getAttributeValues(attributeType,
+                    attributeId, category, issuer, evaluationCtx);
+            assertEquals(attributeValues.size(), expectedResult);
         }
-        when(evaluationCtx.getAttribute(any(URI.class), any(URI.class), anyString(), any(URI.class))).thenReturn(context);
-        mockStatic(FrameworkUtils.class);
-        when(FrameworkUtils.getAuthenticationContextFromCache(anyString())).thenReturn(authCtx);
-        Set<String> attributeValues = authenticationContextAttributePIP.getAttributeValues(attributeType, attributeId,
-                category, issuer, evaluationCtx);
-        assertEquals(attributeValues.size(), expectedResult);
     }
 
     @Test
@@ -198,19 +184,28 @@ public class AuthenticationContextAttributePIPTest {
         AuthenticationContext authenticationContext = mock(AuthenticationContext.class);
         Object object = new Object();
         when(authenticationContext.getProperty(anyString())).thenReturn(object);
-        Set<String> propertySet = WhiteboxImpl.invokeMethod(authenticationContextAttributePIP, "getAuthenticationContextProperty",
-                authenticationContext, attributeType, attributeId, category, issuer, evaluationCtx);
+        Method getAuthenticationContextProperty = AuthenticationContextAttributePIP.class.getDeclaredMethod(
+                "getAuthenticationContextProperty", AuthenticationContext.class, URI.class, URI.class, URI.class,
+                String.class, EvaluationCtx.class);
+        getAuthenticationContextProperty.setAccessible(true);
+
+        Object propertySetObject = getAuthenticationContextProperty.invoke(
+                authenticationContextAttributePIP, authenticationContext,
+                attributeType, attributeId, category, issuer, evaluationCtx);
+        Set<String> propertySet = getpropertySet(propertySetObject);
         assertEquals(propertySet.size(), 1);
 
         object = ATTRIBUTE_VALUE;
         when(authenticationContext.getProperty(anyString())).thenReturn(object);
-        propertySet = WhiteboxImpl.invokeMethod(authenticationContextAttributePIP, "getAuthenticationContextProperty",
+        propertySetObject = getAuthenticationContextProperty.invoke(authenticationContextAttributePIP,
                 authenticationContext, attributeType, attributeId, category, issuer, evaluationCtx);
+        propertySet = getpropertySet(propertySetObject);
         assertEquals(propertySet.size(), 1);
 
         attributeId = new URI(URI_STRING_3);
-        propertySet = WhiteboxImpl.invokeMethod(authenticationContextAttributePIP, "getAuthenticationContextProperty",
+        propertySetObject = getAuthenticationContextProperty.invoke(authenticationContextAttributePIP,
                 authenticationContext, attributeType, attributeId, category, issuer, evaluationCtx);
+        propertySet = getpropertySet(propertySetObject);
         assertEquals(propertySet.size(), 1);
     }
 
@@ -225,13 +220,20 @@ public class AuthenticationContextAttributePIPTest {
         when(authenticationContext.getAuthenticationRequest()).thenReturn(authenticationRequest);
         when(authenticationRequest.getRequestQueryParam(anyString())).thenReturn(queryParams);
 
-        Set<String> propertySet = WhiteboxImpl.invokeMethod(authenticationContextAttributePIP, "getAuthenticationRequestParameter",
-                authenticationContext, attributeType, attributeId, category, issuer, evaluationCtx);
+        Method getAuthenticationRequestParameter = AuthenticationContextAttributePIP.class.getDeclaredMethod(
+                "getAuthenticationRequestParameter", AuthenticationContext.class, URI.class, URI.class, URI.class,
+                String.class, EvaluationCtx.class);
+        getAuthenticationRequestParameter.setAccessible(true);
+
+        Object propertySetObject = getAuthenticationRequestParameter.invoke(authenticationContextAttributePIP, authenticationContext,
+                attributeType, attributeId, category, issuer, evaluationCtx);
+        Set<String> propertySet = getpropertySet(propertySetObject);
         assertEquals(propertySet.size(), 2);
 
         attributeId = new URI(URI_STRING_2);
-        propertySet = WhiteboxImpl.invokeMethod(authenticationContextAttributePIP, "getAuthenticationRequestParameter",
-                authenticationContext, attributeType, attributeId, category, issuer, evaluationCtx);
+        propertySetObject = getAuthenticationRequestParameter.invoke(authenticationContextAttributePIP, authenticationContext,
+                attributeType, attributeId, category, issuer, evaluationCtx);
+        propertySet = getpropertySet(propertySetObject);
         assertEquals(propertySet.size(), 2);
     }
 
@@ -246,14 +248,38 @@ public class AuthenticationContextAttributePIPTest {
         when(authenticationContext.getAuthenticationRequest()).thenReturn(authenticationRequest);
         when(authenticationRequest.getRequestHeaders()).thenReturn(map);
         when(map.get(anyString())).thenReturn(HEADER);
-        Set<String> propertySet = WhiteboxImpl.invokeMethod(authenticationContextAttributePIP, "getAuthenticationRequestHeader",
-                authenticationContext, attributeType, attributeId, category, issuer, evaluationCtx);
+
+        Method getAuthenticationRequestHeader = AuthenticationContextAttributePIP.class.getDeclaredMethod(
+                "getAuthenticationRequestHeader", AuthenticationContext.class, URI.class, URI.class, URI.class,
+                String.class, EvaluationCtx.class);
+        getAuthenticationRequestHeader.setAccessible(true);
+
+        Object propertySetObject = getAuthenticationRequestHeader.invoke(authenticationContextAttributePIP, authenticationContext,
+                attributeType, attributeId, category, issuer, evaluationCtx);
+        Set<String> propertySet = getpropertySet(propertySetObject);
         assertEquals(propertySet.size(), 1);
 
         attributeId = new URI(URI_STRING_3);
-        propertySet = WhiteboxImpl.invokeMethod(authenticationContextAttributePIP, "getAuthenticationRequestHeader",
-                authenticationContext, attributeType, attributeId, category, issuer, evaluationCtx);
+        propertySetObject = getAuthenticationRequestHeader.invoke(authenticationContextAttributePIP, authenticationContext,
+                attributeType, attributeId, category, issuer, evaluationCtx);
+        propertySet = getpropertySet(propertySetObject);
         assertEquals(propertySet.size(), 1);
+    }
+
+    @SuppressWarnings("unchecked")
+    private Set<String> getpropertySet(Object propertySetObject) {
+
+        if (propertySetObject instanceof Set<?>) {
+            Set<?> tempSet = (Set<?>) propertySetObject;
+            if (tempSet.stream().allMatch(element -> element instanceof String)) {
+                // Safe cast if all elements are Strings.
+                return (Set<String>) tempSet;
+            } else {
+                throw new ClassCastException("Property contains non-string elements");
+            }
+        } else {
+            throw new ClassCastException("Property is not a Set");
+        }
     }
 }
 
