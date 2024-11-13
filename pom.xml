@@ -27,7 +27,7 @@
     <groupId>org.wso2.carbon.identity.application.authz.xacml</groupId>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>identity-application-authz-xacml</artifactId>
-    <version>2.3.3-SNAPSHOT</version>
+    <version>2.4.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>WSO2 Carbon - XACML Application authorization handler</name>
     <description>
@@ -151,10 +151,21 @@
                 <version>${carbon.identity.framework.version}</version>
             </dependency>
             <dependency>
+                <groupId>org.wso2.carbon.identity.inbound.auth.oauth2</groupId>
+                <artifactId>org.wso2.carbon.identity.oauth</artifactId>
+                <version>${identity.inbound.auth.oauth.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>org.apache.felix.scr.ds-annotations</artifactId>
                 <version>${apache.felix.scr.ds.annotations.version}</version>
                 <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.identity.framework</groupId>
+                <artifactId>org.wso2.carbon.identity.testutil</artifactId>
+                <version>${carbon.identity.framework.version}</version>
+                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.testng</groupId>
@@ -180,6 +191,16 @@
                 <artifactId>powermock-api-mockito</artifactId>
                 <version>${powermock.version}</version>
                 <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.ops4j.pax.logging</groupId>
+                <artifactId>pax-logging-api</artifactId>
+                <version>${pax.logging.api.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.eclipse.osgi</groupId>
+                <artifactId>org.eclipse.osgi.services</artifactId>
+                <version>${equinox.osgi.services.version}</version>
             </dependency>
         </dependencies>
 
@@ -210,6 +231,10 @@
         <commons-lang.wso2.osgi.version.range>[2.6.0,3.0.0)</commons-lang.wso2.osgi.version.range>
         <imp.pkg.version.javax.xml>[0.0.0,1.0.0)</imp.pkg.version.javax.xml>
         <imp.pkg.version.javax.servlet>[2.6.0, 3.0.0)</imp.pkg.version.javax.servlet>
+        <identity.inbound.auth.oauth.imp.pkg.version>[6.2.18,8.0.0)</identity.inbound.auth.oauth.imp.pkg.version>
+        <osgi.service.component.package.import.version.range>[1.2,2)
+        </osgi.service.component.package.import.version.range>
+        <identity.inbound.auth.oauth.version>7.0.120</identity.inbound.auth.oauth.version>
 
 
         <maven.buildnumber.plugin.version>1.4</maven.buildnumber.plugin.version>
@@ -218,6 +243,7 @@
         <carbon.p2.plugin.version>1.5.3</carbon.p2.plugin.version>
 
         <equinox.osgi.services.version>3.5.100.v20160504-1419</equinox.osgi.services.version>
+        <pax.logging.api.version>1.10.1</pax.logging.api.version>
 
         <!-- Unit test version-->
         <testng.version>6.9.10</testng.version>
@@ -228,6 +254,7 @@
 
     <modules>
         <module>components/org.wso2.carbon.identity.application.authz.xacml</module>
+        <module>components/scope-validator/org.wso2.carbon.identity.oauth2.validators.xacml</module>
         <module>features/org.wso2.carbon.identity.application.authz.xacml.feature</module>
     </modules>
 
