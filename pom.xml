@@ -151,6 +151,11 @@
                 <version>${carbon.identity.framework.version}</version>
             </dependency>
             <dependency>
+                <groupId>org.wso2.carbon.identity.framework</groupId>
+                <artifactId>org.wso2.carbon.identity.provisioning</artifactId>
+                <version>${carbon.identity.framework.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>org.apache.felix.scr.ds-annotations</artifactId>
                 <version>${apache.felix.scr.ds.annotations.version}</version>
@@ -228,6 +233,7 @@
 
     <modules>
         <module>components/org.wso2.carbon.identity.application.authz.xacml</module>
+        <module>components/provisioning/org.wso2.carbon.identity.provisioning.rule.handler.xacml</module>
         <module>features/org.wso2.carbon.identity.application.authz.xacml.feature</module>
     </modules>
 
