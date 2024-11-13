@@ -319,6 +319,11 @@
                 <version>${xercesImpl.version}</version>
             </dependency>
             <dependency>
+                <groupId>org.wso2.carbon.identity.framework</groupId>
+                <artifactId>org.wso2.carbon.identity.provisioning</artifactId>
+                <version>${carbon.identity.framework.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>javax.ws.rs</groupId>
                 <artifactId>javax.ws.rs-api</artifactId>
                 <version>${javax.ws.rs-api.version}</version>
@@ -597,6 +602,7 @@
         <module>components/entitlement</module>
         <module>components/authorization-handler</module>
         <module>components/policy-editor</module>
+        <module>components/provisioning/org.wso2.carbon.identity.provisioning.rule.handler.xacml</module>
         <module>components/scope-validator</module>
         <module>features/org.wso2.carbon.identity.application.authz.xacml.feature</module>
         <module>features/xacml</module>
