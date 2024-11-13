@@ -19,6 +19,7 @@
 package org.wso2.carbon.identity.application.authz.xacml.handler.impl;
 
 import junit.framework.Assert;
+import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -27,6 +28,7 @@ import org.testng.annotations.Test;
 import org.wso2.balana.utils.exception.PolicyBuilderException;
 import org.wso2.balana.utils.policy.PolicyBuilder;
 import org.wso2.balana.utils.policy.dto.RequestElementDTO;
+import org.wso2.carbon.context.PrivilegedCarbonContext;
 import org.wso2.carbon.identity.application.authentication.framework.config.model.ApplicationConfig;
 import org.wso2.carbon.identity.application.authentication.framework.config.model.SequenceConfig;
 import org.wso2.carbon.identity.application.authentication.framework.context.AuthenticationContext;
@@ -36,6 +38,7 @@ import org.wso2.carbon.identity.application.authentication.framework.model.Authe
 import org.wso2.carbon.identity.application.authentication.framework.util.FrameworkUtils;
 import org.wso2.carbon.identity.application.authz.xacml.internal.AppAuthzDataholder;
 import org.wso2.carbon.identity.application.common.model.ServiceProvider;
+import org.wso2.carbon.identity.common.testng.WithCarbonHome;
 import org.wso2.carbon.identity.entitlement.EntitlementException;
 import org.wso2.carbon.identity.entitlement.EntitlementService;
 import org.wso2.carbon.identity.entitlement.common.dto.RequestDTO;
@@ -57,6 +60,7 @@ import static org.testng.Assert.assertEquals;
 /**
  * XACMLBasedAuthorizationHandlerTest defines unit tests for XACMLBasedAuthorizationHandler class.
  */
+@WithCarbonHome
 public class XACMLBasedAuthorizationHandlerTest {
 
     private XACMLBasedAuthorizationHandler xacmlBasedAuthorizationHandler;
@@ -76,11 +80,15 @@ public class XACMLBasedAuthorizationHandlerTest {
             + "</ns:Result>"
             + "</ns:root>";
 
+    @Mock
+    PrivilegedCarbonContext mockPrivilegedCarbonContext;
+
     @BeforeClass
     public void init() {
 
         xacmlBasedAuthorizationHandler = spy(new XACMLBasedAuthorizationHandler());
         context = mock(AuthenticationContext.class);
+        mockPrivilegedCarbonContext = mock(PrivilegedCarbonContext.class);
     }
 
     @AfterClass
@@ -132,9 +140,17 @@ public class XACMLBasedAuthorizationHandlerTest {
         HttpServletRequest request = mock(HttpServletRequest.class);
         HttpServletResponse response = mock(HttpServletResponse.class);
 
-        try (MockedStatic<FrameworkUtils> frameworkUtilsMockedStatic = mockStatic(FrameworkUtils.class);
+        try (MockedStatic<PrivilegedCarbonContext> privilegedCarbonContextMockedStatic = mockStatic(
+                PrivilegedCarbonContext.class);
+             MockedStatic<FrameworkUtils> frameworkUtilsMockedStatic = mockStatic(FrameworkUtils.class);
              MockedStatic<PolicyCreatorUtil> policyCreatorUtilMockedStatic = mockStatic(PolicyCreatorUtil.class);
              MockedStatic<PolicyBuilder> policyBuilderMockedStatic = mockStatic(PolicyBuilder.class)) {
+
+            privilegedCarbonContextMockedStatic.when(
+                    PrivilegedCarbonContext::getThreadLocalCarbonContext).thenReturn(mockPrivilegedCarbonContext);
+            when(mockPrivilegedCarbonContext.getTenantDomain()).thenReturn("carbon.super");
+            when(mockPrivilegedCarbonContext.getTenantId()).thenReturn(-1234);
+            when(mockPrivilegedCarbonContext.getUsername()).thenReturn("admin");
 
             ApplicationConfig applicationConfig = new ApplicationConfig(new ServiceProvider());
             applicationConfig.setEnableAuthorization(isAuthorizationEnabled);
