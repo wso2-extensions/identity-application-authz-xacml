@@ -595,9 +595,9 @@
     <modules>
         <module>service-stubs/identity</module>
         <module>components/entitlement</module>
-        <module>components/org.wso2.carbon.identity.application.authz.xacml</module>
+        <module>components/authorization-handler</module>
         <module>components/policy-editor</module>
-        <module>components/scope-validator/org.wso2.carbon.identity.oauth2.validators.xacml</module>
+        <module>components/scope-validator</module>
         <module>features/org.wso2.carbon.identity.application.authz.xacml.feature</module>
         <module>features/xacml</module>
     </modules>
