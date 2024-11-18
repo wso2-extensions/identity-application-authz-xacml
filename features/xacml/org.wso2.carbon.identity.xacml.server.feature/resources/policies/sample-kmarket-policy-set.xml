@@ -1,3 +1,21 @@
+<!--
+  ~ Copyright (c) 2024, WSO2 LLC. (http://www.wso2.com).
+  ~
+  ~ WSO2 LLC. licenses this file to you under the Apache License,
+  ~ Version 2.0 (the "License"); you may not use this file except
+  ~ in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an
+  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~ KIND, either express or implied.  See the License for the
+  ~ specific language governing permissions and limitations
+  ~ under the License.
+  -->
+
 <PolicySet xmlns="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17"  PolicyCombiningAlgId="urn:oasis:names:tc:xacml:1.0:policy-combining-algorithm:first-applicable" PolicySetId="sample-kmarket-policy-set" Version="1.0">
    <Description>This is sample-kmarket-policy-set policy set. You need to promote this policy to PDP policy store to try out. Also make sure policy reference ids could be retrieve via the policy finder module that has been configured. If default policy finder module is used, there reference policy must be stored in PAP policy store as active policies.  You need a PIP attribute finder module to retrieve some attributes that are defined in policy.  Sample PIP attribute finder module and sample requests to try this policy, can be found at here [1] https://svn.wso2.org/repos/wso2/carbon/platform/branches/4.0.0/components/identity/org.wso2.carbon.identity.samples.entitlement.pip This is same sample that is available with Balana with few modifications [2] https://svn.wso2.org/repos/wso2/trunk/commons/balana/modules/balana-samples/kmarket-trading-sample</Description>
    <Target></Target>
