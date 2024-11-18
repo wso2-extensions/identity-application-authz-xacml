@@ -125,6 +125,11 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
+                <groupId>org.wso2.orbit.javax.activation</groupId>
+                <artifactId>activation</artifactId>
+                <version>${version.org.wso2.orbit.javax.activation}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.wso2.carbon.identity.framework</groupId>
                 <artifactId>org.wso2.carbon.identity.application.authentication.framework</artifactId>
                 <version>${carbon.identity.framework.version}</version>
@@ -268,7 +273,7 @@
             <dependency>
                 <groupId>org.wso2.carbon.identity.application.authz.xacml</groupId>
                 <artifactId>org.wso2.carbon.identity.entitlement.ui</artifactId>
-                <version>${project.version}}</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.wso2.carbon</groupId>
@@ -399,9 +404,24 @@
                 <version>${project.version}</version>
             </dependency>
             <dependency>
+                <groupId>org.wso2.orbit.jsr105</groupId>
+                <artifactId>jsr105</artifactId>
+                <version>${jsr105.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.apache.axis2.wso2</groupId>
                 <artifactId>axis2-client</artifactId>
                 <version>${axis2.wso2.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.apache.ws.commons.axiom</groupId>
+                        <artifactId>axiom-api</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.apache.ws.commons.axiom</groupId>
+                        <artifactId>axiom-impl</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>org.apache.cxf</groupId>
@@ -451,6 +471,12 @@
                 <scope>test</scope>
             </dependency>
             <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-core</artifactId>
+                <version>${mockito.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
                 <groupId>com.h2database</groupId>
                 <artifactId>h2</artifactId>
                 <scope>test</scope>
@@ -469,13 +495,16 @@
         <!--Carbon framework version-->
         <carbon.identity.framework.import.version.range>[5.14.67, 8.0.0)</carbon.identity.framework.import.version.range>
         <carbon.identity.framework.version>7.5.69</carbon.identity.framework.version>
+        <carbon.identity.package.export.version>${project.version}</carbon.identity.package.export.version>
         <balana.version>1.2.4</balana.version>
+        <version.org.wso2.orbit.javax.activation>1.1.1.wso2v1</version.org.wso2.orbit.javax.activation>
+
 
         <identity.app.authz.xacml.pkg.exp.version>${project.version}</identity.app.authz.xacml.pkg.exp.version>
 
         <axiom.org.jaxen.imp.pkg.version.range>[1.1.1, 2.0.0)</axiom.org.jaxen.imp.pkg.version.range>
         <axiom.osgi.version.range>[1.2.11, 2.0.0)</axiom.osgi.version.range>
-        <axiom.wso2.version>1.2.11-wso2v16</axiom.wso2.version>
+        <axiom.wso2.version>1.2.11-wso2v29</axiom.wso2.version>
         <balana.import.version.range>[1.1.0, 2.0.0)</balana.import.version.range>
         <imp.pkg.version.javax.xml.parsers>[0.0.0, 1.0.0)</imp.pkg.version.javax.xml.parsers>
         <apache.felix.scr.ds.annotations.version>1.2.4</apache.felix.scr.ds.annotations.version>
@@ -493,6 +522,7 @@
         <org.apache.cxf.version>3.5.9</org.apache.cxf.version>
         <io.swagger.version>1.6.2</io.swagger.version>
         <com.google.code.gson.version>2.8.9</com.google.code.gson.version>
+        <h2database.version>2.2.224</h2database.version>
 
         <!-- Carbon kernel version -->
         <carbon.kernel.registry.imp.pkg.version>[1.0.1, 2.0.0)</carbon.kernel.registry.imp.pkg.version>
@@ -519,6 +549,7 @@
         <log4j.core.version>2.17.1</log4j.core.version>
         <commons-collections.version>3.2.2.wso2v1</commons-collections.version>
         <commons-lang.wso2.version>2.6.0.wso2v1</commons-lang.wso2.version>
+        <jsr105.version>1.0.1.wso2v1</jsr105.version>
 
         <com.fasterxml.jackson.version>2.16.1</com.fasterxml.jackson.version>
         <com.fasterxml.jackson.annotation.version>2.16.1</com.fasterxml.jackson.annotation.version>
@@ -548,15 +579,14 @@
         <maven.surefire.plugin.version>3.2.5</maven.surefire.plugin.version>
         <mockito.version>5.3.1</mockito.version>
         <mockito-testng.version>0.5.2</mockito-testng.version>
-        <h2database.version>2.2.224</h2database.version>
     </properties>
 
     <modules>
+        <module>service-stubs/identity</module>
         <module>components/entitlement</module>
         <module>components/org.wso2.carbon.identity.application.authz.xacml</module>
         <module>features/org.wso2.carbon.identity.application.authz.xacml.feature</module>
         <module>features/xacml</module>
-        <module>service-stubs/identity/org.wso2.carbon.identity.entitlement.stub</module>
     </modules>
 
 </project>
