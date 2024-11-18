@@ -19,14 +19,15 @@
 
 package org.wso2.carbon.identity.oauth2.validators.xacml.internal;
 
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.wso2.carbon.identity.entitlement.EntitlementService;
 
+import static org.mockito.Mockito.mock;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertNull;
-import static org.powermock.api.mockito.PowerMockito.mock;
 
 /**
  * OAuthScopeValidatorDataHolderTest defines unit tests for AppAuthzDataholder class.
@@ -39,6 +40,12 @@ public class OAuthScopeValidatorDataHolderTest {
     public void init() {
 
         authScopeValidatorDataHolder = OAuthScopeValidatorDataHolder.getInstance();
+    }
+
+    @AfterClass
+    public void tearDown() {
+
+        authScopeValidatorDataHolder.setEntitlementService(null);
     }
 
     @Test

@@ -22,38 +22,37 @@ package org.wso2.carbon.identity.oauth2.validators.xacml.internal;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.osgi.service.component.ComponentContext;
-import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.wso2.carbon.identity.entitlement.EntitlementService;
 
-import static org.powermock.api.mockito.PowerMockito.mock;
-import static org.powermock.api.mockito.PowerMockito.mockStatic;
-import static org.powermock.api.mockito.PowerMockito.spy;
-import static org.powermock.api.mockito.PowerMockito.when;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertNull;
 
-@PrepareForTest(LogFactory.class)
 public class OAuthScopeValidatorServiceComponentTest {
 
     private OAuthScopeValidatorServiceComponent authScopeValidatorServiceComponent;
     private ComponentContext componentContext;
     private EntitlementService entitlementService;
     private OAuthScopeValidatorDataHolder authScopeValidatorDataHolder;
-    private Log log = mock(Log.class);
 
     @BeforeClass
     public void init() {
 
-        mockStatic(LogFactory.class);
-        when(LogFactory.getLog(OAuthScopeValidatorServiceComponent.class)).thenReturn(log);
         authScopeValidatorServiceComponent = spy(new OAuthScopeValidatorServiceComponent());
         componentContext = mock(ComponentContext.class);
         entitlementService = mock(EntitlementService.class);
         authScopeValidatorDataHolder = OAuthScopeValidatorDataHolder.getInstance();
-        when(log.isDebugEnabled()).thenReturn(true);
+    }
+
+    @AfterClass
+    public void tearDown() {
+
+        authScopeValidatorDataHolder.setEntitlementService(null);
     }
 
     @Test
