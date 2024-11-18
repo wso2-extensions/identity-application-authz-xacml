@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (c) 2015, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2015, WSO2 LLC. (http://www.wso2.com).
   ~
-  ~ WSO2 Inc. licenses this file to you under the Apache License,
+  ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
   ~ in compliance with the License.
   ~ You may obtain a copy of the License at
@@ -319,6 +319,11 @@
                 <version>${carbon.identity.framework.version}</version>
             </dependency>
             <dependency>
+                <groupId>org.wso2.orbit.xerces</groupId>
+                <artifactId>xercesImpl</artifactId>
+                <version>${xercesImpl.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>javax.ws.rs</groupId>
                 <artifactId>javax.ws.rs-api</artifactId>
                 <version>${javax.ws.rs-api.version}</version>
@@ -536,6 +541,8 @@
         <commons-lang.wso2.osgi.version.range>[2.6.0,3.0.0)</commons-lang.wso2.osgi.version.range>
         <imp.pkg.version.javax.xml>[0.0.0,1.0.0)</imp.pkg.version.javax.xml>
         <imp.pkg.version.javax.servlet>[2.6.0, 3.0.0)</imp.pkg.version.javax.servlet>
+        <encoder.wso2.version>1.2.0.wso2v1</encoder.wso2.version>
+        <xercesImpl.version>2.12.0.wso2v1</xercesImpl.version>
         <libthrift.wso2.osgi.version.range>[0.12.0.wso2v1,0.17.0)</libthrift.wso2.osgi.version.range>
         <commons-httpclient.wso2.osgi.version>[3.1.0,4.0.0)</commons-httpclient.wso2.osgi.version>
         <commons.io.wso2.osgi.version.range>[2.4.0,3.0.0)</commons.io.wso2.osgi.version.range>
@@ -585,6 +592,7 @@
         <module>service-stubs/identity</module>
         <module>components/entitlement</module>
         <module>components/org.wso2.carbon.identity.application.authz.xacml</module>
+        <module>components/policy-editor</module>
         <module>features/org.wso2.carbon.identity.application.authz.xacml.feature</module>
         <module>features/xacml</module>
     </modules>
