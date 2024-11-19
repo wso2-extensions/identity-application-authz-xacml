@@ -17,7 +17,6 @@
  */
 package org.wso2.carbon.identity.provisioning.rule.handler.xacml;
 
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -53,10 +52,10 @@ import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-
 
 public class XACMLBasedRuleHandler implements ProvisioningHandler {
 
@@ -75,7 +74,6 @@ public class XACMLBasedRuleHandler implements ProvisioningHandler {
         return instance;
     }
 
-
     public boolean isAllowedToProvision(String tenantDomainName, ProvisioningEntity provisioningEntity,
                                         ServiceProvider serviceProvider,
                                         String idPName,
@@ -87,7 +85,7 @@ public class XACMLBasedRuleHandler implements ProvisioningHandler {
 
         try {
             RequestDTO requestDTO = createRequestDTO(tenantDomainName, provisioningEntity, serviceProvider,
-                                                     idPName, connectorType);
+                    idPName, connectorType);
             RequestElementDTO requestElementDTO = PolicyCreatorUtil.createRequestElementDTO(requestDTO);
 
             String requestString = PolicyBuilder.getInstance().buildRequest(requestElementDTO);
@@ -114,65 +112,65 @@ public class XACMLBasedRuleHandler implements ProvisioningHandler {
         return false;
     }
 
-
     private RequestDTO createRequestDTO(String tenantDomainName, ProvisioningEntity provisioningEntity,
                                         ServiceProvider serviceProvider,
                                         String idPName,
                                         String connectorType) {
+
         List<RowDTO> rowDTOs = new ArrayList<>();
         //Setting up user-info category
         RowDTO tenatDomainDTO =
                 createRowDTO(tenantDomainName, EntitlementPolicyConstants.STRING_DATA_TYPE,
-                             ProvisioningRuleConstanats.XACML_ATTRIBUTE_TENAT_DOMAIN,
-                             ProvisioningRuleConstanats.XACML_CATAGORY_USER);
+                        ProvisioningRuleConstanats.XACML_ATTRIBUTE_TENAT_DOMAIN,
+                        ProvisioningRuleConstanats.XACML_CATAGORY_USER);
         RowDTO userDTO =
                 createRowDTO(provisioningEntity.getEntityName(), EntitlementPolicyConstants.STRING_DATA_TYPE,
-                             ProvisioningRuleConstanats.XACML_ATTRIBUTE_USER, ProvisioningRuleConstanats
-                                     .XACML_CATAGORY_USER);
+                        ProvisioningRuleConstanats.XACML_ATTRIBUTE_USER, ProvisioningRuleConstanats
+                                .XACML_CATAGORY_USER);
 
         RowDTO spNameDTO =
                 createRowDTO(serviceProvider.getApplicationName(),
-                             EntitlementPolicyConstants.STRING_DATA_TYPE,
-                             ProvisioningRuleConstanats.XACML_ATTRIBUTE_SP_NAME,
-                             ProvisioningRuleConstanats.XACML_CATAGORY_SERVICE_PROVIDER);
+                        EntitlementPolicyConstants.STRING_DATA_TYPE,
+                        ProvisioningRuleConstanats.XACML_ATTRIBUTE_SP_NAME,
+                        ProvisioningRuleConstanats.XACML_CATAGORY_SERVICE_PROVIDER);
         RowDTO spTenantDomainNameDTO =
                 createRowDTO(serviceProvider.getOwner().getTenantDomain(),
-                             EntitlementPolicyConstants.STRING_DATA_TYPE,
-                             ProvisioningRuleConstanats.XACML_ATTRIBUTE_SP_TENANT_DOMAIN,
-                             ProvisioningRuleConstanats.XACML_CATAGORY_SERVICE_PROVIDER);
+                        EntitlementPolicyConstants.STRING_DATA_TYPE,
+                        ProvisioningRuleConstanats.XACML_ATTRIBUTE_SP_TENANT_DOMAIN,
+                        ProvisioningRuleConstanats.XACML_CATAGORY_SERVICE_PROVIDER);
         //Setting up IDP category
         RowDTO idpNameDTO =
                 createRowDTO(idPName,
-                             EntitlementPolicyConstants.STRING_DATA_TYPE,
-                             ProvisioningRuleConstanats.XACML_ATTRIBUTE_IDP_NAME,
-                             ProvisioningRuleConstanats.XACML_CATAGORY_IDENTITY_PROVIDER);
+                        EntitlementPolicyConstants.STRING_DATA_TYPE,
+                        ProvisioningRuleConstanats.XACML_ATTRIBUTE_IDP_NAME,
+                        ProvisioningRuleConstanats.XACML_CATAGORY_IDENTITY_PROVIDER);
         RowDTO connectorTypeDTO =
                 createRowDTO(connectorType,
-                             EntitlementPolicyConstants.STRING_DATA_TYPE,
-                             ProvisioningRuleConstanats.XACML_ATTRIBUTE_CONNECTOR_TYPE,
-                             ProvisioningRuleConstanats.XACML_CATAGORY_IDENTITY_PROVIDER);
+                        EntitlementPolicyConstants.STRING_DATA_TYPE,
+                        ProvisioningRuleConstanats.XACML_ATTRIBUTE_CONNECTOR_TYPE,
+                        ProvisioningRuleConstanats.XACML_CATAGORY_IDENTITY_PROVIDER);
 
         //Setting up Identity Action
         RowDTO provisioningFlowDTO =
                 createRowDTO(ProvisioningRuleConstanats.IDENTITY_ACTION_PROVISIONING,
-                             EntitlementPolicyConstants.STRING_DATA_TYPE,
-                             ProvisioningRuleConstanats.XACML_ATTRIBUTE_IDENTITY_ACTION,
-                             ProvisioningRuleConstanats.XACML_CATAGORY_IDENTITY_ACTION);
+                        EntitlementPolicyConstants.STRING_DATA_TYPE,
+                        ProvisioningRuleConstanats.XACML_ATTRIBUTE_IDENTITY_ACTION,
+                        ProvisioningRuleConstanats.XACML_CATAGORY_IDENTITY_ACTION);
 
         if (provisioningEntity.getOperation().equals(ProvisioningOperation.POST)) {
             RowDTO provisioningClaimGroupDTO =
                     createRowDTO(StringUtils.substringBetween(provisioningEntity.getAttributes().get(ClaimMapping.build(
-                            IdentityProvisioningConstants.GROUP_CLAIM_URI, null, null, false)).toString(), "[", "]"),
-                                 EntitlementPolicyConstants.STRING_DATA_TYPE,
-                                 ProvisioningRuleConstanats.XACML_ATTRIBUTE_CLAIM_GROUPS,
-                                 ProvisioningRuleConstanats.XACML_CATAGORY_PROVISIONING);
+                                    IdentityProvisioningConstants.GROUP_CLAIM_URI, null, null, false)).toString(), "[", "]"),
+                            EntitlementPolicyConstants.STRING_DATA_TYPE,
+                            ProvisioningRuleConstanats.XACML_ATTRIBUTE_CLAIM_GROUPS,
+                            ProvisioningRuleConstanats.XACML_CATAGORY_PROVISIONING);
             rowDTOs.add(provisioningClaimGroupDTO);
         }
         RowDTO provisioningOperationDTO =
                 createRowDTO(provisioningEntity.getOperation().toString(),
-                             EntitlementPolicyConstants.STRING_DATA_TYPE,
-                             ProvisioningRuleConstanats.XACML_ATTRIBUTE_OPERATION,
-                             ProvisioningRuleConstanats.XACML_CATAGORY_PROVISIONING);
+                        EntitlementPolicyConstants.STRING_DATA_TYPE,
+                        ProvisioningRuleConstanats.XACML_ATTRIBUTE_OPERATION,
+                        ProvisioningRuleConstanats.XACML_CATAGORY_PROVISIONING);
 
         if (provisioningEntity.getInboundAttributes() != null) {
             Iterator<Map.Entry<String, String>> claimIterator = provisioningEntity.getInboundAttributes().entrySet
@@ -183,30 +181,30 @@ public class XACMLBasedRuleHandler implements ProvisioningHandler {
                 String claimValue = claim.getValue();
                 RowDTO claimRowDTO =
                         createRowDTO(claimValue, EntitlementPolicyConstants.STRING_DATA_TYPE,
-                                     claimUri, ProvisioningRuleConstanats.XACML_CATAGORY_USER);
+                                claimUri, ProvisioningRuleConstanats.XACML_CATAGORY_USER);
                 rowDTOs.add(claimRowDTO);
             }
         }
         RowDTO environmentTypeDTO =
                 createRowDTO(tenantDomainName,
-                             EntitlementPolicyConstants.STRING_DATA_TYPE,
-                             ProvisioningRuleConstanats.XACML_ATTRIBUTE_ENVIRONMENT,
-                             ProvisioningRuleConstanats.XACML_CATAGORY_ENVIRONMENT);
+                        EntitlementPolicyConstants.STRING_DATA_TYPE,
+                        ProvisioningRuleConstanats.XACML_ATTRIBUTE_ENVIRONMENT,
+                        ProvisioningRuleConstanats.XACML_CATAGORY_ENVIRONMENT);
         RowDTO dateDTO =
                 createRowDTO(getCurrentDateTime(ProvisioningRuleConstanats.DATE_FORMAT),
-                             EntitlementPolicyConstants.STRING_DATA_TYPE,
-                             ProvisioningRuleConstanats.XACML_ATTRIBUTE_DATE,
-                             ProvisioningRuleConstanats.XACML_CATAGORY_ENVIRONMENT);
+                        EntitlementPolicyConstants.STRING_DATA_TYPE,
+                        ProvisioningRuleConstanats.XACML_ATTRIBUTE_DATE,
+                        ProvisioningRuleConstanats.XACML_CATAGORY_ENVIRONMENT);
         RowDTO timeDTO =
                 createRowDTO(getCurrentDateTime(ProvisioningRuleConstanats.TIME_FORMAT),
-                             EntitlementPolicyConstants.STRING_DATA_TYPE,
-                             ProvisioningRuleConstanats.XACML_ATTRIBUTE_TIME,
-                             ProvisioningRuleConstanats.XACML_CATAGORY_ENVIRONMENT);
+                        EntitlementPolicyConstants.STRING_DATA_TYPE,
+                        ProvisioningRuleConstanats.XACML_ATTRIBUTE_TIME,
+                        ProvisioningRuleConstanats.XACML_CATAGORY_ENVIRONMENT);
         RowDTO dateTimeDTO =
                 createRowDTO(getCurrentDateTime(ProvisioningRuleConstanats.DATE_TIME_FORMAT),
-                             EntitlementPolicyConstants.STRING_DATA_TYPE,
-                             ProvisioningRuleConstanats.XACML_ATTRIBUTE_DATE_TIME,
-                             ProvisioningRuleConstanats.XACML_CATAGORY_ENVIRONMENT);
+                        EntitlementPolicyConstants.STRING_DATA_TYPE,
+                        ProvisioningRuleConstanats.XACML_ATTRIBUTE_DATE_TIME,
+                        ProvisioningRuleConstanats.XACML_CATAGORY_ENVIRONMENT);
 
         rowDTOs.add(tenatDomainDTO);
         rowDTOs.add(userDTO);
@@ -246,12 +244,12 @@ public class XACMLBasedRuleHandler implements ProvisioningHandler {
 
             String decision = "";
             NodeList decisionNode = doc.getDocumentElement().getElementsByTagName(
-                            ProvisioningRuleConstanats.XACML_RESPONSE_DECISION_NODE);
+                    ProvisioningRuleConstanats.XACML_RESPONSE_DECISION_NODE);
             if (decisionNode != null && decisionNode.item(0) != null) {
                 decision = decisionNode.item(0).getTextContent();
             }
             if (decision.equalsIgnoreCase(EntitlementPolicyConstants.RULE_EFFECT_PERMIT)
-                || decision.equalsIgnoreCase(EntitlementPolicyConstants.RULE_EFFECT_NOT_APPLICABLE)) {
+                    || decision.equalsIgnoreCase(EntitlementPolicyConstants.RULE_EFFECT_NOT_APPLICABLE)) {
                 return true;
             }
         } catch (ParserConfigurationException | SAXException | IOException e) {
@@ -261,6 +259,7 @@ public class XACMLBasedRuleHandler implements ProvisioningHandler {
     }
 
     private String getCurrentDateTime(String dateTimeFormat) {
+
         DateFormat dateFormat = new SimpleDateFormat(dateTimeFormat);
         Calendar cal = Calendar.getInstance();
         return dateFormat.format(cal.getTime()).toString();

@@ -21,7 +21,6 @@ package org.wso2.carbon.identity.provisioning.rule.handler.xacml.internal;
 import org.wso2.carbon.identity.entitlement.EntitlementService;
 import org.wso2.carbon.identity.provisioning.rules.ProvisioningHandler;
 
-
 public class XACMLBasedRuleHandlerDataHolder {
 
     private static XACMLBasedRuleHandlerDataHolder instance = new XACMLBasedRuleHandlerDataHolder();
@@ -37,19 +36,23 @@ public class XACMLBasedRuleHandlerDataHolder {
         return instance;
     }
 
-    public EntitlementService getEntitlementService(){
+    public EntitlementService getEntitlementService() {
+
         return entitlementService;
     }
 
     public void setEntitlementService(EntitlementService entitlementService) {
+
         this.entitlementService = entitlementService;
     }
 
-    public ProvisioningHandler getProvisioningHandler(){
+    public ProvisioningHandler getProvisioningHandler() {
+
         return provisioningHandler;
     }
 
-    public void setOutboundProvisioningService (ProvisioningHandler provisioningHandler) {
+    public void setOutboundProvisioningService(ProvisioningHandler provisioningHandler) {
+
         this.provisioningHandler = provisioningHandler;
     }
 }
