@@ -150,11 +150,6 @@
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.wso2.carbon.identity.application.authz.xacml</groupId>
-                <artifactId>org.wso2.carbon.identity.entitlement.common</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>org.wso2.carbon</groupId>
                 <artifactId>org.wso2.carbon.registry.core</artifactId>
                 <version>${carbon.kernel.version}</version>
@@ -404,6 +399,11 @@
                 <version>${carbon.identity.framework.version}</version>
             </dependency>
             <dependency>
+                <groupId>org.wso2.carbon.identity.inbound.auth.oauth2</groupId>
+                <artifactId>org.wso2.carbon.identity.oauth</artifactId>
+                <version>${identity.inbound.auth.oauth.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.wso2.carbon.identity.application.authz.xacml</groupId>
                 <artifactId>org.wso2.carbon.identity.entitlement.stub</artifactId>
                 <version>${project.version}</version>
@@ -465,15 +465,14 @@
             </dependency>
             <dependency>
                 <groupId>org.mockito</groupId>
-                <artifactId>mockito-core</artifactId>
-                <version>${mockito.version}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.mockito</groupId>
                 <artifactId>mockito-testng</artifactId>
                 <version>${mockito-testng.version}</version>
                 <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.eclipse.osgi</groupId>
+                <artifactId>org.eclipse.osgi.services</artifactId>
+                <version>${equinox.osgi.services.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.mockito</groupId>
@@ -541,6 +540,10 @@
         <commons-lang.wso2.osgi.version.range>[2.6.0,3.0.0)</commons-lang.wso2.osgi.version.range>
         <imp.pkg.version.javax.xml>[0.0.0,1.0.0)</imp.pkg.version.javax.xml>
         <imp.pkg.version.javax.servlet>[2.6.0, 3.0.0)</imp.pkg.version.javax.servlet>
+        <identity.inbound.auth.oauth.imp.pkg.version>[6.2.18,8.0.0)</identity.inbound.auth.oauth.imp.pkg.version>
+        <osgi.service.component.package.import.version.range>[1.2,2)
+        </osgi.service.component.package.import.version.range>
+        <identity.inbound.auth.oauth.version>7.0.120</identity.inbound.auth.oauth.version>
         <encoder.wso2.version>1.2.0.wso2v1</encoder.wso2.version>
         <xercesImpl.version>2.12.0.wso2v1</xercesImpl.version>
         <libthrift.wso2.osgi.version.range>[0.12.0.wso2v1,0.17.0)</libthrift.wso2.osgi.version.range>
@@ -577,6 +580,7 @@
         <carbon.p2.plugin.version>1.5.3</carbon.p2.plugin.version>
 
         <equinox.osgi.services.version>3.5.100.v20160504-1419</equinox.osgi.services.version>
+        <pax.logging.api.version>1.10.1</pax.logging.api.version>
         <equinox.osgi.stax-api.imp.pkg.version.range>[1.0.1,2.0.0)</equinox.osgi.stax-api.imp.pkg.version.range>
 
         <!-- Unit test version-->
@@ -591,8 +595,9 @@
     <modules>
         <module>service-stubs/identity</module>
         <module>components/entitlement</module>
-        <module>components/org.wso2.carbon.identity.application.authz.xacml</module>
+        <module>components/authorization-handler</module>
         <module>components/policy-editor</module>
+        <module>components/scope-validator</module>
         <module>features/org.wso2.carbon.identity.application.authz.xacml.feature</module>
         <module>features/xacml</module>
     </modules>
