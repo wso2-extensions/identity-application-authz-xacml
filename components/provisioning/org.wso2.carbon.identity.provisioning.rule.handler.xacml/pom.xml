@@ -3,9 +3,9 @@
 
     <parent>
         <groupId>org.wso2.carbon.identity.application.authz.xacml</groupId>
-        <artifactId>identity-application-authz-xacml</artifactId>
-        <relativePath>../../../pom.xml</relativePath>
-        <version>2.4.0-SNAPSHOT</version>
+        <artifactId>provisioning</artifactId>
+        <relativePath>../pom.xml</relativePath>
+        <version>2.4.2-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>

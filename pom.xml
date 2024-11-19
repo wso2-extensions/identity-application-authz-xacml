@@ -43,7 +43,16 @@
         <tag>HEAD</tag>
     </scm>
 
-
+    <repositories>
+        <repository>
+            <id>wso2-nexus-releases</id>
+            <url>https://maven.wso2.org/nexus/content/repositories/releases/</url>
+        </repository>
+        <repository>
+            <id>wso2-nexus-public</id>
+            <url>https://maven.wso2.org/nexus/content/repositories/public/</url>
+        </repository>
+    </repositories>
 
     <build>
         <pluginManagement>
@@ -503,7 +512,7 @@
     <properties>
         <!--Carbon framework version-->
         <carbon.identity.framework.import.version.range>[5.14.67, 8.0.0)</carbon.identity.framework.import.version.range>
-        <carbon.identity.framework.version>7.5.69</carbon.identity.framework.version>
+        <carbon.identity.framework.version>7.6.11</carbon.identity.framework.version>
         <carbon.identity.package.export.version>${project.version}</carbon.identity.package.export.version>
         <balana.version>1.2.4</balana.version>
         <version.org.wso2.orbit.javax.activation>1.1.1.wso2v1</version.org.wso2.orbit.javax.activation>
@@ -602,8 +611,8 @@
         <module>components/entitlement</module>
         <module>components/authorization-handler</module>
         <module>components/policy-editor</module>
-        <module>components/provisioning/org.wso2.carbon.identity.provisioning.rule.handler.xacml</module>
         <module>components/scope-validator</module>
+        <module>components/provisioning</module>
         <module>features/org.wso2.carbon.identity.application.authz.xacml.feature</module>
         <module>features/xacml</module>
     </modules>
