@@ -25,6 +25,16 @@ However, you can still use the XACML feature by following the below guide to ena
 
 ### Configure Identity Server:
 
+#### Linux users:
+
+If you are a linux user, you can use the setup script from [setup.sh](setup.sh) to configure
+the Identity Server. Make sure to change the XACML_CONNECTOR and IS_HOME variable value as per
+your setup.
+
+#### Non-linux users:
+
+Please follow the below steps.
+
 1. Add the jar files in `<XACML_CONNECTOR>/dropins` folder to the
 `<IS_HOME>/repository/components/dropins` folder.
 
