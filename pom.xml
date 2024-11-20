@@ -517,8 +517,8 @@
         <balana.version>1.2.4</balana.version>
         <version.org.wso2.orbit.javax.activation>1.1.1.wso2v1</version.org.wso2.orbit.javax.activation>
 
-
         <identity.app.authz.xacml.pkg.exp.version>${project.version}</identity.app.authz.xacml.pkg.exp.version>
+        <identity.app.authz.xacml.import.version.range>[2.4.0, 3.0.0)</identity.app.authz.xacml.import.version.range>
 
         <axiom.org.jaxen.imp.pkg.version.range>[1.1.1, 2.0.0)</axiom.org.jaxen.imp.pkg.version.range>
         <axiom.osgi.version.range>[1.2.11, 2.0.0)</axiom.osgi.version.range>

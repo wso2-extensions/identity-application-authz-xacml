@@ -112,10 +112,10 @@
                             org.wso2.carbon.identity.application.authentication.framework.util;version="${carbon.identity.framework.import.version.range}",
                             org.wso2.carbon.identity.application.common.model;version="${carbon.identity.framework.import.version.range}",
                             org.wso2.carbon.identity.core.util;version="${carbon.identity.framework.import.version.range}",
-                            org.wso2.carbon.identity.entitlement;version="${carbon.identity.framework.import.version.range}",
-                            org.wso2.carbon.identity.entitlement.pip;version="${carbon.identity.framework.import.version.range}",
-                            org.wso2.carbon.identity.entitlement.common.dto;version="${carbon.identity.framework.import.version.range}",
-                            org.wso2.carbon.identity.entitlement.common.util;version="${carbon.identity.framework.import.version.range}",
+                            org.wso2.carbon.identity.entitlement;version="${identity.app.authz.xacml.import.version.range}",
+                            org.wso2.carbon.identity.entitlement.pip;version="${identity.app.authz.xacml.import.version.range}",
+                            org.wso2.carbon.identity.entitlement.common.dto;version="${identity.app.authz.xacml.import.version.range}",
+                            org.wso2.carbon.identity.entitlement.common.util;version="${identity.app.authz.xacml.import.version.range}",
                             org.jaxen; version="${axiom.org.jaxen.imp.pkg.version.range}",
                         </Import-Package>
                         <Export-Package>

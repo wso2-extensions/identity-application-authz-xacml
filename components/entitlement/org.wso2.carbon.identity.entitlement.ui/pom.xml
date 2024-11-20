@@ -99,9 +99,9 @@
                             org.wso2.balana.utils.*; version="${balana.import.version.range}",
                             org.wso2.carbon; version="${carbon.kernel.package.import.version.range}",
                             org.wso2.carbon.identity.entitlement.common.*;
-                            version="${carbon.identity.framework.import.version.range}",
+                            version="${identity.app.authz.xacml.import.version.range}",
                             org.wso2.carbon.identity.entitlement.stub.*;
-                            version="${carbon.identity.framework.import.version.range}",
+                            version="${identity.app.authz.xacml.import.version.range}",
                             org.wso2.carbon.ui.*; version="${carbon.kernel.package.import.version.range}",
                             org.wso2.carbon.utils; version="${carbon.kernel.package.import.version.range}",
                             org.wso2.carbon.identity.base; version="${carbon.identity.framework.import.version.range}"
