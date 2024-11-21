@@ -53,4 +53,8 @@ Please follow the below steps.
 `<XACML_CONNECTOR>/config-files/org.wso2.carbon.identity.xacml.server.feature.default.json`
 file to the `<IS_HOME>/repository/resources/conf/default.json`.
 
-7. Restart Identity Server.
+7. Add default XACML policies resides in folder
+`<XACML_CONNECTOR>/config-files/policies`  to the
+`<IS_HOME>/repository/resources/identity/policies/xacml/default` folder.
+
+8. Restart Identity Server.

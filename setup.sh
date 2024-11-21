@@ -82,4 +82,11 @@ else
   exit 1
 fi
 
+# Step 7: Add default XACML policies.
+echo "Copying XACML policies..."
+POLICIES_DIR="$IS_HOME/repository/resources/identity/policies/xacml/default"
+echo "Ensuring XACML policies directory exists..."
+mkdir -p "$POLICIES_DIR"
+echo "Copying XACML policies..."
+cp -r "$XACML_CONNECTOR/policies/"* "$POLICIES_DIR/"
 echo "Script completed successfully."
