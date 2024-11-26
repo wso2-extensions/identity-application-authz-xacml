@@ -42,5 +42,7 @@
   "identity.entitlement.entitlement_engine_caching_interval": "1d",
   "identity.entitlement.JSON_shorten_form_enabled": false,
   "identity.entitlement.default_attribute_finder.properties.MapFederatedUsersToLocal": true,
-  "identity.entitlement.xacml_policy_status.use_last_status_only":false
+  "identity.entitlement.xacml_policy_status.use_last_status_only":false,
+  "oauth.scope_validator.xacml.enable": true,
+  "oauth.scope_validator.xacml.class": "org.wso2.carbon.identity.oauth2.validators.xacml.XACMLScopeValidator"
 }
