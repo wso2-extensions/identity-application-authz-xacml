@@ -68,7 +68,7 @@
     <!-- SWAGGER FILTER -->
     <filter>
         <filter-name>ApiOriginFilter</filter-name>
-        <filter-class>org.wso2.carbon.identity.entitlement.endpoint.filter.ApiOriginFilter</filter-class>
+        <filter-class>org.wso2.carbon.identity.api.server.entitlement.v1.filter.ApiOriginFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>ApiOriginFilter</filter-name>
@@ -117,7 +117,7 @@
     </security-constraint>
 
     <listener>
-        <listener-class>org.wso2.carbon.identity.entitlement.endpoint.impl.ApplicationInitializer</listener-class>
+        <listener-class>org.wso2.carbon.identity.api.server.entitlement.v1.impl.ApplicationInitializer</listener-class>
     </listener>
 
     <!--login-config>

@@ -58,10 +58,10 @@
         </jaxrs:providers>
     </jaxrs:server>
 
-    <bean id="decisionBean" class="org.wso2.carbon.identity.entitlement.endpoint.resources.DecisionResource"/>
+    <bean id="decisionBean" class="org.wso2.carbon.identity.api.server.entitlement.v1.resources.DecisionResource"/>
 
     <bean id="exceptionMapper"
-          class="org.wso2.carbon.identity.entitlement.endpoint.filter.EntitlementExceptionMapper"/>
+          class="org.wso2.carbon.identity.api.server.entitlement.v1.filter.EntitlementExceptionMapper"/>
     <bean id="jacksonJsonProvider"
           class="com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider"/>
 
@@ -85,7 +85,7 @@
     </bean>
 
     <bean id="ClearThreadLocalInterceptor"
-          class="org.wso2.carbon.identity.entitlement.endpoint.util.ClearThreadLocalInterceptor"/>
+          class="org.wso2.carbon.identity.api.server.entitlement.v1.util.ClearThreadLocalInterceptor"/>
 
     <cxf:bus>
         <cxf:inInterceptors>
