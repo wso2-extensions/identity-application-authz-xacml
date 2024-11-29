@@ -34,7 +34,6 @@ import org.wso2.balana.ctx.xacml3.Result;
 import org.wso2.balana.xacml3.Advice;
 import org.wso2.balana.xacml3.Obligation;
 import org.wso2.carbon.identity.api.server.entitlement.v1.exception.ResponseWriteException;
-import org.wso2.carbon.identity.entitlement.endpoint.exception.ResponseWriteException;
 
 import java.net.URI;
 import java.net.URISyntaxException;
