@@ -613,7 +613,7 @@ components:
 
     policyTypeFilter:
       in: query
-      name: policy type
+      name: policyType
       required: false
       description: |
         Policy Type filter
@@ -626,7 +626,7 @@ components:
 
     policySearchString:
       in: query
-      name: policy search string
+      name: policySearchString
       required: false
       description: |
         Policy search string filter
@@ -635,7 +635,7 @@ components:
 
     pageNumber:
       in: query
-      name: page number
+      name: pageNumber
       required: false
       description: |
         Page Number filter
@@ -646,7 +646,7 @@ components:
 
     isPDPPolicy:
       in: query
-      name: is PDP Policy
+      name: isPDPPolicy
       required: true
       description: |
         Whether PDP Policy or PAP Policy
@@ -799,3 +799,10 @@ components:
         traceId:
           type: string
           example: e0fbcfeb-3617-43c4-8dd0-7b7d38e13047
+servers:
+  - url: 'https://{server-url}/t/{tenant-domain}/api/server/v1'
+    variables:
+      tenant-domain:
+        default: "carbon.super"
+      server-url:
+        default: "localhost:9443"
