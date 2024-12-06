@@ -16,18 +16,17 @@
   ~ specific language governing permissions and limitations
   ~ under the License.
   -->
-
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
-         http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" metadata-complete="true">
-    <absolute-ordering />
+	http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
 
-    <display-name>Entitlement-Service-Provider</display-name>
+    <display-name>WSO2 Identity Server REST API</display-name>
+    <description>WSO2 Identity Server REST API</description>
 
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>WEB-INF/cxf-servlet.xml</param-value>
+        <param-value>WEB-INF/beans*.xml</param-value>
     </context-param>
 
     <listener>
@@ -48,9 +47,4 @@
         <servlet-name>CXFServlet</servlet-name>
         <url-pattern>/*</url-pattern>
     </servlet-mapping>
-
-    <session-config>
-        <session-timeout>60</session-timeout>
-    </session-config>
-
 </web-app>

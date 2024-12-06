@@ -39,6 +39,8 @@ import org.wso2.carbon.context.PrivilegedCarbonContext;
 import org.wso2.carbon.identity.application.mgt.ApplicationManagementService;
 import org.wso2.carbon.identity.core.util.IdentityCoreInitializedEvent;
 import org.wso2.carbon.identity.core.util.IdentityUtil;
+import org.wso2.carbon.identity.entitlement.EntitlementAdminService;
+import org.wso2.carbon.identity.entitlement.EntitlementPolicyAdminService;
 import org.wso2.carbon.identity.entitlement.EntitlementUtil;
 import org.wso2.carbon.identity.entitlement.PDPConstants;
 import org.wso2.carbon.identity.entitlement.persistence.PolicyPersistenceManager;
@@ -299,6 +301,13 @@ public class EntitlementServiceComponent {
                     new org.wso2.carbon.identity.entitlement.EntitlementService();
             ctxt.getBundleContext().registerService(
                     org.wso2.carbon.identity.entitlement.EntitlementService.class.getName(), entitlementService, null);
+
+            EntitlementAdminService entitlementAdminService = new EntitlementAdminService();
+            EntitlementPolicyAdminService entitlementPolicyAdminService = new EntitlementPolicyAdminService();
+            ctxt.getBundleContext().registerService(
+                    EntitlementAdminService.class.getName(), entitlementAdminService, null);
+            ctxt.getBundleContext().registerService(
+                    EntitlementPolicyAdminService.class.getName(), entitlementPolicyAdminService, null);
         } catch (Throwable throwable) {
             log.error("Failed to initialize Entitlement Service", throwable);
         }

@@ -25,7 +25,6 @@ import org.apache.cxf.jaxrs.ext.multipart.Multipart;
 import java.io.InputStream;
 import java.util.List;
 import org.wso2.carbon.identity.api.server.entitlement.v1.model.Error;
-import java.util.List;
 import org.wso2.carbon.identity.api.server.entitlement.v1.model.PolicyCombiningAlgorithmDTO;
 import org.wso2.carbon.identity.api.server.entitlement.v1.model.PolicyDTO;
 import org.wso2.carbon.identity.api.server.entitlement.v1.model.PolicySubscriberDTO;
@@ -35,11 +34,11 @@ import javax.ws.rs.core.Response;
 
 public interface EntitlementsApiService {
 
-      public Response addSubscriber(PublisherDataHolderDTO isPDPPolicy);
+      public Response addSubscriber(PublisherDataHolderDTO publisherDataHolderDTO);
 
-      public Response deleteSubscriber(String id);
+      public Response deleteSubscriber(String subscriberId);
 
-      public Response editSubscriber(PublisherDataHolderDTO isPDPPolicy, String id);
+      public Response editSubscriber(PublisherDataHolderDTO publisherDataHolderDTO);
 
       public Response entitlementsCombiningAlgorithmGet();
 
@@ -47,17 +46,15 @@ public interface EntitlementsApiService {
 
       public Response entitlementsPoliciesIdDelete(String id);
 
-      public Response entitlementsPoliciesIdGet(String id, String version);
+      public Response entitlementsPoliciesIdGet(String id);
 
-      public Response entitlementsPoliciesIdPatch(String id, List<PolicyDTO> policyDTO);
+      public Response entitlementsPoliciesPatch(PolicyDTO policyDTO);
 
-      public Response entitlementsPoliciesPost(List<PolicyDTO> policyDTO);
+      public Response entitlementsPoliciesPost(PolicyDTO policyDTO);
 
       public Response getAllPolicies(Boolean isPDPPolicy, String policyType, String policySearchString, Integer pageNumber);
 
-      public Response getAllSubscribers(String subscriberSearchString);
+      public Response getAllSubscribers(String subscriberSearchString, String subscriberId);
 
-      public Response getSubscriber(String id);
-
-      public Response publishPolicies(PolicySubscriberDTO subscriberSearchString);
+      public Response publishPolicies(PolicySubscriberDTO policySubscriberDTO);
 }

@@ -40,8 +40,7 @@
         <module>org.wso2.carbon.identity.entitlement.ui</module>
         <module>org.wso2.carbon.identity.api.server.entitlement</module>
         <module>org.wso2.carbon.identity.entitlement.endpoint</module>
-        <module>org.wso2.carbon.identity.api.server.entitlement/org.wso2.carbon.identity.api.server.entitlement.v1
-        </module>
+        <module>org.wso2.carbon.identity.entitlement.mgt.endpoint</module>
     </modules>
 
 </project>

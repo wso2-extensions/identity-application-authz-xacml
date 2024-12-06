@@ -176,12 +176,22 @@
             <artifactId>jacoco-maven-plugin</artifactId>
             <version>${jacoco.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.wso2.carbon.identity.application.authz.xacml</groupId>
+            <artifactId>org.wso2.carbon.identity.api.server.entitlement.common</artifactId>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <build>
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -199,6 +209,26 @@
                 <configuration>
                     <skip>true</skip>
                 </configuration>
+                <executions>
+                    <execution>
+                        <id>validate</id>
+                        <phase>validate</phase>
+                        <configuration>
+                            <configLocation>
+                                https://raw.githubusercontent.com/wso2/code-quality-tools/v1.2/checkstyle/checkstyle.xml
+                            </configLocation>
+                            <suppressionsLocation>
+                                https://raw.githubusercontent.com/wso2/code-quality-tools/v1.2/checkstyle/suppressions.xml
+                            </suppressionsLocation>
+                            <consoleOutput>true</consoleOutput>
+                            <failsOnError>true</failsOnError>
+                            <includeTestSourceDirectory>true</includeTestSourceDirectory>
+                        </configuration>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>com.github.spotbugs</groupId>
@@ -239,40 +269,40 @@
                 </executions>
             </plugin>
 
-            <plugin>
-                <groupId>org.openapitools</groupId>
-                <artifactId>openapi-generator-maven-plugin</artifactId>
-                <version>4.1.2</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                        <configuration>
-                            <inputSpec>${project.basedir}/src/main/resources/entitlements-api.yaml</inputSpec>
-                            <generatorName>org.wso2.carbon.codegen.CxfWso2Generator</generatorName>
-                            <configOptions>
-                                <sourceFolder>src/gen/java</sourceFolder>
-                                <apiPackage>org.wso2.carbon.identity.api.server.entitlement.v1</apiPackage>
-                                <modelPackage>org.wso2.carbon.identity.api.server.entitlement.v1.model</modelPackage>
-                                <packageName>org.wso2.carbon.identity.api.server.entitlement.v1</packageName>
-                                <dateLibrary>java8</dateLibrary>
-                                <hideGenerationTimestamp>true</hideGenerationTimestamp>
-                                <ignoreFileOverride>${project.basedir}/.openapi-generator-ignore</ignoreFileOverride>
-                            </configOptions>
-                            <output>.</output>
-                            <skipOverwrite>false</skipOverwrite>
-                        </configuration>
-                    </execution>
-                </executions>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.openapitools</groupId>
-                        <artifactId>cxf-wso2-openapi-generator</artifactId>
-                        <version>1.0.0</version>
-                    </dependency>
-                </dependencies>
-            </plugin>
+<!--            <plugin>-->
+<!--                <groupId>org.openapitools</groupId>-->
+<!--                <artifactId>openapi-generator-maven-plugin</artifactId>-->
+<!--                <version>4.1.2</version>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <goals>-->
+<!--                            <goal>generate</goal>-->
+<!--                        </goals>-->
+<!--                        <configuration>-->
+<!--                            <inputSpec>${project.basedir}/src/main/resources/entitlements-api.yaml</inputSpec>-->
+<!--                            <generatorName>org.wso2.carbon.codegen.CxfWso2Generator</generatorName>-->
+<!--                            <configOptions>-->
+<!--                                <sourceFolder>src/gen/java</sourceFolder>-->
+<!--                                <apiPackage>org.wso2.carbon.identity.api.server.entitlement.v1</apiPackage>-->
+<!--                                <modelPackage>org.wso2.carbon.identity.api.server.entitlement.v1.model</modelPackage>-->
+<!--                                <packageName>org.wso2.carbon.identity.api.server.entitlement.v1</packageName>-->
+<!--                                <dateLibrary>java8</dateLibrary>-->
+<!--                                <hideGenerationTimestamp>true</hideGenerationTimestamp>-->
+<!--                                <ignoreFileOverride>${project.basedir}/.openapi-generator-ignore</ignoreFileOverride>-->
+<!--                            </configOptions>-->
+<!--                            <output>.</output>-->
+<!--                            <skipOverwrite>false</skipOverwrite>-->
+<!--                        </configuration>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--                <dependencies>-->
+<!--                    <dependency>-->
+<!--                        <groupId>org.openapitools</groupId>-->
+<!--                        <artifactId>cxf-wso2-openapi-generator</artifactId>-->
+<!--                        <version>1.0.0</version>-->
+<!--                    </dependency>-->
+<!--                </dependencies>-->
+<!--            </plugin>-->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>

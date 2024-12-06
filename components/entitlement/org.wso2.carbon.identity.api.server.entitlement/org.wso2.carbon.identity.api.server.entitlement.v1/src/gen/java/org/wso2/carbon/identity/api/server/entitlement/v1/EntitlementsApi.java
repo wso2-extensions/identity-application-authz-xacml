@@ -24,8 +24,8 @@ import org.apache.cxf.jaxrs.ext.multipart.Multipart;
 import java.io.InputStream;
 import java.util.List;
 
+import org.wso2.carbon.identity.api.server.entitlement.v1.factories.EntitlementsApiServiceFactory;
 import org.wso2.carbon.identity.api.server.entitlement.v1.model.Error;
-import java.util.List;
 import org.wso2.carbon.identity.api.server.entitlement.v1.model.PolicyCombiningAlgorithmDTO;
 import org.wso2.carbon.identity.api.server.entitlement.v1.model.PolicyDTO;
 import org.wso2.carbon.identity.api.server.entitlement.v1.model.PolicySubscriberDTO;
@@ -44,13 +44,12 @@ import javax.validation.constraints.*;
 
 public class EntitlementsApi  {
 
-    @Autowired
-    private EntitlementsApiService delegate;
+    private final static EntitlementsApiService delegate = EntitlementsApiServiceFactory.getEntitlementsApi();
 
     @Valid
     @POST
     @Path("/subscribers")
-    
+    @Consumes({ "application/json" })
     @Produces({ "application/json" })
     @ApiOperation(value = "Add Subscriber ", notes = "This API provides the capability to add a Subscriber.<br>   <b>Permission required:</b> <br>       * /permission/admin/manage/identity/entitlementsubscribermgt/create <br>   <b>Scope required:</b> <br>       * internal_entitlement_subscriber_mgt_create ", response = Void.class, authorizations = {
         @Authorization(value = "basicAuth"),
@@ -66,14 +65,14 @@ public class EntitlementsApi  {
         @ApiResponse(code = 404, message = "Not Found", response = Error.class),
         @ApiResponse(code = 500, message = "Server Error", response = Error.class)
     })
-    public Response addSubscriber(    @Valid @NotNull(message = "Property  cannot be null.") @ApiParam(value = "Whether PDP Policy or PAP Policy ",required=true)  @QueryParam("is PDP Policy") PublisherDataHolderDTO isPDPPolicy) {
+    public Response addSubscriber(@ApiParam(value = "" ) @Valid PublisherDataHolderDTO publisherDataHolderDTO) {
 
-        return delegate.addSubscriber(isPDPPolicy );
+        return delegate.addSubscriber(publisherDataHolderDTO );
     }
 
     @Valid
     @DELETE
-    @Path("/subscribers/{id}")
+    @Path("/subscribers")
     
     @Produces({ "application/json" })
     @ApiOperation(value = "Delete Subscriber ", notes = "This API provides the capability to delete a Subscriber.<br>   <b>Permission required:</b> <br>       * /permission/admin/manage/identity/entitlementsubscribermgt/delete <br>   <b>Scope required:</b> <br>       * internal_entitlement_subscriber_mgt_delete ", response = Void.class, authorizations = {
@@ -90,15 +89,15 @@ public class EntitlementsApi  {
         @ApiResponse(code = 404, message = "Not Found", response = Error.class),
         @ApiResponse(code = 500, message = "Server Error", response = Error.class)
     })
-    public Response deleteSubscriber(@ApiParam(value = "",required=true) @PathParam("id") String id) {
+    public Response deleteSubscriber(    @Valid@ApiParam(value = "")  @QueryParam("subscriberId") String subscriberId) {
 
-        return delegate.deleteSubscriber(id );
+        return delegate.deleteSubscriber(subscriberId );
     }
 
     @Valid
     @PATCH
-    @Path("/subscribers/{id}")
-    
+    @Path("/subscribers")
+    @Consumes({ "application/json" })
     @Produces({ "application/json" })
     @ApiOperation(value = "Edit Subscriber ", notes = "This API provides the capability to edit a Subscriber.<br>   <b>Permission required:</b> <br>       * /permission/admin/manage/identity/entitlementsubscribermgt/update <br>   <b>Scope required:</b> <br>       * internal_entitlement_subscriber_mgt_update ", response = Void.class, authorizations = {
         @Authorization(value = "basicAuth"),
@@ -114,9 +113,9 @@ public class EntitlementsApi  {
         @ApiResponse(code = 404, message = "Not Found", response = Error.class),
         @ApiResponse(code = 500, message = "Server Error", response = Error.class)
     })
-    public Response editSubscriber(    @Valid @NotNull(message = "Property  cannot be null.") @ApiParam(value = "Whether PDP Policy or PAP Policy ",required=true)  @QueryParam("is PDP Policy") PublisherDataHolderDTO isPDPPolicy, @ApiParam(value = "",required=true) @PathParam("id") String id) {
+    public Response editSubscriber(@ApiParam(value = "" ) @Valid PublisherDataHolderDTO publisherDataHolderDTO) {
 
-        return delegate.editSubscriber(isPDPPolicy,  id );
+        return delegate.editSubscriber(publisherDataHolderDTO );
     }
 
     @Valid
@@ -208,14 +207,14 @@ public class EntitlementsApi  {
         @ApiResponse(code = 404, message = "Not Found", response = Error.class),
         @ApiResponse(code = 500, message = "Server Error", response = Error.class)
     })
-    public Response entitlementsPoliciesIdGet(@ApiParam(value = "",required=true) @PathParam("id") String id,     @Valid@ApiParam(value = "")  @QueryParam("version") String version) {
+    public Response entitlementsPoliciesIdGet(@ApiParam(value = "",required=true) @PathParam("id") String id) {
 
-        return delegate.entitlementsPoliciesIdGet(id,  version );
+        return delegate.entitlementsPoliciesIdGet(id );
     }
 
     @Valid
     @PATCH
-    @Path("/policies/{id}")
+    @Path("/policies")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
     @ApiOperation(value = "Update policy", notes = "This API provides the capability to Update a Policy.<br>   <b>Permission required:</b> <br>       * /permission/admin/manage/identity/entitlementmgt/update <br>   <b>Scope required:</b> <br>       * internal_entitlement_mgt_update ", response = Void.class, authorizations = {
@@ -232,9 +231,9 @@ public class EntitlementsApi  {
         @ApiResponse(code = 404, message = "Not Found", response = Error.class),
         @ApiResponse(code = 500, message = "Server Error", response = Error.class)
     })
-    public Response entitlementsPoliciesIdPatch(@ApiParam(value = "",required=true) @PathParam("id") String id, @ApiParam(value = "" ) @Valid List<PolicyDTO> policyDTO) {
+    public Response entitlementsPoliciesPatch(@ApiParam(value = "" ) @Valid PolicyDTO policyDTO) {
 
-        return delegate.entitlementsPoliciesIdPatch(id,  policyDTO );
+        return delegate.entitlementsPoliciesPatch(policyDTO );
     }
 
     @Valid
@@ -256,7 +255,7 @@ public class EntitlementsApi  {
         @ApiResponse(code = 404, message = "Not Found", response = Error.class),
         @ApiResponse(code = 500, message = "Server Error", response = Error.class)
     })
-    public Response entitlementsPoliciesPost(@ApiParam(value = "" ) @Valid List<PolicyDTO> policyDTO) {
+    public Response entitlementsPoliciesPost(@ApiParam(value = "" ) @Valid PolicyDTO policyDTO) {
 
         return delegate.entitlementsPoliciesPost(policyDTO );
     }
@@ -304,39 +303,15 @@ public class EntitlementsApi  {
         @ApiResponse(code = 404, message = "Not Found", response = Error.class),
         @ApiResponse(code = 500, message = "Server Error", response = Error.class)
     })
-    public Response getAllSubscribers(    @Valid@ApiParam(value = "Subscriber search string filter ")  @QueryParam("subscriber search string") String subscriberSearchString) {
+    public Response getAllSubscribers(    @Valid@ApiParam(value = "Subscriber search string filter ")  @QueryParam("subscriberSearchString") String subscriberSearchString,     @Valid@ApiParam(value = "")  @QueryParam("subscriberId") String subscriberId) {
 
-        return delegate.getAllSubscribers(subscriberSearchString );
+        return delegate.getAllSubscribers(subscriberSearchString,  subscriberId );
     }
 
     @Valid
-    @GET
-    @Path("/subscribers/{id}")
-    
-    @Produces({ "application/json" })
-    @ApiOperation(value = "Get Subscriber ", notes = "This API provides the capability to retrieve the Subscriber for a given id.<br>   <b>Permission required:</b> <br>       * /permission/admin/manage/identity/entitlementsubscribermgt/view <br>   <b>Scope required:</b> <br>       * internal_entitlement_subscriber_mgt_view ", response = PublisherDataHolderDTO.class, authorizations = {
-        @Authorization(value = "basicAuth"),
-        @Authorization(value = "oauth2", scopes = {
-            
-        })
-    }, tags={ "Policy Subscribers", })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "The subscribers for the given id", response = PublisherDataHolderDTO.class),
-        @ApiResponse(code = 400, message = "Bad Request", response = Error.class),
-        @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
-        @ApiResponse(code = 403, message = "Forbidden", response = Void.class),
-        @ApiResponse(code = 404, message = "Not Found", response = Error.class),
-        @ApiResponse(code = 500, message = "Server Error", response = Error.class)
-    })
-    public Response getSubscriber(@ApiParam(value = "",required=true) @PathParam("id") String id) {
-
-        return delegate.getSubscriber(id );
-    }
-
-    @Valid
-    @GET
+    @POST
     @Path("/publish")
-    
+    @Consumes({ "application/json" })
     @Produces({ "application/json" })
     @ApiOperation(value = "Publish Policies ", notes = "This API provides the capability to Publish Policies.<br>   <b>Permission required:</b> <br>       * /permission/admin/manage/identity/entitlementmgt/publish <br>   <b>Scope required:</b> <br>       * internal_entitlement_mgt_publish ", response = Void.class, authorizations = {
         @Authorization(value = "basicAuth"),
@@ -352,9 +327,9 @@ public class EntitlementsApi  {
         @ApiResponse(code = 404, message = "Not Found", response = Error.class),
         @ApiResponse(code = 500, message = "Server Error", response = Error.class)
     })
-    public Response publishPolicies(    @Valid@ApiParam(value = "Subscriber search string filter ")  @QueryParam("subscriber search string") PolicySubscriberDTO subscriberSearchString) {
+    public Response publishPolicies(@ApiParam(value = "" ) @Valid PolicySubscriberDTO policySubscriberDTO) {
 
-        return delegate.publishPolicies(subscriberSearchString );
+        return delegate.publishPolicies(policySubscriberDTO );
     }
 
 }

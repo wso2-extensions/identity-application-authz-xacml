@@ -24,7 +24,7 @@ tags:
 
 paths:
   /entitlements/publish:
-    get:
+    post:
       tags:
         - Publish Policies
       operationId: publishPolicies
@@ -36,9 +36,11 @@ paths:
               * /permission/admin/manage/identity/entitlementmgt/publish <br>
           <b>Scope required:</b> <br>
               * internal_entitlement_mgt_publish
-      parameters:
-        - $ref: '#/components/parameters/PolicySubscriberDTO'
-
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/parameters/PolicySubscriberDTO'
       responses:
         '200':
           description: Published Policies
@@ -80,6 +82,11 @@ paths:
               * internal_entitlement_subscriber_mgt_view
       parameters:
         - $ref: '#/components/parameters/SubscriberSearchString'
+        - in: query
+          name: subscriberId
+          required: false
+          schema:
+            type: string
       responses:
         '200':
           content:
@@ -123,8 +130,11 @@ paths:
               * /permission/admin/manage/identity/entitlementsubscribermgt/create <br>
           <b>Scope required:</b> <br>
               * internal_entitlement_subscriber_mgt_create
-      parameters:
-        - $ref: '#/components/parameters/PublisherDataHolderDTO'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PublisherDataHolderDTO'
       responses:
         '200':
           description: Successful
@@ -151,54 +161,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
 
-  /entitlements/subscribers/{id}:
-    get:
-      tags:
-        - Policy Subscribers
-      operationId: getSubscriber
-      summary: |
-        Get Subscriber
-      description: |
-        This API provides the capability to retrieve the Subscriber for a given id.<br>
-          <b>Permission required:</b> <br>
-              * /permission/admin/manage/identity/entitlementsubscribermgt/view <br>
-          <b>Scope required:</b> <br>
-              * internal_entitlement_subscriber_mgt_view
-      parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: The subscribers for the given id
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PublisherDataHolderDTO'
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        '401':
-          description: Unauthorized
-        '403':
-          description: Forbidden
-        '404':
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        '500':
-          description: Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
     patch:
       tags:
         - Policy Subscribers
@@ -211,13 +173,11 @@ paths:
               * /permission/admin/manage/identity/entitlementsubscribermgt/update <br>
           <b>Scope required:</b> <br>
               * internal_entitlement_subscriber_mgt_update
-      parameters:
-        - $ref: '#/components/parameters/PublisherDataHolderDTO'
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PublisherDataHolderDTO'
       responses:
         '200':
           description: Successful
@@ -257,9 +217,9 @@ paths:
           <b>Scope required:</b> <br>
               * internal_entitlement_subscriber_mgt_delete
       parameters:
-        - in: path
-          name: id
-          required: true
+        - in: query
+          name: subscriberId
+          required: false
           schema:
             type: string
       responses:
@@ -352,10 +312,51 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PolicyDataModel'
+              $ref: '#/components/schemas/PolicyDTO'
       responses:
         '201':
           description: Policy created
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    patch:
+      summary: Update policy
+      tags:
+        - Policy Administration Point
+      description: |
+        This API provides the capability to Update a Policy.<br>
+          <b>Permission required:</b> <br>
+              * /permission/admin/manage/identity/entitlementmgt/update <br>
+          <b>Scope required:</b> <br>
+              * internal_entitlement_mgt_update
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PolicyDTO'
+      responses:
+        '200':
+          description: Policy updated.
         '400':
           description: Bad Request
           content:
@@ -425,11 +426,6 @@ paths:
           required: true
           schema:
             type: string
-        - in: query
-          name: version
-          required: false
-          schema:
-            type: string
       responses:
         '200':
           content:
@@ -437,53 +433,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/PolicyDataModel'
           description: A policy object
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        '401':
-          description: Unauthorized
-        '403':
-          description: Forbidden
-        '404':
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        '500':
-          description: Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-
-    patch:
-      summary: Update policy
-      tags:
-        - Policy Administration Point
-      description: |
-        This API provides the capability to Update a Policy.<br>
-          <b>Permission required:</b> <br>
-              * /permission/admin/manage/identity/entitlementmgt/update <br>
-          <b>Scope required:</b> <br>
-              * internal_entitlement_mgt_update
-      parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PolicyDataModel'
-      responses:
-        '200':
-          description: Policy updated.
         '400':
           description: Bad Request
           content:
@@ -595,7 +544,7 @@ components:
   parameters:
     SubscriberSearchString:
       in: query
-      name: subscriber search string
+      name: subscriberSearchString
       required: false
       description: |
         Subscriber search string filter
@@ -604,7 +553,7 @@ components:
 
     PolicySubscriberDTO:
       in: query
-      name: subscriber search string
+      name: policySubscriberDataModel
       required: false
       description: |
         Subscriber search string filter
@@ -656,10 +605,10 @@ components:
 
     PublisherDataHolderDTO:
       in: query
-      name: is PDP Policy
+      name: publisherDataHolderDataModel
       required: true
       description: |
-        Whether PDP Policy or PAP Policy
+        Publisher data holder data model
       schema:
         $ref: '#/components/schemas/PublisherDataHolderDTO'
 
@@ -800,7 +749,7 @@ components:
           type: string
           example: e0fbcfeb-3617-43c4-8dd0-7b7d38e13047
 servers:
-  - url: 'https://{server-url}/t/{tenant-domain}/api/server/v1'
+  - url: 'https://{server-url}/t/{tenant-domain}/api/identity/entitlement/v1'
     variables:
       tenant-domain:
         default: "carbon.super"
