@@ -18,35 +18,45 @@
 
 package org.wso2.carbon.identity.api.server.entitlement.common;
 
+import org.wso2.carbon.context.PrivilegedCarbonContext;
 import org.wso2.carbon.identity.entitlement.EntitlementAdminService;
 import org.wso2.carbon.identity.entitlement.EntitlementPolicyAdminService;
 
 public class EntitlementManagementServiceHolder {
 
-    private static EntitlementAdminService entitlementAdminService;
-    private static EntitlementPolicyAdminService entitlementPolicyAdminService;
-
-    public static EntitlementAdminService getEntitlementAdminService() {
-
-        return entitlementAdminService;
-    }
-
-    public static void setEntitlementAdminService(EntitlementAdminService entitlementAdminService) {
-
-        EntitlementManagementServiceHolder.entitlementAdminService = entitlementAdminService;
-    }
-
-    public static EntitlementPolicyAdminService getEntitlementPolicyAdminService() {
-
-        return entitlementPolicyAdminService;
-    }
-
-    public static void setEntitlementPolicyAdminService(EntitlementPolicyAdminService entitlementPolicyAdminService) {
-
-        EntitlementManagementServiceHolder.entitlementPolicyAdminService = entitlementPolicyAdminService;
-    }
-
     private EntitlementManagementServiceHolder() {
 
+    }
+
+    private static class EntitlementAdminServiceHolder {
+
+        static final EntitlementAdminService SERVICE = (EntitlementAdminService) PrivilegedCarbonContext
+                .getThreadLocalCarbonContext().getOSGiService(EntitlementAdminService.class, null);
+    }
+
+    /**
+     * Get EntitlementAdminService osgi service.
+     *
+     * @return EntitlementAdminService
+     */
+    public static EntitlementAdminService getEntitlementAdminService() {
+
+        return EntitlementAdminServiceHolder.SERVICE;
+    }
+
+    private static class EntitlementPolicyAdminServiceHolder {
+
+        static final EntitlementPolicyAdminService SERVICE = (EntitlementPolicyAdminService) PrivilegedCarbonContext
+                .getThreadLocalCarbonContext().getOSGiService(EntitlementPolicyAdminService.class, null);
+    }
+
+    /**
+     * Get EntitlementPolicyAdminService osgi service.
+     *
+     * @return EntitlementPolicyAdminService
+     */
+    public static EntitlementPolicyAdminService getEntitlementPolicyAdminService() {
+
+        return EntitlementPolicyAdminServiceHolder.SERVICE;
     }
 }

@@ -84,7 +84,6 @@ public class ServerEntitlementsManagementService {
      * Gets policy for given policy id.
      *
      * @param policyId    Policy id.
-     * @param isPDPPolicy Whether policy is PDP policy or PAP policy.
      * @return Returns policy.
      * @throws EntitlementException Throws if error occurred while getting the policy.
      */

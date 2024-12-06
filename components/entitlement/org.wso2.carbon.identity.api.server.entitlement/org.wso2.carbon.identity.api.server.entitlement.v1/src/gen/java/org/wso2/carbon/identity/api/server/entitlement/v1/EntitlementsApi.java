@@ -18,19 +18,12 @@
 
 package org.wso2.carbon.identity.api.server.entitlement.v1;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.apache.cxf.jaxrs.ext.multipart.Attachment;
-import org.apache.cxf.jaxrs.ext.multipart.Multipart;
-import java.io.InputStream;
-import java.util.List;
-
 import org.wso2.carbon.identity.api.server.entitlement.v1.factories.EntitlementsApiServiceFactory;
 import org.wso2.carbon.identity.api.server.entitlement.v1.model.Error;
 import org.wso2.carbon.identity.api.server.entitlement.v1.model.PolicyCombiningAlgorithmDTO;
 import org.wso2.carbon.identity.api.server.entitlement.v1.model.PolicyDTO;
 import org.wso2.carbon.identity.api.server.entitlement.v1.model.PolicySubscriberDTO;
 import org.wso2.carbon.identity.api.server.entitlement.v1.model.PublisherDataHolderDTO;
-import org.wso2.carbon.identity.api.server.entitlement.v1.EntitlementsApiService;
 
 import javax.validation.Valid;
 import javax.ws.rs.*;
