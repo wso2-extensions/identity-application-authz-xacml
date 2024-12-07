@@ -54,7 +54,7 @@ import javax.ws.rs.core.MediaType;
 /**
  * Entry point class for the REST API end points
  */
-@Path("/")
+@Path("decision")
 @Api(value = "/", description = "Evaluate XACML 3.0 Policies")
 public class DecisionResource extends AbstractResource {
     private static Log log = LogFactory.getLog(DecisionResource.class);
