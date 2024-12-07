@@ -52,6 +52,10 @@
             <id>wso2-nexus-public</id>
             <url>https://maven.wso2.org/nexus/content/repositories/public/</url>
         </repository>
+        <repository>
+            <id>wso2.snapshots</id>
+            <url>https://maven.wso2.org/nexus/content/repositories/snapshots/</url>
+        </repository>
     </repositories>
 
     <build>
@@ -191,6 +195,16 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
+                <groupId>org.apache.cxf</groupId>
+                <artifactId>cxf-rt-frontend-jaxrs</artifactId>
+                <version>${cxf-bundle.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.cxf</groupId>
+                <artifactId>cxf-rt-rs-service-description</artifactId>
+                <version>${cxf-bundle.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.wso2.orbit.javax.activation</groupId>
                 <artifactId>activation</artifactId>
                 <version>${version.org.wso2.orbit.javax.activation}</version>
@@ -214,6 +228,17 @@
                 <groupId>org.wso2.carbon.identity.application.authz.xacml</groupId>
                 <artifactId>org.wso2.carbon.identity.entitlement</artifactId>
                 <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.identity.application.authz.xacml</groupId>
+                <artifactId>org.wso2.carbon.identity.api.server.entitlement</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.identity.application.authz.xacml</groupId>
+                <artifactId>org.wso2.carbon.identity.api.server.entitlement.common</artifactId>
+                <version>${project.version}</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.wso2.carbon</groupId>
@@ -506,7 +531,7 @@
             </dependency>
             <dependency>
                 <groupId>org.wso2.carbon.identity.application.authz.xacml</groupId>
-                <artifactId>org.wso2.carbon.identity.api.server.entitlement</artifactId>
+                <artifactId>org.wso2.carbon.identity.api.server.entitlement.v1</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -582,6 +607,7 @@
         <carbon.identity.framework.version>7.6.11</carbon.identity.framework.version>
         <carbon.identity.package.export.version>${project.version}</carbon.identity.package.export.version>
         <balana.version>1.2.4</balana.version>
+        <cxf-bundle.version>3.5.9</cxf-bundle.version>
         <version.org.wso2.orbit.javax.activation>1.1.1.wso2v1</version.org.wso2.orbit.javax.activation>
 
         <identity.app.authz.xacml.pkg.exp.version>${project.version}</identity.app.authz.xacml.pkg.exp.version>
@@ -682,8 +708,6 @@
         <module>components/policy-editor</module>
         <module>components/scope-validator</module>
         <module>components/provisioning</module>
-        <module>features/org.wso2.carbon.identity.application.authz.xacml.feature</module>
-        <module>features/xacml</module>
     </modules>
 
 </project>
