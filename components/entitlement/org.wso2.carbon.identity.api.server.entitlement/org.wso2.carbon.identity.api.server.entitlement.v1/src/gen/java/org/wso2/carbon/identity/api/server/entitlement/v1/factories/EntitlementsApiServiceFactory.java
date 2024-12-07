@@ -25,8 +25,7 @@ public class EntitlementsApiServiceFactory {
 
    private final static EntitlementsApiService service = new EntitlementsApiServiceImpl();
 
-   public static EntitlementsApiService getEntitlementsApi()
-   {
+   public static EntitlementsApiService getEntitlementsApi() {
       return service;
    }
 }
