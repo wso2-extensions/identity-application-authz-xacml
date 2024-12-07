@@ -39,13 +39,14 @@ public class EntitlementsApiServiceImpl implements EntitlementsApiService {
     private final ServerEntitlementsManagementService serverEntitlementsManagementService =
             new ServerEntitlementsManagementService();
 
+    @Override
     public Response addSubscriber(PublisherDataHolderDTO publisherDataHolderDTO) {
 
         PublisherDataHolder publisherDataHolder = convertToPublisherDataHolder(publisherDataHolderDTO);
         try {
             serverEntitlementsManagementService.addSubscriber(publisherDataHolder);
         } catch (EntitlementException e) {
-            Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
         return Response.ok().build();
     }
@@ -56,7 +57,7 @@ public class EntitlementsApiServiceImpl implements EntitlementsApiService {
         try {
             serverEntitlementsManagementService.deleteSubscriber(subscriberId);
         } catch (EntitlementException e) {
-            Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
         return Response.ok().build();
     }
@@ -67,7 +68,7 @@ public class EntitlementsApiServiceImpl implements EntitlementsApiService {
         try {
             serverEntitlementsManagementService.updateSubscriber(convertToPublisherDataHolder(publisherDataHolderDTO));
         } catch (EntitlementException e) {
-            Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
         return Response.ok().build();
     }
@@ -79,7 +80,7 @@ public class EntitlementsApiServiceImpl implements EntitlementsApiService {
         try {
             globalPolicyAlgorithm = serverEntitlementsManagementService.getGlobalPolicyAlgorithm();
         } catch (EntitlementException e) {
-            Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
         return Response.ok().entity(globalPolicyAlgorithm).build();
     }
@@ -91,7 +92,7 @@ public class EntitlementsApiServiceImpl implements EntitlementsApiService {
             serverEntitlementsManagementService.setGlobalPolicyAlgorithm(
                     policyCombiningAlgorithmDTO.getPolicyCombiningAlgorithm());
         } catch (EntitlementException e) {
-            Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
         return Response.ok().build();
     }
@@ -102,7 +103,7 @@ public class EntitlementsApiServiceImpl implements EntitlementsApiService {
         try {
             serverEntitlementsManagementService.removePolicy(id);
         } catch (EntitlementException e) {
-            Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
         return Response.ok().build();
     }
@@ -114,7 +115,7 @@ public class EntitlementsApiServiceImpl implements EntitlementsApiService {
         try {
             policyDTO = serverEntitlementsManagementService.getPolicy(id);
         } catch (EntitlementException e) {
-            Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
         return Response.ok().entity(policyDTO).build();
     }
@@ -126,7 +127,7 @@ public class EntitlementsApiServiceImpl implements EntitlementsApiService {
         try {
             serverEntitlementsManagementService.updatePolicy(policy);
         } catch (EntitlementException e) {
-            Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
         return Response.ok().build();
     }
@@ -138,7 +139,7 @@ public class EntitlementsApiServiceImpl implements EntitlementsApiService {
         try {
             serverEntitlementsManagementService.addPolicy(policy);
         } catch (EntitlementException e) {
-            Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
         return Response.ok().build();
     }
