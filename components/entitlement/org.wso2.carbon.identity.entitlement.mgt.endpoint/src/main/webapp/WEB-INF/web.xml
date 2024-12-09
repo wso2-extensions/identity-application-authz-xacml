@@ -21,8 +21,8 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
 	http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" metadata-complete="true">
 
-    <display-name>WSO2 Identity Server Entitlements REST API</display-name>
-    <description>WSO2 Identity Server Entitlements REST API</description>
+    <display-name>WSO2 Identity Server Entitlements mgt REST API</display-name>
+    <description>WSO2 Identity Server Entitlements mgt REST API</description>
 
     <servlet>
         <servlet-name>CXFServlet</servlet-name>
@@ -32,6 +32,7 @@
         <init-param>
             <param-name>jaxrs.serviceClasses</param-name>
             <param-value>
+                org.wso2.carbon.identity.api.server.entitlement.v1.EntitlementsApi,
                 org.wso2.carbon.identity.api.server.entitlement.v1.resources.DecisionResource
             </param-value>
         </init-param>
