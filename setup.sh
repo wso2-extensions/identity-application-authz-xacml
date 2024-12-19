@@ -89,4 +89,13 @@ echo "Ensuring XACML policies directory exists..."
 mkdir -p "$POLICIES_DIR"
 echo "Copying XACML policies..."
 cp -r "$XACML_CONNECTOR/policies/"* "$POLICIES_DIR/"
+
+# Step 8: Copy entitlements webapp.
+echo "Copying entitlements webapp..."
+POLICIES_DIR="$IS_HOME/repository/deployment/server/webapps"
+echo "Ensuring webapps directory exists..."
+mkdir -p "$POLICIES_DIR"
+echo "Copying entitlements webapp..."
+cp -r "$XACML_CONNECTOR/webapps/"* "$POLICIES_DIR/"
+
 echo "Script completed successfully."
