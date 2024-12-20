@@ -89,4 +89,27 @@ echo "Ensuring XACML policies directory exists..."
 mkdir -p "$POLICIES_DIR"
 echo "Copying XACML policies..."
 cp -r "$XACML_CONNECTOR/policies/"* "$POLICIES_DIR/"
+
+# Step 8: Copy entitlements webapp.
+echo "Copying entitlements webapp..."
+WEBAPPS_DIR="$IS_HOME/repository/deployment/server/webapps"
+echo "Ensuring webapps directory exists..."
+mkdir -p "$WEBAPPS_DIR"
+echo "Copying entitlements webapp..."
+cp -r "$XACML_CONNECTOR/webapps/"* "$WEBAPPS_DIR/"
+
+# Step 9: Append content to deployment.toml
+echo "Appending content to deployment.toml..."
+DEPLOYMENT_TOML="$IS_HOME/repository/conf/deployment.toml"
+XACML_DEPLOYMENT_TOML="$XACML_CONNECTOR/config-files/deployment.toml"
+if [ -f "$DEPLOYMENT_TOML" ] && [ -f "$XACML_DEPLOYMENT_TOML" ]; then
+  cat "$XACML_DEPLOYMENT_TOML" >> "$DEPLOYMENT_TOML" || {
+    echo "Error appending content to deployment.toml."
+    exit 1
+  }
+else
+  echo "Error: deployment.toml or XACML deployment.toml not found."
+  exit 1
+fi
+
 echo "Script completed successfully."
