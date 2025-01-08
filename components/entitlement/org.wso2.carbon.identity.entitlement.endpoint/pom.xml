@@ -32,6 +32,21 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.wso2.carbon.identity.application.authz.xacml</groupId>
+            <artifactId>org.wso2.carbon.identity.api.server.entitlement.v1</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.carbon.identity.application.authz.xacml</groupId>
+            <artifactId>org.wso2.carbon.identity.api.server.entitlement.common</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
             <groupId>javax.ws.rs</groupId>
             <artifactId>javax.ws.rs-api</artifactId>
             <scope>provided</scope>
@@ -41,16 +56,6 @@
             <groupId>org.apache.cxf</groupId>
             <artifactId>cxf-core</artifactId>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.wso2.carbon.identity.application.authz.xacml</groupId>
-            <artifactId>org.wso2.carbon.identity.api.server.entitlement</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>*</groupId>
-                    <artifactId>*</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
