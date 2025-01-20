@@ -32,8 +32,7 @@
         <init-param>
             <param-name>jaxrs.serviceClasses</param-name>
             <param-value>
-                org.wso2.carbon.identity.api.server.entitlement.v1.EntitlementsApi,
-                org.wso2.carbon.identity.api.server.entitlement.v1.resources.DecisionResource
+                org.wso2.carbon.identity.api.server.entitlement.v1.EntitlementsApi
             </param-value>
         </init-param>
         <init-param>

@@ -14,7 +14,7 @@ Design and implementation details of the endpoint is available at [http://manzzu
 Procedure
 --------
 
-1. Download the target/entitlement.war file
+1. Download the target/api#identity#entitlement.war file
 2. Place it in your **{IS ROOT}/repository/deployement/server/webapps** (Tested for IS 5.2.0)
 3. You can hot deploy the war file as well
 4. Once deployed the WADL definitions for the service can be seen at, **https://localhost:9443/entitlement/entitlement/Decision?_wadl**
