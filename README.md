@@ -53,14 +53,14 @@ Please follow the below steps.
 `<XACML_CONNECTOR>/config-files/org.wso2.carbon.identity.xacml.server.feature.default.json`
 file to the `<IS_HOME>/repository/resources/conf/default.json`.
 
-7. Add default XACML policies resides in folder
-`<XACML_CONNECTOR>/config-files/policies`  to the
-`<IS_HOME>/repository/resources/identity/policies/xacml/default` folder.
+[//]: # (7. Add default XACML policies resides in folder)
+[//]: # (`<XACML_CONNECTOR>/config-files/policies`  to the)
+[//]: # (`<IS_HOME>/repository/resources/identity/policies/xacml/default` folder.)
 
-8. Add XACML rest api webapp resides in folder `<XACML_CONNECTOR>/webapps` to the
+7. Add XACML rest api webapp resides in folder `<XACML_CONNECTOR>/webapps` to the
 `<IS_HOME>/repository/deployment/server/webapps` folder.
 
-9. Add the below configuration to the `<IS_HOME>/repository/conf/deployment.toml` file.
+8. Add the below configuration to the `<IS_HOME>/repository/conf/deployment.toml` file.
 
 ```toml
 # Entitlement Policies API
@@ -227,6 +227,13 @@ type = "TENANT"
 displayName = "Policy Mgt"
 name = "internal_manage_pep"
 description = "Policy Mgt"
+```
+
+9. Add below configuration to enable the UI in `<IS_HOME>/repository/conf/deployment.toml` file.
+
+```toml
+[console.policyAdministration]
+enabled = "true"
 ```
 
 10. Restart Identity Server.
