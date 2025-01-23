@@ -18,6 +18,7 @@
 
 package org.wso2.carbon.identity.api.server.entitlement.v1.impl;
 
+import org.apache.axiom.om.util.Base64;
 import org.wso2.carbon.identity.api.server.entitlement.v1.*;
 import org.wso2.carbon.identity.api.server.entitlement.v1.core.ServerEntitlementsManagementService;
 import org.wso2.carbon.identity.api.server.entitlement.v1.model.*;
@@ -101,7 +102,7 @@ public class EntitlementsApiServiceImpl implements EntitlementsApiService {
     public Response entitlementsPoliciesIdDelete(String id) {
 
         try {
-            serverEntitlementsManagementService.removePolicy(id);
+            serverEntitlementsManagementService.removePolicy(new String(Base64.decode(id)));
         } catch (EntitlementException e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
@@ -113,7 +114,7 @@ public class EntitlementsApiServiceImpl implements EntitlementsApiService {
 
         org.wso2.carbon.identity.entitlement.dto.PolicyDTO policyDTO = null;
         try {
-            policyDTO = serverEntitlementsManagementService.getPolicy(id);
+            policyDTO = serverEntitlementsManagementService.getPolicy(new String(Base64.decode(id)));
         } catch (EntitlementException e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
