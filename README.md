@@ -234,6 +234,9 @@ description = "Policy Mgt"
 ```toml
 [console.policyAdministration]
 enabled = "true"
+
+[console.ui]
+isXacmlConnectorEnabled = "true"
 ```
 
 10. Restart Identity Server.
