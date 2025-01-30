@@ -1,0 +1,169 @@
+[[resource.access_control]]
+context = "(.*)/api/identity/entitlement/v1/entitlements/policies(.*)"
+secure = "true"
+http_method = "GET"
+scopes = ["internal_entitlement_policy_mgt_view"]
+
+[[resource.access_control]]
+context = "(.*)/api/identity/entitlement/v1/entitlements/policies(.*)"
+secure = "true"
+http_method = "POST"
+scopes = ["internal_entitlement_policy_mgt_create"]
+
+[[resource.access_control]]
+context = "(.*)/api/identity/entitlement/v1/entitlements/policies(.*)"
+secure = "true"
+http_method = "PATCH"
+scopes = ["internal_entitlement_policy_mgt_update"]
+
+[[resource.access_control]]
+context = "(.*)/api/identity/entitlement/v1/entitlements/policies(.*)"
+secure = "true"
+http_method = "DELETE"
+scopes = ["internal_entitlement_policy_mgt_delete"]
+
+# Entitlement Subscriber API
+[[resource.access_control]]
+context = "(.*)/api/identity/entitlement/v1/entitlements/subscribers(.*)"
+secure = "true"
+http_method = "GET"
+scopes = ["internal_entitlement_subscriber_mgt_view"]
+
+[[resource.access_control]]
+context = "(.*)/api/identity/entitlement/v1/entitlements/subscribers(.*)"
+secure = "true"
+http_method = "POST"
+scopes = ["internal_entitlement_subscriber_mgt_create"]
+
+[[resource.access_control]]
+context = "(.*)/api/identity/entitlement/v1/entitlements/subscribers(.*)"
+secure = "true"
+http_method = "PATCH"
+scopes = ["internal_entitlement_subscriber_mgt_update"]
+
+[[resource.access_control]]
+context = "(.*)/api/identity/entitlement/v1/entitlements/subscribers(.*)"
+secure = "true"
+http_method = "DELETE"
+scopes = ["internal_entitlement_subscriber_mgt_delete"]
+
+# Entitlement Policy Publish API
+[[resource.access_control]]
+context = "(.*)/api/identity/entitlement/v1/entitlements/publish(.*)"
+secure = "true"
+http_method = "POST"
+scopes = ["internal_entitlement_policy_publish"]
+
+# Entitlement Global Policy Combining Algorithm API
+[[resource.access_control]]
+context = "(.*)/api/identity/entitlement/v1/entitlements/combining-algorithm(.*)"
+secure = "true"
+http_method = "GET"
+scopes = ["internal_entitlement_gpa_get"]
+
+[[resource.access_control]]
+context = "(.*)/api/identity/entitlement/v1/entitlements/combining-algorithm(.*)"
+secure = "true"
+http_method = "PATCH"
+scopes = ["internal_entitlement_gpa_set"]
+
+[[api_resources]]
+name = "Entitlement Policies API"
+identifier = "/api/identity/entitlement/v1/entitlements/policies"
+requiresAuthorization = true
+description = "API representation of the Entitlements Policy Management API"
+type = "TENANT"
+
+[[api_resources.scopes]]
+displayName = "Create Policy"
+name = "internal_entitlement_policy_mgt_create"
+description = "Create new Policy"
+
+[[api_resources.scopes]]
+displayName = "Update Policy"
+name = "internal_entitlement_policy_mgt_update"
+description = "Update Policy"
+
+[[api_resources.scopes]]
+displayName = "View Policy"
+name = "internal_entitlement_policy_mgt_view"
+description = "View Policy"
+
+[[api_resources.scopes]]
+displayName = "Delete Policy"
+name = "internal_entitlement_policy_mgt_delete"
+description = "Delete Policy"
+
+[[api_resources]]
+name = "Entitlement Subscriber API"
+identifier = "/api/identity/entitlement/v1/entitlements/subscribers"
+requiresAuthorization = true
+description = "API representation of the Entitlement Subscriber Management API"
+type = "TENANT"
+
+[[api_resources.scopes]]
+displayName = "Create Subscriber"
+name = "internal_entitlement_subscriber_mgt_create"
+description = "Create new Subscriber"
+
+[[api_resources.scopes]]
+displayName = "Update Subscriber"
+name = "internal_entitlement_subscriber_mgt_update"
+description = "Update Subscriber"
+
+[[api_resources.scopes]]
+displayName = "View Subscriber"
+name = "internal_entitlement_subscriber_mgt_view"
+description = "View Subscriber"
+
+[[api_resources.scopes]]
+displayName = "Delete Subscriber"
+name = "internal_entitlement_subscriber_mgt_delete"
+description = "Delete Subscriber"
+
+[[api_resources]]
+name = "Entitlement Global Policy Combining Algorithm API"
+identifier = "/api/identity/entitlement/v1/entitlements/combining-algorithm"
+requiresAuthorization = true
+description = "API representation of the Entitlement Global Policy Combining Algorithm API"
+type = "TENANT"
+
+[[api_resources.scopes]]
+displayName = "Set Global Policy Combining Algorithm API"
+name = "internal_entitlement_gpa_set"
+description = "Set Global Policy Combining Algorithm"
+
+[[api_resources.scopes]]
+displayName = "Get Global Policy Combining Algorithm API"
+name = "internal_entitlement_gpa_get"
+description = "Get Global Policy Combining Algorithm"
+
+[[api_resources]]
+name = "Entitlement Policy Publish API"
+identifier = "/api/identity/entitlement/v1/entitlements/publish"
+requiresAuthorization = true
+description = "API representation of the Entitlements Policy Publish API"
+type = "TENANT"
+
+[[api_resources.scopes]]
+displayName = "Publish Policy"
+name = "internal_entitlement_policy_publish"
+description = "Publish new Policy"
+
+[[api_resources]]
+name = "Entitlement Policy Mgt API"
+identifier = "/api/identity/entitlement/v1/decision"
+requiresAuthorization = true
+description = "API representation of the Entitlements Policy Mgt API"
+type = "TENANT"
+
+[[api_resources.scopes]]
+displayName = "Policy Mgt"
+name = "internal_manage_pep"
+description = "Policy Mgt"
+
+[console.policyAdministration]
+enabled = "true"
+
+[console.ui]
+isXacmlConnectorEnabled = "true"
