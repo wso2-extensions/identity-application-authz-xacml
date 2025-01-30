@@ -34,5 +34,3 @@
     </Rule>
     <Rule Effect="Deny" RuleId="deny_others"></Rule>
 </Policy>
-
-
