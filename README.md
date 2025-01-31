@@ -227,6 +227,12 @@ type = "TENANT"
 displayName = "Policy Mgt"
 name = "internal_manage_pep"
 description = "Policy Mgt"
+
+[[event_listener]]
+id = "xacml_authorization_handler"
+type = "org.wso2.carbon.identity.core.handler.AbstractIdentityHandler"
+name = "org.wso2.carbon.identity.application.authz.xacml.handler.impl.XACMLBasedAuthorizationHandler"
+order = 899
 ```
 
 9. Add below configuration to enable the UI in `<IS_HOME>/repository/conf/deployment.toml` file.
