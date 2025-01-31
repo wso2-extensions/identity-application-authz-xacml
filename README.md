@@ -254,3 +254,12 @@ isXacmlConnectorEnabled = "true"
 ```
 
 11. Restart Identity Server.
+
+#### Enable Authorization :
+
+Enable `Enable authorization` for the desired application.
+
+1. Navigate to console.
+2. Navigate to applications and select desired application.
+3. Go to Advanced section.
+4. Enable the checkbox for `Enable authorization`.
