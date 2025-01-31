@@ -82,6 +82,23 @@ else
   exit 1
 fi
 
+# Step 7: Append XACML ScopeValidator to identity.xml.j2
+IDENTITY_XML_J2="$IS_HOME/repository/resources/conf/templates/repository/conf/identity/identity.xml.j2"
+if [ -f "$IDENTITY_XML_J2" ]; then
+  echo "Appending ScopeValidator to identity.xml.j2..."
+  # Check if ScopeValidators tag exists
+  if grep -q "<ScopeValidators>" "$IDENTITY_XML_J2"; then
+    # Append the ScopeValidator inside ScopeValidators tag
+    awk '/<ScopeValidators>/ {print; print "        {% if oauth.scope_validator.xacml.enable %}\n            <ScopeValidator class=\"{{oauth.scope_validator.xacml.class}}\"/>\n        {% endif %}"; next}1' "$IDENTITY_XML_J2" > "$IDENTITY_XML_J2.tmp" && mv "$IDENTITY_XML_J2.tmp" "$IDENTITY_XML_J2"
+  else
+    echo "Error: <ScopeValidators> tag not found in identity.xml.j2."
+    exit 1
+  fi
+else
+  echo "Error: identity.xml.j2 file not found."
+  exit 1
+fi
+
 # Step 7: Add default XACML policies.
 #echo "Copying XACML policies..."
 #POLICIES_DIR="$IS_HOME/repository/resources/identity/policies/xacml/default"
@@ -113,3 +130,4 @@ else
 fi
 
 echo "Script completed successfully."
+
