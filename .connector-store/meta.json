@@ -1,0 +1,20 @@
+{
+  "name": "XACML Connector",
+  "owner": "WSO2",
+  "category": "Fine Grained Authorization",
+  "documentationUrl": "https://github.com/wso2-extensions/identity-application-authz-xacml?tab=readme-ov-file#xacml-connector",
+  "description": "XACML (eXtensible Access Control Markup Language) enables fine-grained, policy-based access control by evaluating authorization requests against defined policies.",
+  "status": "Active",
+  "labels": [
+    "Authorization",
+    "XACML"
+  ],
+  "releases": [
+    {
+      "tagName": "v1.0.0",
+      "products": [
+        "IS 7.1.0"
+      ]
+    }
+  ]
+}
