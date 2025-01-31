@@ -53,14 +53,22 @@ Please follow the below steps.
 `<XACML_CONNECTOR>/config-files/org.wso2.carbon.identity.xacml.server.feature.default.json`
 file to the `<IS_HOME>/repository/resources/conf/default.json`.
 
+7. Add the XACML Scope validator to the Scope Validators list in `identity.xml.j2` file. Append the below XML tag inside of <ScopeValidators></ScopeValidators> tags.
+```
+{% if oauth.scope_validator.xacml.enable %}
+   <ScopeValidator class="{{oauth.scope_validator.xacml.class}}"/>
+{% endif %}
+
+```
+
 [//]: # (7. Add default XACML policies resides in folder)
 [//]: # (`<XACML_CONNECTOR>/config-files/policies`  to the)
 [//]: # (`<IS_HOME>/repository/resources/identity/policies/xacml/default` folder.)
 
-7. Add XACML rest api webapp resides in folder `<XACML_CONNECTOR>/webapps` to the
+8. Add XACML rest api webapp resides in folder `<XACML_CONNECTOR>/webapps` to the
 `<IS_HOME>/repository/deployment/server/webapps` folder.
 
-8. Add the below configuration to the `<IS_HOME>/repository/conf/deployment.toml` file.
+9. Add the below configuration to the `<IS_HOME>/repository/conf/deployment.toml` file.
 
 ```toml
 # Entitlement Policies API
@@ -235,7 +243,7 @@ name = "org.wso2.carbon.identity.application.authz.xacml.handler.impl.XACMLBased
 order = 899
 ```
 
-9. Add below configuration to enable the UI in `<IS_HOME>/repository/conf/deployment.toml` file.
+10. Add below configuration to enable the UI in `<IS_HOME>/repository/conf/deployment.toml` file.
 
 ```toml
 [console.policyAdministration]
@@ -245,4 +253,4 @@ enabled = "true"
 isXacmlConnectorEnabled = "true"
 ```
 
-10. Restart Identity Server.
+11. Restart Identity Server.
