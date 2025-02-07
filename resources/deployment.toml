@@ -150,18 +150,6 @@ displayName = "Publish Policy"
 name = "internal_entitlement_policy_publish"
 description = "Publish new Policy"
 
-[[api_resources]]
-name = "Entitlement Policy Mgt API"
-identifier = "/api/identity/entitlement/v1/decision"
-requiresAuthorization = true
-description = "API representation of the Entitlements Policy Mgt API"
-type = "TENANT"
-
-[[api_resources.scopes]]
-displayName = "Policy Mgt"
-name = "internal_manage_pep"
-description = "Policy Mgt"
-
 [[event_listener]]
 id = "xacml_authorization_handler"
 type = "org.wso2.carbon.identity.core.handler.AbstractIdentityHandler"
