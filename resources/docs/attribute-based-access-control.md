@@ -91,7 +91,7 @@ template that is available by default with WSO2 Identity Server.
 4. Edit the policy to customize it depending on your requirement. You
    can change the values of attributes and rules.
 5. Click **Create** to save the changes. 
-6. The policy is initially created in an Inactive state. To activate it, click the Activate button.
+6. The policy is initially created in an **Inactive** state. To activate it, click the **Activate** button.
 
 Now, you have created the policy and enforced it using the policy
 template. You can test the policy to evaluate whether XACML scope is
