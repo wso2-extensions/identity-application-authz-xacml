@@ -816,12 +816,9 @@ public class EntitlementPolicyAdminService {
             pageNumber = numberOfPages - 1;
         }
         int startIndex = pageNumber * itemsPerPageInt;
-        int endIndex = (pageNumber + 1) * itemsPerPageInt;
-        PolicyDTO[] returnedPolicySet = new PolicyDTO[itemsPerPageInt];
+        int endIndex = Math.min(startIndex + itemsPerPageInt, policySet.length);
 
-        for (int i = startIndex, j = 0; i < endIndex && i < policySet.length; i++, j++) {
-            returnedPolicySet[j] = policySet[i];
-        }
+        PolicyDTO[] returnedPolicySet = Arrays.copyOfRange(policySet, startIndex, endIndex);
 
         paginatedPolicySet.setPolicySet(returnedPolicySet);
         paginatedPolicySet.setNumberOfPages(numberOfPages);
