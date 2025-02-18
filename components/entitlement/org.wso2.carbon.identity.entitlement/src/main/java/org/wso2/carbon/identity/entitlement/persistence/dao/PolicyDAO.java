@@ -104,6 +104,7 @@ public class PolicyDAO {
     private static final String IS_IN_PDP_1 = "IS_IN_PDP_1";
     private static final boolean IN_PAP = true;
     private static final boolean IN_PDP = true;
+    private static final boolean NOT_IN_PDP = false;
     private static final boolean INACTIVE = false;
     private static final int DEFAULT_POLICY_ORDER = 0;
     private static final String ERROR_RETRIEVING_PAP_POLICY =
@@ -228,6 +229,7 @@ public class PolicyDAO {
             try (NamedPreparedStatement prepStmt = new NamedPreparedStatement(connection, GET_ALL_PAP_POLICIES_SQL)) {
                 prepStmt.setBoolean(IS_IN_PAP, IN_PAP);
                 prepStmt.setInt(TENANT_ID, tenantId);
+                prepStmt.setBoolean(IS_IN_PDP, NOT_IN_PDP);
 
                 try (ResultSet policies = prepStmt.executeQuery()) {
                     while (policies.next()) {
