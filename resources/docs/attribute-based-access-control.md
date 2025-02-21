@@ -82,7 +82,7 @@ token issuance.
 ### Set up the policy
 
 Follow the instructions given below to publish a policy using a XACML policy
-template that is available by default with WSO2 Identity Server.
+template that is available [here](https://github.com/wso2-extensions/identity-application-authz-xacml/tree/master/resources/policies).
 
 1. Log in to the Console via <https://localhost:9443/console>.
 2. Navigate to **Policy Administration**.
