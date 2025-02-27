@@ -15,7 +15,7 @@ However, you can still use the XACML feature by following the below guide to ena
 1. Download Identity Server latest pack using the following link.
    https://wso2.com/identity-server/
 
-2. Download the XACML connector artifacts from here https://store.wso2.com.
+2. Download the XACML connector artifacts from here https://store.wso2.com/connector/identity-application-authz-xacml.
 
 3. Unzip the downloaded pack.
 
