@@ -12,12 +12,11 @@ However, you can still use the XACML feature by following the below guide to ena
 
 ### Pre-requisites:
 
-1. Download Identity Server latest pack using the following link.
-   https://wso2.com/identity-server/
+1. Download Identity Server latest pack using the following link 
+   https://wso2.com/identity-server/ and note the unzipped location as <IS_HOME>.
 
-2. Download the XACML connector artifacts from here https://store.wso2.com/connector/identity-application-authz-xacml.
-
-3. Unzip the downloaded pack.
+2. Download the XACML connector artifacts from here https://store.wso2.com/connector/identity-application-authz-xacml 
+   and note the unzipped location as <XACML_CONNECTOR>.
 
 ### Setup database:
 
@@ -38,7 +37,7 @@ Please follow the below steps.
 1. Add the jar files in `<XACML_CONNECTOR>/dropins` folder to the
 `<IS_HOME>/repository/components/dropins` folder.
 
-2. Add the jar file in  <XACML_CONNECTOR>/api-server folder to the 
+2. Add the jar file in  `<XACML_CONNECTOR>/api-server` folder to the 
 `<IS_HOME>/repository/deployment/server/webapps/api/WEB-INF/lib` folder.
 
 3. Add the `<XACML_CONNECTOR>/config-files/entitlement.properties` file to the 
@@ -49,26 +48,14 @@ Please follow the below steps.
 
 5. Add the `balana-config.xml` file to the `<IS_HOME>/repository/conf/security`.
 
-6. Append the json content in the 
-`<XACML_CONNECTOR>/config-files/org.wso2.carbon.identity.xacml.server.feature.default.json`
-file to the `<IS_HOME>/repository/resources/conf/default.json`.
+   [//]: # (7. Add default XACML policies resides in folder)
+   [//]: # (`<XACML_CONNECTOR>/config-files/policies`  to the)
+   [//]: # (`<IS_HOME>/repository/resources/identity/policies/xacml/default` folder.)
 
-7. Add the XACML Scope validator to the Scope Validators list in `identity.xml.j2` file. Append the below XML tag inside of <ScopeValidators></ScopeValidators> tags.
-```
-{% if oauth.scope_validator.xacml.enable %}
-   <ScopeValidator class="{{oauth.scope_validator.xacml.class}}"/>
-{% endif %}
+6. Add XACML rest api webapp resides in folder `<XACML_CONNECTOR>/webapps` to the
+   `<IS_HOME>/repository/deployment/server/webapps` folder.
 
-```
-
-[//]: # (7. Add default XACML policies resides in folder)
-[//]: # (`<XACML_CONNECTOR>/config-files/policies`  to the)
-[//]: # (`<IS_HOME>/repository/resources/identity/policies/xacml/default` folder.)
-
-8. Add XACML rest api webapp resides in folder `<XACML_CONNECTOR>/webapps` to the
-`<IS_HOME>/repository/deployment/server/webapps` folder.
-
-9. Add the below configuration to the `<IS_HOME>/repository/conf/deployment.toml` file.
+7. Add the below configuration to the `<IS_HOME>/repository/conf/deployment.toml` file.
 
 ```toml
 # Entitlement Policies API
@@ -229,9 +216,70 @@ id = "xacml_authorization_handler"
 type = "org.wso2.carbon.identity.core.handler.AbstractIdentityHandler"
 name = "org.wso2.carbon.identity.application.authz.xacml.handler.impl.XACMLBasedAuthorizationHandler"
 order = 899
+
+[identity.entitlement]
+entitlement_engine_caching_interval = "1d"
+JSON_shorten_form_enabled = false
+
+[identity.entitlement.default_attribute_finder.properties]
+MapFederatedUsersToLocal = true
+
+[identity.entitlement.xacml_policy_status]
+use_last_status_only = false
+
+[identity.entitlement.policy_point.pdp]
+enabled = true
+default_caching_interval = "5m"
+schema_validation_enabled = true
+balana_config_enabled = true
+multiple_decision_profile_enabled = true
+global_policy_combining_algorithm = "urn:oasis:names:tc:xacml:3.0:policy-combining-algorithm:deny-overrides"
+registry_level_policy_cache_clear = false
+reference_max_policy_entries = "3000"
+policy_finders = ["org.wso2.carbon.identity.entitlement.persistence.JDBCPolicyPersistenceManager"]
+policy_store_module = "org.wso2.carbon.identity.entitlement.persistence.JDBCPolicyPersistenceManager"
+policy_data_store_module = "org.wso2.carbon.identity.entitlement.policy.store.DefaultPolicyDataStore"
+
+[identity.entitlement.policy_point.pdp.caching.decision_caching]
+enabled = true
+caching_interval = "$ref{identity.entitlement.policy_point.pdp.default_caching_interval}"
+
+[identity.entitlement.policy_point.pdp.caching.attribute_caching]
+enabled = true
+caching_interval = "$ref{identity.entitlement.policy_point.pdp.default_caching_interval}"
+
+[identity.entitlement.policy_point.pdp.caching.resource_caching]
+enabled = true
+caching_interval = "$ref{identity.entitlement.policy_point.pdp.default_caching_interval}"
+
+[identity.entitlement.policy_point.pdp.caching.policy_caching]
+caching_interval = "100s"
+
+[identity.entitlement.policy_point.pap]
+enabled = true
+policy_add_start_enable = true
+items_per_page = 10
+store_metadata = true
+entitlement_data_finders = ["org.wso2.carbon.identity.entitlement.pap.CarbonEntitlementDataFinder"]
+policy_publisher_modules = ["org.wso2.carbon.identity.entitlement.policy.publisher.CarbonBasicPolicyPublisherModule"]
+status_data_handlers = ["org.wso2.carbon.identity.entitlement.persistence.JDBCSimplePAPStatusDataHandler"]
+
+[identity.entitlement.policy_point.pip]
+attribute_designators = [
+   "org.wso2.carbon.identity.entitlement.pip.DefaultAttributeFinder",
+   "org.wso2.carbon.identity.application.authz.xacml.pip.AuthenticationContextAttributePIP"
+]
+resource_finders = ["org.wso2.carbon.identity.entitlement.pip.DefaultResourceFinder"]
+
+[oauth.scope_validator.xacml]
+enable = true
+class = "org.wso2.carbon.identity.oauth2.validators.xacml.XACMLScopeValidator"
+
+[[oauth.custom_scope_validator]]
+class = "org.wso2.carbon.identity.oauth2.validators.xacml.XACMLScopeValidator"
 ```
 
-10. Add below configuration to enable the UI in `<IS_HOME>/repository/conf/deployment.toml` file.
+8. Add below configuration to enable the UI in `<IS_HOME>/repository/conf/deployment.toml` file.
 
 ```toml
 [console.policyAdministration]
@@ -241,7 +289,7 @@ enabled = "true"
 isXacmlConnectorEnabled = "true"
 ```
 
-11. Restart Identity Server.
+9. Restart Identity Server.
 
 #### Enable Authorization :
 

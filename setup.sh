@@ -67,39 +67,7 @@ cp "$XACML_CONNECTOR/config-files/balana-config.xml" "$IS_HOME/repository/conf/s
   exit 1
 }
 
-# Step 6: Append JSON content to default.json
-DEFAULT_JSON="$IS_HOME/repository/resources/conf/default.json"
-XACML_JSON="$XACML_CONNECTOR/config-files/org.wso2.carbon.identity.xacml.server.feature.default.json"
-
-if [ -f "$DEFAULT_JSON" ] && [ -f "$XACML_JSON" ]; then
-  echo "Appending JSON content to default.json..."
-  jq -s '.[0] * .[1]' "$DEFAULT_JSON" "$XACML_JSON" > "$DEFAULT_JSON.tmp" && mv "$DEFAULT_JSON.tmp" "$DEFAULT_JSON" || {
-    echo "Error appending JSON content to default.json."
-    exit 1
-  }
-else
-  echo "Error: default.json or org.wso2.carbon.identity.xacml.server.feature.default.json not found."
-  exit 1
-fi
-
-# Step 7: Append XACML ScopeValidator to identity.xml.j2
-IDENTITY_XML_J2="$IS_HOME/repository/resources/conf/templates/repository/conf/identity/identity.xml.j2"
-if [ -f "$IDENTITY_XML_J2" ]; then
-  echo "Appending ScopeValidator to identity.xml.j2..."
-  # Check if ScopeValidators tag exists
-  if grep -q "<ScopeValidators>" "$IDENTITY_XML_J2"; then
-    # Append the ScopeValidator inside ScopeValidators tag
-    awk '/<ScopeValidators>/ {print; print "        {% if oauth.scope_validator.xacml.enable %}\n            <ScopeValidator class=\"{{oauth.scope_validator.xacml.class}}\"/>\n        {% endif %}"; next}1' "$IDENTITY_XML_J2" > "$IDENTITY_XML_J2.tmp" && mv "$IDENTITY_XML_J2.tmp" "$IDENTITY_XML_J2"
-  else
-    echo "Error: <ScopeValidators> tag not found in identity.xml.j2."
-    exit 1
-  fi
-else
-  echo "Error: identity.xml.j2 file not found."
-  exit 1
-fi
-
-# Step 7: Add default XACML policies.
+# Step 6: Add default XACML policies.
 #echo "Copying XACML policies..."
 #POLICIES_DIR="$IS_HOME/repository/resources/identity/policies/xacml/default"
 #echo "Ensuring XACML policies directory exists..."
@@ -107,7 +75,7 @@ fi
 #echo "Copying XACML policies..."
 #cp -r "$XACML_CONNECTOR/policies/"* "$POLICIES_DIR/"
 
-# Step 8: Copy entitlements webapp.
+# Step 7: Copy entitlements webapp.
 echo "Copying entitlements webapp..."
 WEBAPPS_DIR="$IS_HOME/repository/deployment/server/webapps"
 echo "Ensuring webapps directory exists..."
@@ -115,7 +83,7 @@ mkdir -p "$WEBAPPS_DIR"
 echo "Copying entitlements webapp..."
 cp -r "$XACML_CONNECTOR/webapps/"* "$WEBAPPS_DIR/"
 
-# Step 9: Append content to deployment.toml
+# Step 8: Append content to deployment.toml
 echo "Appending content to deployment.toml..."
 DEPLOYMENT_TOML="$IS_HOME/repository/conf/deployment.toml"
 XACML_DEPLOYMENT_TOML="$XACML_CONNECTOR/config-files/deployment.toml"
