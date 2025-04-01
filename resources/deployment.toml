@@ -215,6 +215,9 @@ resource_finders = ["org.wso2.carbon.identity.entitlement.pip.DefaultResourceFin
 enable = true
 class = "org.wso2.carbon.identity.oauth2.validators.xacml.XACMLScopeValidator"
 
+[[oauth.custom_scope_validator]]
+class = "org.wso2.carbon.identity.oauth2.validators.xacml.XACMLScopeValidator"
+
 [console.policyAdministration]
 enabled = "true"
 

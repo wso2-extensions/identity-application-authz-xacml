@@ -274,6 +274,9 @@ resource_finders = ["org.wso2.carbon.identity.entitlement.pip.DefaultResourceFin
 [oauth.scope_validator.xacml]
 enable = true
 class = "org.wso2.carbon.identity.oauth2.validators.xacml.XACMLScopeValidator"
+
+[[oauth.custom_scope_validator]]
+class = "org.wso2.carbon.identity.oauth2.validators.xacml.XACMLScopeValidator"
 ```
 
 8. Add below configuration to enable the UI in `<IS_HOME>/repository/conf/deployment.toml` file.
