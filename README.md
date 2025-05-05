@@ -58,6 +58,10 @@ Please follow the below steps.
 7. Add the below configuration to the `<IS_HOME>/repository/conf/deployment.toml` file.
 
 ```toml
+# Enable tenanted support.
+[tenant_context.rewrite]
+custom_webapps = ["/api/identity/entitlement/v1/"]
+
 # Entitlement Policies API
 [[resource.access_control]]
 context = "(.*)/api/identity/entitlement/v1/entitlements/policies(.*)"

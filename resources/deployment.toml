@@ -223,3 +223,6 @@ enabled = "true"
 
 [console.ui]
 isXacmlConnectorEnabled = "true"
+
+[tenant_context.rewrite]
+custom_webapps = ["/api/identity/entitlement/v1/"]
