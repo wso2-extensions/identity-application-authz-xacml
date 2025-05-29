@@ -23,7 +23,7 @@
         <groupId>org.wso2.carbon.identity.application.authz.xacml</groupId>
         <artifactId>entitlement</artifactId>
         <relativePath>../pom.xml</relativePath>
-        <version>2.4.28-SNAPSHOT</version>
+        <version>2.4.28</version>
     </parent>
 
     <artifactId>org.wso2.carbon.identity.entitlement.endpoint</artifactId>
