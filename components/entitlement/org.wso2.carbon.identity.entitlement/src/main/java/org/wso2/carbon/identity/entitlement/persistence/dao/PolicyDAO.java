@@ -852,7 +852,7 @@ public class PolicyDAO {
             createPolicyPrepStmt.setBoolean(IS_ACTIVE, policy.isActive());
             createPolicyPrepStmt.setString(POLICY_TYPE, policy.getPolicyType());
             createPolicyPrepStmt.setString(POLICY_EDITOR, policy.getPolicyEditor());
-            createPolicyPrepStmt.setInt(POLICY_ORDER, DEFAULT_POLICY_ORDER);
+            createPolicyPrepStmt.setInt(POLICY_ORDER, policy.getPolicyOrder());
             createPolicyPrepStmt.setTimeStamp(LAST_MODIFIED_TIME, new Timestamp(System.currentTimeMillis()),
                     Calendar.getInstance(TimeZone.getTimeZone(UTC)));
             createPolicyPrepStmt.setString(LAST_MODIFIED_USER,
