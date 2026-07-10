@@ -308,6 +308,17 @@ Enable `Enable authorization` for the desired application.
 
 ## Documentation
 
+### Guides using the IS 7.x Console UI
+
+From IS 7.x onwards, the Console includes a XACML **Policy Administration** UI at `https://localhost:9443/console` for creating, activating, and managing policies as raw XACML XML. The following guides use this new UI end-to-end:
+
+| Guide | Description |
+|---|---|
+| [Validate OAuth Scope with XACML](resources/docs/attribute-based-access-control.md) | Use XACML policies to validate OAuth token scopes |
+| [Rule-based Provisioning](resources/docs/rule-based-provisioning.md) | Control outbound user provisioning using XACML rules |
+
+### Additional guides
+
 | Guide | Description |
 |---|---|
 | [XACML Engine Overview](resources/docs/xacml-engine-overview.md) | How IS acts as a XACML engine — PDP, PAP, PIP, PEP concepts |
@@ -315,8 +326,6 @@ Enable `Enable authorization` for the desired application.
 | [Fine-grained Authorization for Applications](resources/docs/fine-grained-authorization.md) | Enable XACML-based authorization on an application |
 | [Fine-grained Authorization using JSON Format](resources/docs/fine-grained-auth-json.md) | Send XACML requests and responses in JSON via REST |
 | [Multiple Decision Profile (MDP)](resources/docs/multiple-decision-profile.md) | Batch multiple authorization questions into a single XACML request |
-| [Validate OAuth Scope with XACML](resources/docs/attribute-based-access-control.md) | Use XACML policies to validate OAuth token scopes |
-| [Rule-based Provisioning](resources/docs/rule-based-provisioning.md) | Control outbound user provisioning using XACML rules |
 | [XACML Policy Templates](resources/docs/xacml-policy-templates.md) | Reference for all 18 built-in policy templates |
 | [XACML Policy Reference](resources/docs/xacml-policy-reference.md) | XACML 2.0/3.0 structure, combining algorithms, XPath policies |
 | [PDP Caching](resources/docs/pdp-caching.md) | Improve PDP performance with policy, attribute, and decision caches |
