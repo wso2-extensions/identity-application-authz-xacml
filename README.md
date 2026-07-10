@@ -321,7 +321,7 @@ From IS 7.x onwards, the Console includes a XACML **Policy Administration** UI a
 
 | Guide | Description |
 |---|---|
-| [XACML Engine Overview](resources/docs/xacml-engine-overview.md) | How IS acts as a XACML engine — PDP, PAP, PIP, PEP concepts |
+| [XACML Engine Overview](resources/docs/xacml-engine-overview.md) | How IS acts as a XACML engine (PDP, PAP, PIP, PEP concepts) |
 | [Managing XACML Policies](resources/docs/manage-xacml-policies.md) | Create, edit, publish, enable/disable, version, and test policies |
 | [Fine-grained Authorization for Applications](resources/docs/fine-grained-authorization.md) | Enable XACML-based authorization on an application |
 | [Fine-grained Authorization using JSON Format](resources/docs/fine-grained-auth-json.md) | Send XACML requests and responses in JSON via REST |

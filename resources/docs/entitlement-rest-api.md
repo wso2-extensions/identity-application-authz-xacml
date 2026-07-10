@@ -14,7 +14,7 @@ The XACML connector ships a REST API for managing entitlement policies, subscrib
 | XACML decision | `https://localhost:9443/api/identity/entitlement/decision/` |
 | Tenant-scoped (v1) | `https://localhost:9443/t/{tenant_domain}/api/identity/entitlement/v1/` |
 
-Authentication: **Basic Auth** — Base64-encode `username:password` and pass as `Authorization: Basic <token>`.
+Authentication: **Basic Auth**: Base64-encode `username:password` and pass as `Authorization: Basic <token>`.
 
 ---
 
@@ -243,7 +243,7 @@ For a full guide on JSON request/response format, see [Fine-grained Authorizatio
 
 ---
 
-## Setting up a policy via REST — end-to-end example
+## Setting up a policy via REST: end-to-end example
 
 1. **Deploy a sample policy**:
 

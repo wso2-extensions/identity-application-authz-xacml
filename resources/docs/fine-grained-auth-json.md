@@ -166,7 +166,7 @@ A XACML 3.0 JSON request maps XACML categories to JSON objects. The standard cat
 | `urn:oasis:names:tc:xacml:1.0:subject-category:access-subject` | `AccessSubject` |
 | Custom categories (e.g., `http://wso2.org/identity/user`) | Use the full URI as the key |
 
-### Example request — Denied (adminUser doing view-welcome)
+### Example request: Denied (adminUser doing view-welcome)
 
 ```bash
 curl -X POST https://localhost:9443/api/identity/entitlement/decision/pdp \
@@ -203,7 +203,7 @@ curl -X POST https://localhost:9443/api/identity/entitlement/decision/pdp \
   }'
 ```
 
-**Response** — `Deny` with obligation (attributes included because `IncludeInResult: true`):
+**Response**: `Deny` with obligation (attributes included because `IncludeInResult: true`):
 
 ```json
 {
@@ -233,7 +233,7 @@ curl -X POST https://localhost:9443/api/identity/entitlement/decision/pdp \
 }
 ```
 
-### Example request — Permitted (adminUser doing modify-welcome)
+### Example request: Permitted (adminUser doing modify-welcome)
 
 ```bash
 curl -X POST https://localhost:9443/api/identity/entitlement/decision/pdp \
@@ -255,7 +255,7 @@ curl -X POST https://localhost:9443/api/identity/entitlement/decision/pdp \
   }'
 ```
 
-**Response** — `Permit` (compact — attributes not included because `IncludeInResult: false`):
+**Response**: `Permit` (compact, attributes not included because `IncludeInResult: false`):
 
 ```json
 {

@@ -1,6 +1,6 @@
 # XACML Policy Templates
 
-The XACML connector ships a set of pre-built policy templates in the [`resources/policies/`](../policies/) directory. These templates cover the most common authorization patterns and can be used as starting points — copy the template, fill in the placeholders, and publish.
+The XACML connector ships a set of pre-built policy templates in the [`resources/policies/`](../policies/) directory. These templates cover the most common authorization patterns and can be used as starting points, copy the template, fill in the placeholders, and publish.
 
 > **Prerequisite**: The XACML connector must be installed. See the [setup guide](../../README.md).
 
@@ -60,8 +60,8 @@ Permits authentication only within a specified time window; denies outside it.
 | Placeholder | Description | Example |
 |---|---|---|
 | `SP_NAME` | Service provider name | `MyApp` |
-| `09:00:00` | Start time — replace with desired time. Timezone offset supported (e.g., `09:00:00+05:30`) | `08:00:00` |
-| `17:00:00` | End time — replace with desired time. | `18:00:00` |
+| `09:00:00` | Start time, replace with desired time. Timezone offset supported (e.g., `09:00:00+05:30`) | `08:00:00` |
+| `17:00:00` | End time, replace with desired time. | `18:00:00` |
 
 ---
 
@@ -94,7 +94,7 @@ Permits users whose claim values match and who authenticate within a time window
 | `CLAIM_VALUE_1` | Expected claim value | `Engineering` |
 | `CLAIM_URI_2` | Second claim URI (remove if not needed) | `http://wso2.org/claims/country` |
 | `CLAIM_VALUE_2` | Second expected claim value | `LK` |
-| `09:00:00` / `17:00:00` | Time window start/end — replace with desired values | `08:00:00` / `18:00:00` |
+| `09:00:00` / `17:00:00` | Time window start/end, replace with desired values | `08:00:00` / `18:00:00` |
 
 ---
 
@@ -211,13 +211,13 @@ Permits token validation when the token's scope is valid for the requested resou
 
 ### `eval_permission_tree_policy`
 
-Evaluates access based on the WSO2 permission tree — the hierarchical permission structure defined in the IS Management Console under **User Management > Permissions**.
+Evaluates access based on the WSO2 permission tree, the hierarchical permission structure defined in the IS Management Console under **User Management > Permissions**.
 
 **How it works**: The policy uses a custom XACML function `urn:oasis:names:tc:xacml:1.0:function:eval-permission-tree` that checks whether the subject (user) has the required permission node in the permission tree for the requested resource. The action must be `ui.execute`.
 
 **When to use**: When you want to enforce UI-level permissions (e.g., restricting access to management console sections) through the XACML engine rather than the built-in permission check.
 
-**Placeholders**: None — this template works as-is. The `resource-id` in the XACML request should match the permission node path (e.g., `/permission/admin/manage/identity`).
+**Placeholders**: None, this template works as-is. The `resource-id` in the XACML request should match the permission node path (e.g., `/permission/admin/manage/identity`).
 
 **Example request**:
 ```xml
@@ -253,4 +253,4 @@ Evaluates access based on the WSO2 permission tree — the hierarchical permissi
 7. Click **Create**. The policy is created in **Inactive** state.
 8. Click **Activate** to enable it for runtime evaluation.
 
-> The original template file remains unchanged — your customised version is a separate policy.
+> The original template file remains unchanged, your customised version is a separate policy.

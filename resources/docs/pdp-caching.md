@@ -59,7 +59,7 @@ For high-traffic systems where the same authorization query hits the PDP repeate
   - The global policy combining algorithm is updated
 - Invalidation must be distributed in a cluster.
 
-**WSO2 IS implementation**: A concurrent hash map is used as the decision cache. The cache is not replicated across nodes — only invalidation messages are distributed via Hazelcast. When one node invalidates its decision cache, all other nodes do the same.
+**WSO2 IS implementation**: A concurrent hash map is used as the decision cache. The cache is not replicated across nodes, only invalidation messages are distributed via Hazelcast. When one node invalidates its decision cache, all other nodes do the same.
 
 Each cache entry has a configurable TTL (`caching_interval`), which limits unbounded cache growth.
 
@@ -81,7 +81,7 @@ The PEP (your application) can also cache PDP decisions locally, completely elim
 - The PEP cache must be invalidated whenever the PDP decision cache is invalidated.
 - Invalidation messages need a reliable delivery mechanism from PDP to PEP.
 
-**WSO2 IS implementation**: IS provides the PDP, PAP, and PIP but not the PEP — the PEP is part of your application. IS supports sending cache invalidation notifications to registered external PEP endpoints when policies or user attributes change. See [Policy Update Notifications](policy-update-notifications.md) for setup instructions.
+**WSO2 IS implementation**: IS provides the PDP, PAP, and PIP but not the PEP. The PEP is part of your application. IS supports sending cache invalidation notifications to registered external PEP endpoints when policies or user attributes change. See [Policy Update Notifications](policy-update-notifications.md) for setup instructions.
 
 ---
 
@@ -151,4 +151,4 @@ entitlement_engine_caching_interval = "1d"
 | Frequent policy updates | Reduce `policy_caching.caching_interval` or set `registry_level_policy_cache_clear = true` |
 | External attribute sources update often (LDAP sync) | Reduce `attribute_caching.caching_interval` |
 | Large policy set (5000+ policies) | Reduce `reference_max_policy_entries` and rely on on-demand loading |
-| Clustered deployment | Ensure Hazelcast clustering is configured — cache invalidation depends on it |
+| Clustered deployment | Ensure Hazelcast clustering is configured, cache invalidation depends on it |

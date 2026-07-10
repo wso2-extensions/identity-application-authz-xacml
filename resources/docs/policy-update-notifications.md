@@ -50,7 +50,7 @@ json.subscription.policyUpdate.endpoint.pepEndpoint1.password=admin
 json.subscription.policyUpdate.jsonId=3232
 ```
 
-**JSON template format** — create a file at the path above with content like:
+**JSON template format**: create a file at the path above with content like:
 
 ```json
 {"TargetID":"(targetId)","Username":"(username)","Target":"(target)","Action":"(action)"}
@@ -83,7 +83,7 @@ Available dynamic placeholders from the `policyUpdate` event:
 
 ## Part 2: Notifications to external PEP endpoints
 
-This covers a broader set of triggers — not just policy changes, but also user attribute/role/permission changes that should cause PEP caches to be cleared.
+This covers a broader set of triggers, not just policy changes, but also user attribute/role/permission changes that should cause PEP caches to be cleared.
 
 ### Step 1: Add the PAP status data handler
 
@@ -97,14 +97,14 @@ status_data_handlers = [
 ]
 ```
 
-> **Note**: Do not remove the `JDBCSimplePAPStatusDataHandler` entry — it was added during connector installation and is required for policy persistence.
+> **Note**: Do not remove the `JDBCSimplePAPStatusDataHandler` entry, it was added during connector installation and is required for policy persistence.
 
 ### Step 2: Configure notification extension properties
 
 Add to `deployment.toml` (adjust values as needed):
 
 ```toml
-# Notification type — choose one: JSON, XML, or EMAIL
+# Notification type (choose one): JSON, XML, or EMAIL
 org.wso2.carbon.identity.entitlement.EntitlementNotificationExtension.1=notificationType,JSON
 
 # Ignore SSL verification for the target URL (set false in production)
@@ -139,7 +139,7 @@ org.wso2.carbon.identity.entitlement.EntitlementNotificationExtension.3=emailAdd
 | `pdpNotificationAction` | Which PDP actions trigger notifications: `ENABLE`, `DISABLE`, `UPDATE`, `DELETE` (semicolon-separated) |
 | `papNotification` | Send notification for PAP policy store changes (`true`/`false`) |
 | `targetUrl` | `url;username;password` for JSON/XML endpoint delivery |
-| `roleName` | For EMAIL type without `targetUrl` — send to all members of this role |
+| `roleName` | For EMAIL type without `targetUrl`, send to all members of this role |
 | `ignoreServerVerification` | Skip SSL certificate validation for the endpoint (`true`/`false`) |
 | `emailTemplateFile` | Absolute path to a custom email template file |
 | `emailSubject` | Subject line for EMAIL notifications |
@@ -170,7 +170,7 @@ email.subscription.policyUpdate.endpoint.privateMail.subject=Policy update notif
 threadPool.size=10
 ```
 
-**Sample email template** — create at `<IS_HOME>/repository/conf/email/entitlement-email-config.xml`:
+**Sample email template**: create at `<IS_HOME>/repository/conf/email/entitlement-email-config.xml`:
 
 ```
 Hi {username},

@@ -122,7 +122,7 @@ XACML 3.0 uses the same fundamental elements but with a revised namespace and se
 
 ### Target (3.0)
 
-In 3.0, the `<Target>` uses `<AnyOf>` / `<AllOf>` / `<Match>` instead of the 2.0 `<Subjects>` / `<Resources>` / `<Actions>` structure. This gives greater flexibility — any attribute category can appear in the target:
+In 3.0, the `<Target>` uses `<AnyOf>` / `<AllOf>` / `<Match>` instead of the 2.0 `<Subjects>` / `<Resources>` / `<Actions>` structure. This gives greater flexibility, any attribute category can appear in the target:
 
 ```xml
 <Target>
@@ -155,7 +155,7 @@ XACML 3.0 introduces **obligations** (the PEP must fulfill them) and **advice** 
     <ObligationExpression FulfillOn="Deny" ObligationId="log-denial">
       <AttributeAssignmentExpression AttributeId="message">
         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">
-          Access denied — insufficient privileges
+          Access denied, insufficient privileges
         </AttributeValue>
       </AttributeAssignmentExpression>
     </ObligationExpression>
@@ -182,12 +182,12 @@ urn:oasis:names:tc:xacml:1.0:policy-combining-algorithm:only-one-applicable
 
 | Algorithm | Behaviour |
 |---|---|
-| `deny-overrides` | Any Deny wins. Safest — favours denial. |
+| `deny-overrides` | Any Deny wins. Safest, favours denial. |
 | `permit-overrides` | Any Permit wins. Grants access if at least one rule permits. |
 | `first-applicable` | First matching rule (Permit or Deny) wins. Stops evaluation early. |
 | `deny-unless-permit` | Returns Deny unless at least one Permit is found. Hides NotApplicable/Indeterminate. |
 | `permit-unless-deny` | Returns Permit unless at least one Deny is found. Hides NotApplicable/Indeterminate. |
-| `only-one-applicable` | PolicySet only — exactly one child must return a valid decision. |
+| `only-one-applicable` | PolicySet only, exactly one child must return a valid decision. |
 | `ordered-deny-overrides` | Same as `deny-overrides` but guarantees evaluation order. |
 | `ordered-permit-overrides` | Same as `permit-overrides` but guarantees evaluation order. |
 
@@ -296,7 +296,7 @@ The PEP includes a `<Content>` element in the resource attributes of the XACML r
 
 ### Sample scenario
 
-A healthcare application **Medicom** returns patient records from a datastore. The rule: **users can only read their own patient records** — a user `alex` can only read records where `patientId` is `alex`.
+A healthcare application **Medicom** returns patient records from a datastore. The rule: **users can only read their own patient records**: a user `alex` can only read records where `patientId` is `alex`.
 
 ### Policy
 
@@ -378,7 +378,7 @@ The PEP passes the patient record as `<Content>` inside the resource attributes.
 </Request>
 ```
 
-**Response** — `Permit` because `alex` (subject) matches `alex` (patientId in content):
+**Response**: `Permit` because `alex` (subject) matches `alex` (patientId in content):
 
 ```xml
 <Response>
@@ -403,4 +403,4 @@ The PEP passes the patient record as `<Content>` inside the resource attributes.
 
    ![Publish XPath Policy to PDP](../images/publish-xpath-policy-to-pdp.png)
 
-4. Use the **TryIt** tool — paste the sample request XML and click **Evaluate With PDP**.
+4. Use the **TryIt** tool, paste the sample request XML and click **Evaluate With PDP**.

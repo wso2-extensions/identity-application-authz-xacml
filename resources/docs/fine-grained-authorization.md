@@ -25,13 +25,13 @@ The PDP evaluates any published policies against this request and returns **Perm
 ## Scenario
 
 **Pickup** is a cab company with two applications:
-- **Pickup Manager** — HR management portal
-- **Pickup Dispatch** — Vehicle and driver allocation system
+- **Pickup Manager**: HR management portal
+- **Pickup Dispatch**: Vehicle and driver allocation system
 
 Three employees:
-- **Larry** — Manager; can view allocations in Pickup Dispatch (GET)
-- **Sam** — Executive; can view and create allocations in Pickup Dispatch (GET + POST)
-- **Kim** — HR manager; only has access to Pickup Manager, not Pickup Dispatch
+- **Larry**: Manager; can view allocations in Pickup Dispatch (GET)
+- **Sam**: Executive; can view and create allocations in Pickup Dispatch (GET + POST)
+- **Kim**: HR manager; only has access to Pickup Manager, not Pickup Dispatch
 
 The goal is to create a XACML policy that enforces these access rules on Pickup Dispatch.
 
@@ -67,7 +67,7 @@ The goal is to create a XACML policy that enforces these access rules on Pickup 
    ![Create a XACML Policy](../images/create-a-xacml-policy.png)
 
    - **Entitlement Policy Name**: `Pickup_Access_Control`
-   - **Policy evaluation criteria** — Target the Pickup Dispatch resources:
+   - **Policy evaluation criteria**: Target the Pickup Dispatch resources:
 
      | Category | Function | Value |
      |---|---|---|
@@ -75,7 +75,7 @@ The goal is to create a XACML policy that enforces these access rules on Pickup 
 
 5. Define the rules:
 
-   **Rule 1 — Grant GET access to Larry and Sam**
+   **Rule 1: Grant GET access to Larry and Sam**
 
    - Rule Name: `View_Access`
    - Rule Effect: `Permit`
@@ -87,7 +87,7 @@ The goal is to create a XACML policy that enforces these access rules on Pickup 
 
    ![First XACML Rule](../images/first-xacml-rule.png)
 
-   **Rule 2 — Grant POST access to Sam**
+   **Rule 2: Grant POST access to Sam**
 
    - Rule Name: `Edit_Access`
    - Rule Effect: `Permit`
@@ -97,7 +97,7 @@ The goal is to create a XACML policy that enforces these access rules on Pickup 
 
    Click **Add**.
 
-   **Rule 3 — Deny POST access for Larry**
+   **Rule 3: Deny POST access for Larry**
 
    - Rule Name: `Deny_Edit_Access`
    - Rule Effect: `Deny`
@@ -107,7 +107,7 @@ The goal is to create a XACML policy that enforces these access rules on Pickup 
 
    Click **Add**.
 
-   **Rule 4 — Deny all access for Kim**
+   **Rule 4: Deny all access for Kim**
 
    - Rule Name: `Deny_Kim`
    - Rule Effect: `Deny`

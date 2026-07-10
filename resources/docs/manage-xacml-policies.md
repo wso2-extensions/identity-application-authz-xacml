@@ -14,11 +14,11 @@ A XACML policy follows a defined lifecycle inside the Policy Administration Poin
 
 ![Policy Lifecycle](../images/policy-life-cycle.png)
 
-1. **Create** — Write a policy using one of the six editors (Simple, Basic, Standard, Policy Set, Import, or XML).
-2. **Test** — Evaluate the policy against sample requests using the TryIt tool *before* publishing — without affecting the live PDP.
-3. **Revise** — Edit and retest. IS automatically versions the policy on each save so you can revert to any previous version.
-4. **Publish** — When the policy is correct, publish it to the PDP. It becomes active for runtime evaluation.
-5. **Enable/Disable** — Toggle enforcement in the PDP without deleting the policy.
+1. **Create**: Write a policy using one of the six editors (Simple, Basic, Standard, Policy Set, Import, or XML).
+2. **Test**: Evaluate the policy against sample requests using the TryIt tool *before* publishing, without affecting the live PDP.
+3. **Revise**: Edit and retest. IS automatically versions the policy on each save so you can revert to any previous version.
+4. **Publish**: When the policy is correct, publish it to the PDP. It becomes active for runtime evaluation.
+5. **Enable/Disable**: Toggle enforcement in the PDP without deleting the policy.
 
 ---
 
@@ -39,11 +39,11 @@ A UI-driven editor that requires no knowledge of XACML syntax. Policies are buil
 ![Create XACML Policy - Simple Editor](../images/create-xacml-policy.png)
 
 Key behaviours:
-- A **Deny rule is automatically added** as the final rule — everything not explicitly permitted is denied.
+- A **Deny rule is automatically added** as the final rule, everything not explicitly permitted is denied.
 - Permitted rules are evaluated **top to bottom**.
 - Supports regex with `{ }`, OR/AND with `|` / `&`, range with `[ ]` / `( )`, and comparison with `<` / `>`.
 
-Example — policy allowing admin role to read/write `foo`, and wso2.com email users to read `foo/wso2` between 09:00–16:00:
+Example, policy allowing admin role to read/write `foo`, and wso2.com email users to read `foo/wso2` between 09:00–16:00:
 
 ![Sample Policy Editor](../images/sample-policy-editor.png)
 
@@ -59,16 +59,16 @@ Designed for XACML 3.0 rules. Supports defining a target (when the policy applie
 
 You can plug in attribute value sources (user store roles, registry resources, custom sources) rather than typing values manually.
 
-**Sample scenario** — patient records at `/patient/` accessible only 09:00–16:00, createable/deletable by MedAdministrator, updatable/readable by MediStaff:
+**Sample scenario**: patient records at `/patient/` accessible only 09:00–16:00, createable/deletable by MedAdministrator, updatable/readable by MediStaff:
 
 | Step | What to configure |
 |---|---|
 | 1 | Define the policy name |
 | 2 | Set target: resource matches `/patient//*` (regex) |
-| 3 | Rule 1 — Deny for access outside 09:00–16:00 (time `is not` in range) |
-| 4 | Rule 2 — Permit for MedAdministrator role with create/delete actions |
-| 5 | Rule 3 — Permit for MediStaff role with read/update actions |
-| 6 | Rule 4 — Deny all others |
+| 3 | Rule 1: Deny for access outside 09:00–16:00 (time `is not` in range) |
+| 4 | Rule 2: Permit for MedAdministrator role with create/delete actions |
+| 5 | Rule 3: Permit for MediStaff role with read/update actions |
+| 6 | Rule 4: Deny all others |
 | 7 | Set rule-combining algorithm (e.g., `first-applicable`) and click **Finish** |
 
 ### Standard Policy Editor
@@ -77,8 +77,8 @@ Similar to the Basic Editor but adds **XACML 3.0 Obligations and Advice** at the
 
 ![Standard Policy Editor](../images/create-xacml-policy-in-standard-policy-editor.png)
 
-- **Obligations** — statements the PEP *must* fulfil (e.g., log the access).
-- **Advice** — statements the PEP *may* consider (e.g., explain a denial to the user).
+- **Obligations**: statements the PEP *must* fulfil (e.g., log the access).
+- **Advice**: statements the PEP *may* consider (e.g., explain a denial to the user).
 
 Define obligations/advice using the **Define Policy Obligation or Advice** field at the bottom of the editor.
 
@@ -112,7 +112,7 @@ Paste raw XACML 3.0 XML directly into the editor.
 | `first-applicable` | First rule that evaluates to Permit or Deny wins. Short-circuits evaluation. |
 | `deny-unless-permit` | Returns Deny if no Permit; hides NotApplicable/Indeterminate. |
 | `permit-unless-deny` | Returns Permit if no Deny; hides NotApplicable/Indeterminate. |
-| `only-one-applicable` | For PolicySets — exactly one child must produce a valid decision. |
+| `only-one-applicable` | For PolicySets, exactly one child must produce a valid decision. |
 | `ordered-deny-overrides` | Same as `deny-overrides` but evaluation order is guaranteed. |
 | `ordered-permit-overrides` | Same as `permit-overrides` but evaluation order is guaranteed. |
 
@@ -133,7 +133,7 @@ Paste raw XACML 3.0 XML directly into the editor.
 
 > Policies created with the Simple Policy Editor open in design view, not XML view, when edited. The base condition cannot be changed after creation.
 
-After editing, publish the updated policy to the PDP — click **Publish To My PDP** next to the policy in the list.
+After editing, publish the updated policy to the PDP, click **Publish To My PDP** next to the policy in the list.
 
 ---
 
@@ -168,7 +168,7 @@ A policy is not enforced until it is published to the **Policy Decision Point (P
 
 After publishing, the policy appears in **PDP > Policy View**. When you have multiple policies published, select a **global policy combining algorithm** and click **Update**.
 
-Policy order (priority) can be changed using the **Edit Order** link — policies are evaluated in ascending order (lower number = evaluated first).
+Policy order (priority) can be changed using the **Edit Order** link, policies are evaluated in ascending order (lower number = evaluated first).
 
 ![Edit Policy Order](../images/edit-the-order-of-the-policy.png)
 
@@ -242,13 +242,13 @@ Select an older version from the dropdown to view its content and restore it if 
 
 ## Test a policy with the TryIt tool
 
-The **TryIt tool** lets you evaluate a policy directly from the PAP against sample requests — without publishing to the PDP and without triggering real application flows. Use it to verify policy logic before activating.
+The **TryIt tool** lets you evaluate a policy directly from the PAP against sample requests, without publishing to the PDP and without triggering real application flows. Use it to verify policy logic before activating.
 
 1. Go to **Policy Administration**, find the policy, and click **Try**.
 2. The TryIt screen appears. Fill in:
-   - **Resource** — The resource being accessed (e.g., `/pickup-dispatch/protected/index.jsp`)
-   - **Subject Name** — The user making the request
-   - **Action Name** — The operation (e.g., `GET`, `POST`)
+   - **Resource**: The resource being accessed (e.g., `/pickup-dispatch/protected/index.jsp`)
+   - **Subject Name**: The user making the request
+   - **Action Name**: The operation (e.g., `GET`, `POST`)
 3. Click **Test Evaluate**.
 
 The result is **Permit** or **Deny** based on the policy as written in the PAP.
