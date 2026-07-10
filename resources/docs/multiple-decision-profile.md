@@ -2,7 +2,7 @@
 
 The **Multiple Decision Profile (MDP)** is a XACML 3.0 feature that lets a Policy Enforcement Point (PEP) ask several access-control questions in a single XACML request. The Policy Decision Point (PDP) evaluates each question independently and returns one `<Result>` per question in the same response.
 
-MDP is useful when the PEP would otherwise have to send many almost-identical requests — for example, checking every action a user might perform on a resource, or authorizing every child under a parent resource. Reusing the shared attribute values across all questions minimizes network traffic and simplifies the PEP logic.
+MDP is useful when the PEP would otherwise have to send many almost-identical requests. For example, checking every action a user might perform on a resource, or authorizing every child under a parent resource. Reusing the shared attribute values across all questions minimizes network traffic and simplifies the PEP logic.
 
 > **Prerequisite**: The XACML connector must be installed. See the [setup guide](../../README.md).
 
@@ -90,7 +90,7 @@ Instead of issuing four separate requests, the PEP sends one request that repeat
 
 Two things to note:
 
-- **`IncludeInResult="true"`** on the repeated attribute — this is what lets you distinguish which decision belongs to which action in the response.
+- **`IncludeInResult="true"`** on the repeated attribute. This is what lets you distinguish which decision belongs to which action in the response.
 - **Shared attributes** (subject, resource) are declared once and reused across all decisions.
 
 ### Sample response
@@ -198,7 +198,7 @@ Key points:
 
 - The **root** is `resource-id = index.jsp`.
 - The **scope** attribute uses AttributeId `urn:oasis:names:tc:xacml:2.0:resource:scope` on the resource category.
-- The additional `root-resource-id` is a convenience attribute that policies can reference — its actual AttributeId is up to how your policies are written.
+- The additional `root-resource-id` is a convenience attribute that policies can reference. Its actual AttributeId is up to how your policies are written.
 - `IncludeInResult="true"` on the resource-id ensures the response echoes the resolved child in every `<Result>`, so the PEP can tell which decision belongs to which child.
 
 ### Sample response
@@ -287,7 +287,7 @@ The `CombinedDecision` flag on the `<Request>` element controls whether the PDP 
 
 | `CombinedDecision` | Response |
 |---|---|
-| `false` (default) | One `<Result>` per question — the caller can inspect each independently. |
+| `false` (default) | One `<Result>` per question, so the caller can inspect each independently. |
 | `true` | The PDP combines all the individual decisions into a single `<Result>` using the global policy combining algorithm. |
 
 Use `CombinedDecision="true"` when the PEP only needs a single yes/no answer (e.g., "can the user do *any* of these things?"). Use the default when you need per-question decisions.
@@ -296,6 +296,6 @@ Use `CombinedDecision="true"` when the PEP only needs a single yes/no answer (e.
 
 ## See also
 
-- [Fine-grained Authorization using JSON Format](fine-grained-auth-json.md) — Base JSON request format
-- [Entitlement Management REST API](entitlement-rest-api.md) — Decision endpoint and REST usage
-- [XACML Policy Reference](xacml-policy-reference.md) — Policy structure, combining algorithms
+- [Fine-grained Authorization using JSON Format](fine-grained-auth-json.md): Base JSON request format
+- [Entitlement Management REST API](entitlement-rest-api.md): Decision endpoint and REST usage
+- [XACML Policy Reference](xacml-policy-reference.md): Policy structure, combining algorithms

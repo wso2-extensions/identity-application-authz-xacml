@@ -87,7 +87,7 @@ For specific use cases, refer to:
 **Authorization flows**
 - [Fine-grained Authorization for Applications](fine-grained-authorization.md) — XACML authorization handler on an app
 - [Fine-grained Authorization using JSON Format](fine-grained-auth-json.md) — Send XACML requests and responses as JSON
-- [Multiple Decision Profile (MDP)](multiple-decision-profile.md) — Batch multiple authorization questions in one request
+- [Multiple Decision Profile (MDP)](multiple-decision-profile.md): Batch multiple authorization questions in one request
 - [Validate OAuth Scope with XACML](attribute-based-access-control.md) — Scope-based token issuance
 - [Rule-based Provisioning](rule-based-provisioning.md) — Control outbound provisioning with XACML rules
 
