@@ -5,7 +5,7 @@ Fine-grained authorization specifies the requirements and variables in an access
 policy that is used to authorize access to a resource. However, there are plenty of other
 aspects of XACML other than it being just a fine grained authorization mechanism.
 
-We have remove the default support for XACML from Identity Server 7.1 onwards.
+We have removed the default support for XACML from Identity Server 7.1 onwards.
 However, you can still use the XACML feature by following the below guide to enable it.
 
 ## How to enable XACML connector
@@ -303,3 +303,22 @@ Enable `Enable authorization` for the desired application.
 2. Navigate to applications and select desired application.
 3. Go to Advanced section.
 4. Enable the checkbox for `Enable authorization`.
+
+---
+
+## Documentation
+
+| Guide | Description |
+|---|---|
+| [XACML Engine Overview](resources/docs/xacml-engine-overview.md) | How IS acts as a XACML engine — PDP, PAP, PIP, PEP concepts |
+| [Managing XACML Policies](resources/docs/manage-xacml-policies.md) | Create, edit, publish, enable/disable, version, and test policies |
+| [Fine-grained Authorization for Applications](resources/docs/fine-grained-authorization.md) | Enable XACML-based authorization on an application |
+| [Fine-grained Authorization using JSON Format](resources/docs/fine-grained-auth-json.md) | Send XACML requests and responses in JSON via REST |
+| [Multiple Decision Profile (MDP)](resources/docs/multiple-decision-profile.md) | Batch multiple authorization questions into a single XACML request |
+| [Validate OAuth Scope with XACML](resources/docs/attribute-based-access-control.md) | Use XACML policies to validate OAuth token scopes |
+| [Rule-based Provisioning](resources/docs/rule-based-provisioning.md) | Control outbound user provisioning using XACML rules |
+| [XACML Policy Templates](resources/docs/xacml-policy-templates.md) | Reference for all 18 built-in policy templates |
+| [XACML Policy Reference](resources/docs/xacml-policy-reference.md) | XACML 2.0/3.0 structure, combining algorithms, XPath policies |
+| [PDP Caching](resources/docs/pdp-caching.md) | Improve PDP performance with policy, attribute, and decision caches |
+| [Policy Update Notifications](resources/docs/policy-update-notifications.md) | Send notifications to external PEPs on policy or attribute changes |
+| [Entitlement Management REST API](resources/docs/entitlement-rest-api.md) | REST API for managing policies, subscribers, and evaluating requests |

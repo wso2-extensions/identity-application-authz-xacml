@@ -50,7 +50,7 @@ Server so that the authentication happens as expected.
     ```
 
 9. Execute the Inbound Protocols PUT REST API call to update the application with the
-   XACML scope validator which added in the step 7. You can get the API call details from
+   XACML scope validator added in step 8. You can get the API call details from
    <a href="https://is.docs.wso2.com/en/latest/apis/application-rest-api/#tag/Inbound-Protocols-OAuth-OIDC/operation/updateInboundOAuthConfiguration/">Update OIDC authentication protocol parameters</a>.
 
 ### Register an API resource and Authorize for an app
