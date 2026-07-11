@@ -663,7 +663,7 @@
         <encoder.wso2.version>1.2.0.wso2v1</encoder.wso2.version>
         <org.slf4j.verison>1.7.21</org.slf4j.verison>
         <log4j.api.version>2.17.1</log4j.api.version>
-        <log4j.core.version>2.17.1</log4j.core.version>
+        <log4j.core.version>2.25.3</log4j.core.version>
         <commons-collections.version>3.2.2.wso2v1</commons-collections.version>
         <commons-lang.wso2.version>2.6.0.wso2v1</commons-lang.wso2.version>
         <jsr105.version>1.0.1.wso2v1</jsr105.version>
