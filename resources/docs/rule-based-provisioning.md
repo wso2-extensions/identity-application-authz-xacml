@@ -26,7 +26,7 @@ curl --location --request PUT 'https://localhost:9443/api/server/v1/applications
 --data '{
     "outboundProvisioningIdps": [
         {
-            "idp": <IDP_NAME>,
+            "idp": "<IDP_NAME>",
             "connector": "SCIM2",
             "blocking": false,
             "rules": true,
@@ -51,7 +51,7 @@ curl --location --request PATCH 'https://localhost:9443/api/server/v1/applicatio
     "provisioningConfigurations": {
         "outboundProvisioningIdps": [
             {
-                "idp": <IDP_NAME>,
+                "idp": "<IDP_NAME>",
                 "connector": "SCIM2",
                 "blocking": false,
                 "rules": true,
@@ -71,7 +71,7 @@ Use the [application API](https://is.docs.wso2.com/en/latest/apis/application-re
 
 1. Log in to the Console via <https://localhost:9443/console>.
 2. Navigate to **Policy Administration**.
-3. Click on "New Policy" and retrieve the `provisioning_user_claim_based_policy_template` from this [link](https://github.com/wso2-extensions/identity-application-authz-xacml/blob/master/resources/policies/scope_based_token_issuance_policy_template.xml). 
+3. Click on "New Policy" and retrieve the `provisioning_user_claim_based_policy_template` from this [link](https://github.com/wso2-extensions/identity-application-authz-xacml/blob/master/resources/policies/provisioning_user_claim_based_policy_template.xml). 
    Copy the policy content and paste it into the policy editor. Note that this example scenario is based on using the email address as the user claim.
 4. Edit the placeholders accordingly with the relevant values.
     1. Change the `PolicyId` as follows:
@@ -130,7 +130,7 @@ Use the [application API](https://is.docs.wso2.com/en/latest/apis/application-re
 <Condition>
 <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:and">
 <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-regexp-match">
-<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">.*@wso2\.com$</AttributeValue>
+<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">.*@abc\.com$</AttributeValue>
 <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
 <AttributeDesignator AttributeId="http://wso2.org/claims/emailaddress" Category="http://wso2.org/identity/user" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true">
 </AttributeDesignator>
