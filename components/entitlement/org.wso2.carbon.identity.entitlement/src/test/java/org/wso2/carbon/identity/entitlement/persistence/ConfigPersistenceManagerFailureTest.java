@@ -35,7 +35,7 @@ import org.wso2.carbon.registry.core.Registry;
 import org.wso2.carbon.registry.core.exceptions.RegistryException;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
+import java.lang.reflect.Method;
 
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -175,10 +175,17 @@ public class ConfigPersistenceManagerFailureTest {
         Field field = clazz.getDeclaredField(fieldName);
         field.setAccessible(true);
 
-        Field modifiers = Field.class.getDeclaredField("modifiers");
-        modifiers.setAccessible(true);
-        modifiers.setInt(field, field.getModifiers() & ~Modifier.FINAL);
+        Class<?> unsafeClass = Class.forName("sun.misc.Unsafe");
+        Field unsafeField = unsafeClass.getDeclaredField("theUnsafe");
+        unsafeField.setAccessible(true);
+        Object unsafe = unsafeField.get(null);
 
-        field.set(null, newValue);
+        Method staticFieldBase = unsafeClass.getMethod("staticFieldBase", Field.class);
+        Method staticFieldOffset = unsafeClass.getMethod("staticFieldOffset", Field.class);
+        Method putObject = unsafeClass.getMethod("putObject", Object.class, long.class, Object.class);
+
+        Object base = staticFieldBase.invoke(unsafe, field);
+        long offset = (long) staticFieldOffset.invoke(unsafe, field);
+        putObject.invoke(unsafe, base, offset, newValue);
     }
 }
