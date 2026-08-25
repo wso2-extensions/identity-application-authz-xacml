@@ -8,6 +8,20 @@ aspects of XACML other than it being just a fine grained authorization mechanism
 We have removed the default support for XACML from Identity Server 7.1 onwards.
 However, you can still use the XACML feature by following the below guide to enable it.
 
+## Compatibility
+
+| Connector version | Identity Server | JDK |
+| --- | --- | --- |
+| 2.5.x | IS 7.3.0 | 21 |
+| 2.4.36 and earlier | IS 7.1.0, IS 7.2.0 | 11, 17, 21 |
+
+From 2.5.0 onwards the connector is compiled at Java 21 and its bundles declare
+`Require-Capability: osgi.ee;filter:="(&(osgi.ee=JavaSE)(version=21))"`. On a server
+running a lower JDK the bundles do not resolve and the server does not start.
+
+Versions 2.4.37 and 2.4.38 also carry the JDK 21 requirement. For IS 7.1.0 or IS 7.2.0
+deployments running JDK 11 or 17, use 2.4.36 or earlier.
+
 ## How to enable XACML connector
 
 ### Pre-requisites:
